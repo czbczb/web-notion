@@ -1,4 +1,16 @@
-<script setup></script>
+<script setup>
+import { reactive } from "vue";
+const state = reactive({
+  listnav: [
+    {
+      title: "test1",
+    },
+    {
+      title: "test2",
+    },
+  ],
+});
+</script>
 <template>
   <a-row justify="center" align="center" class="navWrapper">
     <a class="h1" href="#h1">h1</a>
@@ -7,8 +19,10 @@
     <a class="h4" href="#h4">h4</a>
     <a class="h5" href="#h5">h5</a>
     <a class="h6" href="#h6">h6</a>
-    <a-list>
-      <a-list-item></a-list-item>
+    <a-list size="small" class="listNav" :data-source="state.listnav">
+      <template #renderItem="{ item }">
+        <a-list-item>{{ item.title }}</a-list-item>
+      </template>
     </a-list>
   </a-row>
 </template>
@@ -17,27 +31,16 @@
   flex-direction: column;
   height: 100%;
 }
-.h1 {
-  font-size: 35px;
+.listNav {
+  list-style-type: url("@/assets/point.png");
 }
 .h2 {
   text-indent: 1rem;
-  font-size: 32px;
 }
-.h3 {
-  text-indent: 2rem;
-  font-size: 30px;
-}
-.h4 {
-  text-indent: 2rem;
-  font-size: 28px;
-}
-.h5 {
-  text-indent: 2rem;
-  font-size: 25px;
-}
+.h3,
+.h4,
+.h5,
 .h6 {
   text-indent: 2rem;
-  font-size: 20px;
 }
 </style>
