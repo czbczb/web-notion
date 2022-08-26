@@ -1,5 +1,6 @@
 <script setup>
 import { reactive } from "vue";
+import router from "../router/index";
 import NotionItem from "../components/list/NotionItem.vue";
 const state = reactive({
   pageList: [
@@ -13,14 +14,14 @@ const state = reactive({
     },
   ],
 });
-function createPage() {
-  console.log("create");
-}
+const createPage = () => {
+  router.push({ name: "create" });
+};
 </script>
 <template>
   <header class="notionListheader">
     <b>总共：12000个</b>
-    <a-button type="primary" @click="createPage">创建新的文章</a-button>
+    <a-button type="primary" @click="createPage"> 创建新的文章 </a-button>
   </header>
   <div class="notionList">
     <NotionItem

@@ -1,10 +1,14 @@
 <script setup>
+import router from "../../router/index";
 defineProps({
   pageItem: Object,
 });
+const goDetail = () => {
+  router.push({ name: "create" });
+};
 </script>
 <template>
-  <a-card :title="pageItem.title" class="pageItem"> </a-card>
+  <a-card @click="goDetail" :title="pageItem.title" class="pageItem"> </a-card>
 </template>
 <style scoped>
 .pageItem {

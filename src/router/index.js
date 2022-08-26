@@ -14,6 +14,11 @@ const router = createRouter({
       name: "describe",
       component: () => import("../views/DescribeView.vue"),
     },
+    {
+      path: "/create",
+      name: "create",
+      component: () => import("../views/NotionContent.vue"),
+    },
   ],
 });
 

@@ -1,11 +1,11 @@
 <script setup></script>
 <template>
   <main class="designWrapper">
-    <div class="libs">
-      <slot name="libs"></slot>
+    <div class="navWrapper">
+      <slot name="nav"></slot>
     </div>
-    <div class="form">
-      <slot name="form"></slot>
+    <div class="contentWrapper">
+      <slot name="content"></slot>
     </div>
     <div class="property">
       <slot name="property"></slot>
@@ -17,23 +17,23 @@
 .designWrapper {
   display: flex;
 }
-.libs {
+.navWrapper {
   flex: 0 0 250px;
-  padding: 5px;
-  border: 1px dashed #ccc;
   height: calc(100vh - 60px);
+  padding: 0 20px;
+  overflow-y: scroll;
 }
-.form {
+.contentWrapper {
   width: 100%;
-  padding: 5px;
-  border: 1px dashed #ccc;
   height: calc(100vh - 60px);
+  border: 1px dashed #ccc;
+  padding: 5px;
+  overflow-y: scroll;
 }
 .property {
   flex: 0 0 250px;
   padding: 5px;
   justify-self: flex-end;
-  border: 1px dashed #ccc;
   height: calc(100vh - 60px);
 }
 </style>
