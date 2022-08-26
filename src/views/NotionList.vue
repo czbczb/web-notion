@@ -19,7 +19,8 @@ function createPage() {
 </script>
 <template>
   <header class="notionListheader">
-    <b>总共：12000个</b> <button class="primary" @click="createPage">创建新的文章</button>
+    <b>总共：12000个</b>
+    <button class="primary" @click="createPage">创建新的文章</button>
   </header>
   <list class="notionList">
     <NotionItem
@@ -48,5 +49,6 @@ function createPage() {
   border-radius: 5px;
   padding: 5px 10px;
   height: 30px;
+  cursor: pointer;
 }
 </style>
