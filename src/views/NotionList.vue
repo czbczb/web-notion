@@ -20,15 +20,15 @@ function createPage() {
 <template>
   <header class="notionListheader">
     <b>总共：12000个</b>
-    <button class="primary" @click="createPage">创建新的文章</button>
+    <a-button type="primary" @click="createPage">创建新的文章</a-button>
   </header>
-  <list class="notionList">
+  <div class="notionList">
     <NotionItem
       v-for="item in state.pageList"
       :key="item.key"
       :pageItem="item"
     ></NotionItem>
-  </list>
+  </div>
 </template>
 <style scoped>
 .notionListheader {

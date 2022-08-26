@@ -4,9 +4,7 @@ defineProps({
 });
 </script>
 <template>
-  <li class="pageItem">
-    <h3>{{ pageItem.title }}</h3>
-  </li>
+  <a-card :title="pageItem.title" class="pageItem"> </a-card>
 </template>
 <style scoped>
 .pageItem {
