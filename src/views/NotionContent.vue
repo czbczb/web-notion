@@ -1,15 +1,36 @@
 <script setup>
-import ArticleContent from "../components/designer/ArticleContent.vue";
-import ArticleNav from "../components/designer/ArticleNav.vue";
-import LayoutContainer from "../components/designer/layoutContainer.vue";
+import NotionContent from "../components/designer/NotionContent.vue";
+import NotionNav from "../components/designer/NotionNav.vue";
+import Notionlayout from "../components/designer/Notionlayout.vue";
+import config from "../components/config";
+import { reactive } from "vue";
+const state = reactive({
+  config: config,
+});
+
+function removeConfigItem(order) {
+  state.config = state.config.splice(order, 1);
+}
+
+function addConfigItem(order, config) {
+  console.log(order, config);
+}
 </script>
 <template>
-  <LayoutContainer>
+  <Notionlayout>
     <template #nav>
-      <ArticleNav />
+      <NotionNav
+        :config="state.config"
+        @removeConfigItem="removeConfigItem"
+        @addConfigItem="addConfigItem"
+      />
     </template>
     <template #content>
-      <ArticleContent />
+      <NotionContent
+        :config="state.config"
+        @removeConfigItem="removeConfigItem"
+        @addConfigItem="addConfigItem"
+      />
     </template>
-  </LayoutContainer>
+  </Notionlayout>
 </template>

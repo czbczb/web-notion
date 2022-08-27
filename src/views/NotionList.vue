@@ -1,7 +1,7 @@
 <script setup>
 import { reactive } from "vue";
 import router from "../router/index";
-import NotionItem from "../components/list/NotionItem.vue";
+import NotionListItem from "../components/list/NotionListItem.vue";
 const state = reactive({
   pageList: [
     {
@@ -24,11 +24,11 @@ const createPage = () => {
     <a-button type="primary" @click="createPage"> 创建新的文章 </a-button>
   </header>
   <div class="notionList">
-    <NotionItem
+    <NotionListItem
       v-for="item in state.pageList"
       :key="item.key"
       :pageItem="item"
-    ></NotionItem>
+    ></NotionListItem>
   </div>
 </template>
 <style scoped>

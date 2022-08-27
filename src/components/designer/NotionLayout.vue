@@ -1,4 +1,3 @@
-<script setup></script>
 <template>
   <main class="designWrapper">
     <div class="navWrapper">
@@ -12,7 +11,6 @@
     </div>
   </main>
 </template>
-
 <style scoped>
 .designWrapper {
   display: flex;
@@ -26,9 +24,9 @@
 .contentWrapper {
   width: 100%;
   height: calc(100vh - 60px);
-  border: 1px dashed #ccc;
-  padding: 5px;
-  overflow-y: scroll;
+  /* border: 1px dashed #ccc; */
+  margin: 5px;
+  /* overflow-y: scroll; */
 }
 .property {
   flex: 0 0 250px;
