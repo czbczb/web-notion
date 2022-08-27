@@ -17,7 +17,7 @@ const router = createRouter({
     {
       path: "/create",
       name: "create",
-      component: () => import("../views/NotionContent.vue"),
+      component: () => import("../views/NotionView.vue"),
     },
   ],
 });

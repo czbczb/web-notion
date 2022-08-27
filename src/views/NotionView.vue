@@ -2,32 +2,31 @@
 import NotionContent from "../components/designer/NotionContent.vue";
 import NotionNav from "../components/designer/NotionNav.vue";
 import Notionlayout from "../components/designer/Notionlayout.vue";
-import config from "../components/config";
+import configJson from "../components/config";
 import { reactive } from "vue";
-const state = reactive({
-  config: config,
-});
+let config = reactive(configJson);
 
 function removeConfigItem(order) {
-  state.config = state.config.splice(order, 1);
+  config = config.splice(order, 1);
 }
 
-function addConfigItem(order, config) {
-  console.log(order, config);
+function addConfigItem(params) {
+  console.log(params.config);
+  config.splice(params.order, 0, params.config)
 }
 </script>
 <template>
   <Notionlayout>
     <template #nav>
       <NotionNav
-        :config="state.config"
+        :config="config"
         @removeConfigItem="removeConfigItem"
         @addConfigItem="addConfigItem"
       />
     </template>
     <template #content>
       <NotionContent
-        :config="state.config"
+        :config="config"
         @removeConfigItem="removeConfigItem"
         @addConfigItem="addConfigItem"
       />

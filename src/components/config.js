@@ -9,7 +9,7 @@ export default [
 		type: "h2",
 		title: "title",
 		target: '#h2',
-		html: "h1 content",
+		html: "h2 content",
 	},
 	{
 		type: "h3",

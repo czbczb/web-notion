@@ -1,7 +1,11 @@
 <template>
   <a-card>
     <a-row>
-      <a-col @click="addHxCom" v-for="(item, index) in state.hxList" :key="index">
+      <a-col
+        @click="addHxCom"
+        v-for="(item, index) in state.hxList"
+        :key="index"
+      >
         <b>{{ item }}</b>
       </a-col>
     </a-row>
@@ -11,8 +15,6 @@
 <script setup>
 import { reactive, onBeforeMount, onMounted } from "vue";
 const props = defineProps({
-  config: Array,
-  configItem: Object,
   order: Number,
 });
 const state = reactive({

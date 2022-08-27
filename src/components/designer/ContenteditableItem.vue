@@ -1,22 +1,29 @@
 <template>
   <div
-    @keydown.self="changeEnter"
+    @keyup.enter="changeEnter"
+    @keyup.space="changeSpace"
     ref="editItem"
     class="editItem"
-    :contenteditable="readOnly"
+    :contenteditable="!readOnly"
     v-bind="state.value"
   ></div>
 </template>
 
 <script setup>
-import { ref, reactive, onBeforeMount, onMounted, onBeforeUpdate } from "vue";
+import { ref, reactive, onBeforeMount, onMounted } from "vue";
 const props = defineProps({
   config: Object,
-  configItem: Object,
+  configItem: {
+    type: Object,
+    default: () => ({
+      type: "p",
+      html: "",
+    }),
+  },
   order: Number,
   readOnly: {
     type: Boolean,
-    default: true,
+    default: false,
   },
 });
 
@@ -70,6 +77,10 @@ const state = reactive({
       html: "h1",
       target: "h1",
     },
+    default: {
+      type: "p",
+      html: "正文",
+    },
   },
 });
 
@@ -79,25 +90,42 @@ onBeforeMount(() => {
 
 onMounted(() => {
   console.log("3.-组件挂载到页面之后执行-------onMounted");
+  editItem.value.innerHTML = props.configItem.html;
 });
 
-onBeforeUpdate(() => {
-  if (state.value && state.value === editItem.value.innerText) {
-    updateValue(editItem.value.innerText);
-  }
-});
+// onBeforeUpdate(() => {
+//   console.log(editItem.value.innerText);
+//   if (editItem.value.innerText.endWith("/n")) {
+//     console.log(editItem.value.innerText);
+//   }
+//   if (state.value !== "" && state.value === editItem.value.innerText) {
+//     updateValue(editItem.value.innerText);
+//   }
+// });
 
 // 自定义v-model
-function updateValue(value) {
-  state.value = value;
+// function updateValue(value) {
+//   console.log(value);
+//   state.value = value;
+// }
+
+function changeSpace() {
+  console.log("space", state.value);
 }
 
 function changeEnter() {
+  let config = state.markeDownCommand.default;
+
   Object.keys(state.markeDownCommand).map((command) => {
     if (state.value.startsWith(command)) {
-      const config = state.markeDownCommand[state.value];
-      emit("addConfigItem", props.order, config);
+      config = state.markeDownCommand[command];
     }
+  });
+  config.html = editItem.value.innerText.replaceAll(/[\r\n]/g, "");
+  editItem.value.innerText = "";
+  emit("addConfigItem", {
+    order: 1,
+    config,
   });
 }
 </script>

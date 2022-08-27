@@ -14,8 +14,11 @@
 <style scoped>
 .designWrapper {
   display: flex;
+  padding-left: 250px;
 }
 .navWrapper {
+  position: fixed;
+  left: 0;
   flex: 0 0 250px;
   height: calc(100vh - 60px);
   padding: 0 20px;
@@ -26,7 +29,7 @@
   height: calc(100vh - 60px);
   /* border: 1px dashed #ccc; */
   margin: 5px;
-  /* overflow-y: scroll; */
+  overflow-y: auto;
 }
 .property {
   flex: 0 0 250px;

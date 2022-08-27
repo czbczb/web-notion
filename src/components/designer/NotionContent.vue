@@ -1,20 +1,33 @@
 <template>
-  <LayoutItemVue v-for="(item, index) in config" :key="index">
+  <LayoutItemVue v-for="(item, index) in config" :key="item.type">
     <template #menu>
       <FloatMenuVue
         :config="config"
         :configItem="item"
         :order="index"
-        @removeConfigItem="emit('removeConfigItem')"
-        @addConfigItem="emit('addConfigItem')"
+        @removeConfigItem="(params) => emit('removeConfigItem', params)"
+        @addConfigItem="(params) => emit('addConfigItem', params)"
       ></FloatMenuVue>
     </template>
     <ContenteditableItem
       :configItem="item"
       :order="index"
       :config="config"
-      @removeConfigItem="emit('removeConfigItem')"
-      @addConfigItem="emit('addConfigItem')"
+      @removeConfigItem="(params) => emit('removeConfigItem', params)"
+      @addConfigItem="(params) => emit('addConfigItem', params)"
+    ></ContenteditableItem>
+  </LayoutItemVue>
+  <LayoutItemVue>
+    <template #menu>
+      <FloatMenuVue
+        :order="config.length"
+        @removeConfigItem="(params) => emit('removeConfigItem', params)"
+        @addConfigItem="(params) => emit('addConfigItem', params)"
+      ></FloatMenuVue>
+    </template>
+    <ContenteditableItem
+      :order="config.length"
+      @addConfigItem="(params) => emit('addConfigItem', params)"
     ></ContenteditableItem>
   </LayoutItemVue>
 </template>
