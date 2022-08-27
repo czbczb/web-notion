@@ -11,8 +11,9 @@ function removeConfigItem(order) {
 }
 
 function addConfigItem(params) {
-  console.log(params.config);
+  console.log(params.config, params.order, '添加');
   config.splice(params.order, 0, params.config)
+  console.log(config);
 }
 </script>
 <template>

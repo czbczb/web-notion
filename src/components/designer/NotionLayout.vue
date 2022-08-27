@@ -15,21 +15,24 @@
 .designWrapper {
   display: flex;
   padding-left: 250px;
+  padding-top: 80px;
 }
 .navWrapper {
+  width: 250px;
+  height: calc(100vh - 80px);
+  flex: 0 0 250px;
   position: fixed;
   left: 0;
-  flex: 0 0 250px;
-  height: calc(100vh - 60px);
   padding: 0 20px;
   overflow-y: scroll;
 }
 .contentWrapper {
   width: 100%;
-  height: calc(100vh - 60px);
+  height: calc(100vh - 80px);
   /* border: 1px dashed #ccc; */
   margin: 5px;
-  overflow-y: auto;
+  padding-bottom: 50px;
+  /* overflow-y: auto; */
 }
 .property {
   flex: 0 0 250px;

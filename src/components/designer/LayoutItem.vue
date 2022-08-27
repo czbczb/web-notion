@@ -27,7 +27,7 @@ function updateHover(hover) {
 .menu {
   width: 200px;
   position: absolute;
-  z-index: 1000;
+  z-index: 5;
   left: -200px;
   top: 0;
 }

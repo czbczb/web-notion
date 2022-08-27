@@ -1,22 +1,17 @@
 <template>
   <div
-    class="editable-true"
-    ref="hx"
     @keydown.enter.prevent="changeEnter"
     @keydown.enter.space="changeSpace"
-    :contenteditable="!readOnly"
     @input="inputText"
-    :placeholder="configItem.type"
-    :class="configItem.type"
-  >
-    {{ configItem.html }}
-  </div>
+    ref="editItem"
+    class="editItem p"
+    :contenteditable="!readOnly"
+  ></div>
 </template>
 
 <script setup>
-import { reactive, ref, onMounted } from "vue";
+import { ref, reactive, onMounted } from "vue";
 import markdownCommand from "../markdownCommand";
-
 const props = defineProps({
   config: Object,
   configItem: {
@@ -33,24 +28,27 @@ const props = defineProps({
   },
 });
 
+const editItem = ref(null);
+
 const emit = defineEmits(["removeConfigItem", "addConfigItem"]);
-const hx = ref(null);
 const state = reactive({
   value: "",
   isActive: false,
-  markeDownCommand: markdownCommand,
 });
 
 onMounted(() => {
-  hx.value.innerHTML = props.configItem.html;
+  editItem.value.innerHTML = props.configItem.html;
+  editItem.value.focus();
 });
+
 function changeSpace() {
   console.log("space", state.value);
 }
 
 function inputText() {
-  state.value = hx.value.innerHTML;
+  state.value = editItem.value.innerHTML;
 }
+
 function changeEnter() {
   let config = markdownCommand.default;
   Object.keys(markdownCommand).map((command) => {
@@ -59,19 +57,26 @@ function changeEnter() {
       config = markdownCommand[command];
     }
   });
-  config.html = "";
+  config.html = editItem.value.innerHTML.replace(/#/gi, "");
+  state.value = "";
+  editItem.value.innerHTML = "";
   emit("addConfigItem", {
-    order: props.order + 1,
+    order: props.order,
     config: JSON.parse(JSON.stringify(config)),
   });
 }
 </script>
-
 <style scoped>
-.editable-true {
+.editItem {
+  padding: 0 5px;
+  border: 1px solid #fff;
+  transition: all linear 0.1s;
+  border-radius: 2px;
+  margin-top: 5px;
   border: 1px solid transparent;
-  transition: all linear 300ms;
 }
-.editable-true:hover {
+.editItem:hover {
+  border: 1px solid #ccc;
   background-color: #eee;
-}</style>
+}
+</style>
