@@ -31,7 +31,7 @@
   height: calc(100vh - 80px);
   /* border: 1px dashed #ccc; */
   margin: 5px;
-  padding-bottom: 50px;
+  margin-bottom: 300px;
   /* overflow-y: auto; */
 }
 .property {

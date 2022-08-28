@@ -14,7 +14,7 @@
 </template>
 
 <script setup>
-import { reactive, ref, onMounted } from "vue";
+import { reactive, toRaw, ref, onMounted } from "vue";
 import markdownCommand from "../markdownCommand";
 
 const props = defineProps({
@@ -31,9 +31,10 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  focusOrder: Number,
 });
 
-const emit = defineEmits(["removeConfigItem", "addConfigItem"]);
+const emit = defineEmits(["removeConfigItem", "addConfigItem", "setFocusOrder"]);
 const hx = ref(null);
 const state = reactive({
   value: "",
@@ -43,6 +44,10 @@ const state = reactive({
 
 onMounted(() => {
   hx.value.innerHTML = props.configItem.html;
+  console.log(props.focusOrder, props.order, props.focusOrder === props.order);
+  if (props.focusOrder === props.order) {
+    hx.value.focus();
+  }
 });
 function changeSpace() {
   console.log("space", state.value);
@@ -54,16 +59,33 @@ function inputText() {
 function changeEnter() {
   let config = markdownCommand.default;
   Object.keys(markdownCommand).map((command) => {
-    console.log(state.value, command, state.value.startsWith(command));
     if (state.value.startsWith(command)) {
       config = markdownCommand[command];
     }
   });
-  config.html = "";
-  emit("addConfigItem", {
-    order: props.order + 1,
-    config: JSON.parse(JSON.stringify(config)),
+
+  config.html = hx.value.innerHTML.replace(/#/gi, "");
+  state.value = config.html;
+
+  // 更新自己的html
+  emit("updateConfigItem", {
+    order: props.order,
+    config: { ...toRaw(props.configItem), html: toRaw(state.value) },
   });
+
+  if (config.type === "p") {
+    config.html = "";
+    emit("addConfigItem", {
+      order: props.order + 1,
+      // toRaw 取消响应式
+      config: toRaw(config),
+    });
+    emit("setFocusOrder", props.order + 1);
+  } else {
+    console.log("udpate item");
+
+    emit("setFocusOrder", props.order);
+  }
 }
 </script>
 
@@ -74,4 +96,5 @@ function changeEnter() {
 }
 .editable-true:hover {
   background-color: #eee;
-}</style>
+}
+</style>

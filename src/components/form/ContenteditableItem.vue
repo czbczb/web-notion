@@ -10,7 +10,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from "vue";
+import { ref, watch, toRaw, nextTick, reactive, onMounted } from "vue";
 import markdownCommand from "../markdownCommand";
 const props = defineProps({
   config: Object,
@@ -26,21 +26,29 @@ const props = defineProps({
     type: Boolean,
     default: false,
   },
+  focusOrder: Number,
 });
-
-const editItem = ref(null);
-
-const emit = defineEmits(["removeConfigItem", "addConfigItem"]);
 const state = reactive({
   value: "",
   isActive: false,
 });
+const editItem = ref(null);
+
+watch(() => props.focusOrder, autofocusHandler);
+
+const emit = defineEmits(["removeConfigItem", "addConfigItem", "setFocusOrder", "updateConfigItem"]);
 
 onMounted(() => {
   editItem.value.innerHTML = props.configItem.html;
-  editItem.value.focus();
 });
-
+nextTick(() => {
+  autofocusHandler(props.focusOrder);
+});
+function autofocusHandler(newAutofocus) {
+  if (newAutofocus === props.order) {
+    editItem.value.focus();
+  }
+}
 function changeSpace() {
   console.log("space", state.value);
 }
@@ -52,18 +60,26 @@ function inputText() {
 function changeEnter() {
   let config = markdownCommand.default;
   Object.keys(markdownCommand).map((command) => {
-    console.log(state.value, command, state.value.startsWith(command));
     if (state.value.startsWith(command)) {
       config = markdownCommand[command];
     }
   });
   config.html = editItem.value.innerHTML.replace(/#/gi, "");
-  state.value = "";
-  editItem.value.innerHTML = "";
-  emit("addConfigItem", {
-    order: props.order,
-    config: JSON.parse(JSON.stringify(config)),
-  });
+  if (config.type === "p") {
+    state.value = "";
+    config.html = ""
+    emit("addConfigItem", {
+      order: props.order,
+      config: toRaw(config),
+    });
+    emit("setFocusOrder", props.order + 1);
+  } else {
+    emit("updateConfigItem", {
+      order: props.order,
+      config: config,
+    });
+    emit("setFocusOrder", props.order);
+  }
 }
 </script>
 <style scoped>

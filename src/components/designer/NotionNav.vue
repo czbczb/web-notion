@@ -1,39 +1,47 @@
-
 <template>
   <a-row justify="center" align="center" class="navWrapper">
     <a
       :class="item.type"
       :href="item.target"
-      v-for="(item, index) in config"
+      v-for="(item, index) in listNav"
       :key="index"
-      >{{ item.title }}</a
+      >{{ item.html }}</a
     >
-    <a-list size="small" class="listNav" :data-source="state.listnav">
+    <!-- <a-list size="small" class="listNav" :data-source="state.listnav">
       <template #renderItem="{ item }">
         <a-list-item>{{ item.title }}</a-list-item>
       </template>
-    </a-list>
+    </a-list> -->
   </a-row>
 </template>
 
 <script setup>
-import { reactive } from "vue";
+import { computed, onMounted } from "vue";
 
-const state = reactive({
-  listnav: [
-    {
-      title: "test1",
-    },
-    {
-      title: "test2",
-    },
-  ],
+// const state = reactive({
+//   listnav: [
+//     {
+//       title: "test1",
+//     },
+//     {
+//       title: "test2",
+//     },
+//   ],
+// });
+
+onMounted(() => {
+  console.log(listNav);
 });
 
-defineProps({
+const props = defineProps({
   config: Array,
 });
 
+const listNav = computed(() => {
+  return props.config.filter((item) =>
+    ["h1", "h2", "h3", "h4", "h5", "h6"].includes(item.type)
+  );
+});
 </script>
 <style scoped>
 .navWrapper {
