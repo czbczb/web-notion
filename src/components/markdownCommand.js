@@ -1,6 +1,6 @@
 export default {
   "```": {
-    type: "MonacoEditor",
+    type: "code",
     component: "MonacoEditor",
     html: "",
     result: "",

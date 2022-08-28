@@ -1,4 +1,5 @@
 <template>
+  <div style="padding-top: 80px; width: 200px">test</div>
   <main class="designWrapper">
     <div class="navWrapper">
       <slot name="nav"></slot>

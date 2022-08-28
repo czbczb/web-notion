@@ -6,7 +6,7 @@
         v-for="(item, index) in state.hxList"
         :key="index"
       >
-        <b>{{ item }}</b>
+        <b>{{ item.type }}</b>
       </a-col>
     </a-row>
   </a-card>
@@ -14,11 +14,19 @@
 
 <script setup>
 import { reactive, onBeforeMount, onMounted } from "vue";
+import markdownCommand from '../markdownCommand'
 const props = defineProps({
+  config: Object,
+  configItem: Object,
   order: Number,
+  readOnly: {
+    type: Boolean,
+    default: false,
+  },
+  focusOrder: Number,
 });
 const state = reactive({
-  hxList: ["h1", "h2", "h3", "h4", "h5", "h6"],
+  hxList: markdownCommand,
 });
 
 function addHxCom() {

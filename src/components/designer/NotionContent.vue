@@ -9,6 +9,7 @@
         @setFocusOrder="(params) => emit('setFocusOrder', params)"
         @removeConfigItem="(params) => emit('removeConfigItem', params)"
         @addConfigItem="(params) => emit('addConfigItem', params)"
+        @updateConfigItem="(params) => emit('updateConfigItem', params)"
       ></FloatMenuVue>
     </template>
     <component
@@ -40,9 +41,7 @@ const CurrentCompoent = reactive({
     defineAsyncComponent(() => import("../form/ContenteditableItem.vue"))
   ),
   HxCom: markRaw(defineAsyncComponent(() => import("../form/hxCom.vue"))),
-  MonacoEditor: markRaw(
-    defineAsyncComponent(() => import("../form/MonacoEditor.vue"))
-  ),
+  MonacoEditor: markRaw(defineAsyncComponent(() => import("../form/MonacoEditor.vue"))),
 });
 
 const emit = defineEmits([

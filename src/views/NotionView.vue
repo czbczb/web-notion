@@ -1,3 +1,26 @@
+<template>
+  <Notionlayout>
+    <template #nav>
+      <NotionNav
+        :listNav="listNav"
+        @removeConfigItem="removeConfigItem"
+        @addConfigItem="addConfigItem"
+        @setFocusOrder="setFocusOrder"
+        :focusOrder="data.focusOrder"
+      />
+    </template>
+    <template #content>
+      <NotionContent
+        :config="config"
+        :focusOrder="data.focusOrder"
+        @setFocusOrder="setFocusOrder"
+        @removeConfigItem="removeConfigItem"
+        @addConfigItem="addConfigItem"
+        @updateConfigItem="updateConfigItem"
+      />
+    </template>
+  </Notionlayout>
+</template>
 <script setup>
 import NotionContent from "../components/designer/NotionContent.vue";
 import NotionNav from "../components/designer/NotionNav.vue";
@@ -34,26 +57,3 @@ function setFocusOrder(order) {
   data.focusOrder = order;
 }
 </script>
-<template>
-  <Notionlayout>
-    <template #nav>
-      <NotionNav
-        :listNav="listNav"
-        @removeConfigItem="removeConfigItem"
-        @addConfigItem="addConfigItem"
-        @setFocusOrder="setFocusOrder"
-        :focusOrder="data.focusOrder"
-      />
-    </template>
-    <template #content>
-      <NotionContent
-        :config="config"
-        :focusOrder="data.focusOrder"
-        @setFocusOrder="setFocusOrder"
-        @removeConfigItem="removeConfigItem"
-        @addConfigItem="addConfigItem"
-        @updateConfigItem="updateConfigItem"
-      />
-    </template>
-  </Notionlayout>
-</template>
