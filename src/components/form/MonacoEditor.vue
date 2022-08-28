@@ -26,7 +26,14 @@ import htmlWorker from "monaco-editor/esm/vs/language/html/html.worker?worker";
 import tsWorker from "monaco-editor/esm/vs/language/typescript/ts.worker?worker";
 import EditorWorker from "monaco-editor/esm/vs/editor/editor.worker?worker";
 import * as monaco from "monaco-editor";
-import { nextTick, toRaw, ref, reactive, onBeforeUnmount, onMounted } from "vue";
+import {
+  nextTick,
+  toRaw,
+  ref,
+  reactive,
+  onBeforeUnmount,
+  onMounted,
+} from "vue";
 import { useRoute } from "vue-router";
 import { format } from "sql-formatter";
 import api from "../../api/api.js";

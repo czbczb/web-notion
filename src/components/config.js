@@ -35,11 +35,6 @@ export default [
   //   html: "h6 content",
   //   component: "HxCom",
   // },
-  // {
-  //   type: "MonacoEditor",
-  //   html: "age = 20",
-  //   component: "MonacoEditor",
-  // },
   {
     type: "p",
     html: "",

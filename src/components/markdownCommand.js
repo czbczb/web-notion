@@ -1,7 +1,7 @@
 export default {
   "```": {
-    type: "code",
-    component: "editorCode",
+    type: "MonacoEditor",
+    component: "MonacoEditor",
     html: "",
     result: "",
   },

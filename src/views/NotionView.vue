@@ -25,7 +25,6 @@ function updateConfigItem(params) {
 }
 
 function setFocusOrder(order) {
-  console.log('update focusOrder', order);
   data.focusOrder = order;
 }
 </script>
