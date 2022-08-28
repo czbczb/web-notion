@@ -3,11 +3,17 @@ import NotionContent from "../components/designer/NotionContent.vue";
 import NotionNav from "../components/designer/NotionNav.vue";
 import Notionlayout from "../components/designer/Notionlayout.vue";
 import configJson from "../components/config";
-import { reactive } from "vue";
+import { reactive, computed } from "vue";
 
 let config = reactive(configJson);
 let data = reactive({
   focusOrder: 0,
+});
+
+const listNav = computed(() => {
+  return config.filter((item) =>
+    ["h1", "h2", "h3", "h4", "h5", "h6"].includes(item.type)
+  );
 });
 
 data.focusOrder = config.length - 1;
@@ -32,7 +38,7 @@ function setFocusOrder(order) {
   <Notionlayout>
     <template #nav>
       <NotionNav
-        :config="config"
+        :listNav="listNav"
         @removeConfigItem="removeConfigItem"
         @addConfigItem="addConfigItem"
         @setFocusOrder="setFocusOrder"

@@ -2,6 +2,7 @@
   <a-row justify="center" align="center" class="navWrapper">
     <a
       :class="item.type"
+      class="headerText"
       :href="item.target"
       v-for="(item, index) in listNav"
       :key="index"
@@ -16,37 +17,20 @@
 </template>
 
 <script setup>
-import { computed, onMounted } from "vue";
-
-// const state = reactive({
-//   listnav: [
-//     {
-//       title: "test1",
-//     },
-//     {
-//       title: "test2",
-//     },
-//   ],
-// });
-
-onMounted(() => {
-  console.log(listNav);
-});
-
-const props = defineProps({
-  config: Array,
-});
-
-const listNav = computed(() => {
-  return props.config.filter((item) =>
-    ["h1", "h2", "h3", "h4", "h5", "h6"].includes(item.type)
-  );
+defineProps({
+  listNav: Array,
 });
 </script>
 <style scoped>
 .navWrapper {
   flex-direction: column;
   height: 100%;
+}
+.headerText {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 100%;
 }
 .listNav {
   list-style-type: url("@/assets/point.png");

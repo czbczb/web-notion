@@ -34,7 +34,12 @@ const props = defineProps({
   focusOrder: Number,
 });
 
-const emit = defineEmits(["removeConfigItem", "addConfigItem", "setFocusOrder"]);
+const emit = defineEmits([
+  "removeConfigItem",
+  "addConfigItem",
+  "setFocusOrder",
+  "updateConfigItem",
+]);
 const hx = ref(null);
 const state = reactive({
   value: "",
@@ -71,7 +76,10 @@ function changeSpace() {
 }
 
 // function inputText() {
-//   state.value = hx.value.innerHTML;
+//   emit("updateConfigItem", {
+//     order: props.order,
+//     config: { ...toRaw(props.configItem), html: hx.value.innerHTML },
+//   });
 // }
 
 function hasCommand(config) {
@@ -84,7 +92,9 @@ function changeEnter() {
   Object.keys(markdownCommand).map((command) => {
     if (hx.value.innerHTML.startsWith(command)) {
       config = markdownCommand[command];
-      html = config.html.replace(command, "");
+
+      const reg = eval("/" + command + "/gi");
+      html = html.replace(reg, "");
     }
   });
 

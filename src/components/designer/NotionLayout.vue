@@ -27,7 +27,7 @@
   overflow-y: scroll;
 }
 .contentWrapper {
-  width: 100%;
+  width: calc(100vw - 500px);
   height: calc(100vh - 80px);
   /* border: 1px dashed #ccc; */
   margin: 5px;

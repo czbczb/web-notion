@@ -12,11 +12,14 @@
       <a-button type="primary" @click="handleFormat" style="margin-right: 5px"
         >格式化</a-button
       >
-      <a-button type="primary" @click="submitCode">Run</a-button>
+      <a-button :loading="configItem.loading" type="primary" @click="submitCode">Run</a-button>
     </a-col>
   </a-row>
   <div ref="codeEditBox" class="codeEditBox"></div>
-  <div class="output"></div>
+  <div class="output" v-if="configItem.result">
+    <div class="outputheader">运行结果</div>
+    <div class="outputContent">{{ configItem.result }}</div>
+  </div>
 </template>
 
 <script setup>
@@ -26,14 +29,7 @@ import htmlWorker from "monaco-editor/esm/vs/language/html/html.worker?worker";
 import tsWorker from "monaco-editor/esm/vs/language/typescript/ts.worker?worker";
 import EditorWorker from "monaco-editor/esm/vs/editor/editor.worker?worker";
 import * as monaco from "monaco-editor";
-import {
-  nextTick,
-  toRaw,
-  ref,
-  reactive,
-  onBeforeUnmount,
-  onMounted,
-} from "vue";
+import { nextTick, toRaw, ref, reactive, onBeforeUnmount, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { format } from "sql-formatter";
 import api from "../../api/api.js";
@@ -129,7 +125,7 @@ const editorInit = () => {
           value: text.value, // 编辑器初始显示文字
           language: "go", // 语言支持自行查阅demo
           automaticLayout: true, // 自适应布局
-          theme: "vs-dark", // 官方自带三种主题vs, hc-black, or vs-dark
+          theme: "hc-black", // 官方自带三种主题vs, hc-black, or vs-dark
           foldingStrategy: "indentation",
           renderLineHighlight: "all", // 行亮
           selectOnLineNumbers: true, // 显示行号
@@ -163,7 +159,11 @@ function changeLanguage() {
 
 const submitCode = () => {
   loading.value = true;
-
+  emit("updateConfigItem", {
+    order: props.order,
+    config: { ...props.configItem, result: "提交成功", html: editor.getValue() },
+  });
+  return;
   api.submitCode(text.value, route.query.identity).then((res) => {
     loading.value = false;
     if (res.data.code == 200) {
@@ -219,6 +219,18 @@ editor.onDidChangeLanguage
 .codeEditBox {
   min-height: 100px;
   max-height: 600px;
-  margin-bottom: 20px;
 }
+.output {
+  border: 1px solid #ccc;
+}
+.outputheader {
+  padding: 5px;
+  margin-bottom: 5px;
+  background: #eee;
+	font-weight: bold;
+}
+.outputContent {
+	text-indent: 2rem;
+}
+
 </style>

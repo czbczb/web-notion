@@ -88,7 +88,8 @@ function changeEnter() {
   Object.keys(markdownCommand).map((command) => {
     if (state.value.startsWith(command)) {
       config = markdownCommand[command];
-      html = html.replace(command, "");
+      const reg = eval("/" + command + "/gi");
+      html = html.replace(reg, "");
     }
   });
   config.html = html;
