@@ -12,7 +12,9 @@
       <a-button type="primary" @click="handleFormat" style="margin-right: 5px"
         >格式化</a-button
       >
-      <a-button :loading="configItem.loading" type="primary" @click="submitCode">Run</a-button>
+      <a-button :loading="configItem.loading" type="primary" @click="submitCode"
+        >Run</a-button
+      >
     </a-col>
   </a-row>
   <div ref="codeEditBox" class="codeEditBox"></div>
@@ -159,11 +161,7 @@ function changeLanguage() {
 
 const submitCode = () => {
   loading.value = true;
-  emit("updateConfigItem", {
-    order: props.order,
-    config: { ...props.configItem, result: "提交成功", html: editor.getValue() },
-  });
-  return;
+
   api.submitCode(text.value, route.query.identity).then((res) => {
     loading.value = false;
     if (res.data.code == 200) {
@@ -177,6 +175,10 @@ const submitCode = () => {
     } else {
       message.error(res.data.msg);
     }
+    emit("updateConfigItem", {
+      order: props.order,
+      config: { ...props.configItem, result: res.data.msg, html: editor.getValue() },
+    });
   });
 };
 
@@ -227,10 +229,9 @@ editor.onDidChangeLanguage
   padding: 5px;
   margin-bottom: 5px;
   background: #eee;
-	font-weight: bold;
+  font-weight: bold;
 }
 .outputContent {
-	text-indent: 2rem;
+  text-indent: 2rem;
 }
-
 </style>
