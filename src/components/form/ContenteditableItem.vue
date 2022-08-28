@@ -64,7 +64,9 @@ function changeEnter() {
       config = markdownCommand[command];
     }
   });
+
   config.html = editItem.value.innerHTML.replace(/#/gi, "");
+
   if (config.type === "p") {
     state.value = "";
     config.html = ""
