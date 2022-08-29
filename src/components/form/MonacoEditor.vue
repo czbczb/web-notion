@@ -170,8 +170,9 @@ const submitCode = () => {
   loading.value = true;
   articleApi.runCode(text.value, route.query.identity).then((res) => {
     loading.value = false;
-    if (res.data.code == 200) {
-      msg.value = res.data.data.msg;
+    console.log(res);
+    if (res.code == 200) {
+      msg.value = res.data;
     } else {
       message.error(res.data.msg);
     }
