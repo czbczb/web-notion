@@ -1,5 +1,5 @@
 <template>
-  <div style="padding-top: 80px; width: 200px">test</div>
+  <div class="articleHeader h4">test</div>
   <main class="designWrapper">
     <div class="navWrapper">
       <slot name="nav"></slot>
@@ -13,10 +13,14 @@
   </main>
 </template>
 <style scoped>
+.articleHeader {
+  width: calc(100vw - 500px);
+  padding-top: 80px;
+  margin: 0 auto;
+}
 .designWrapper {
   display: flex;
   padding-left: 250px;
-  padding-top: 80px;
 }
 .navWrapper {
   width: 250px;
