@@ -34,7 +34,7 @@ import * as monaco from "monaco-editor";
 import { nextTick, toRaw, ref, reactive, onBeforeUnmount, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { format } from "sql-formatter";
-import api from "../../api/article.js";
+import articleApi from "../../api/article.js";
 
 import { message } from "ant-design-vue";
 const route = useRoute();
@@ -161,23 +161,22 @@ function changeLanguage() {
 
 const submitCode = () => {
   loading.value = true;
-
-  api.submitCode(text.value, route.query.identity).then((res) => {
+  articleApi.runCode(text.value, route.query.identity).then(() => {
     loading.value = false;
-    if (res.data.code == 200) {
-      msg.value = res.data.data.msg;
+    // if (res.data.code == 200) {
+    //   msg.value = res.data.data.msg;
 
-      if (res.data.data.status == 1) {
-        message.success(res.data.data.msg);
-      } else {
-        message.warning(res.data.data.msg);
-      }
-    } else {
-      message.error(res.data.msg);
-    }
+    //   if (res.data.data.status == 1) {
+    //     message.success(res.data.data.msg);
+    //   } else {
+    //     message.warning(res.data.data.msg);
+    //   }
+    // } else {
+    //   message.error(res.data.msg);
+    // }
     emit("updateConfigItem", {
       order: props.order,
-      config: { ...props.configItem, result: res.data.msg, html: editor.getValue() },
+      config: { ...props.configItem, result: '运行成功', html: editor.getValue() },
     });
   });
 };
