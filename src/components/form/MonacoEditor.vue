@@ -34,7 +34,7 @@ import * as monaco from "monaco-editor";
 import { nextTick, toRaw, ref, reactive, onBeforeUnmount, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import { format } from "sql-formatter";
-import api from "../../api/api.js";
+import api from "../../api/article.js";
 
 import { message } from "ant-design-vue";
 const route = useRoute();

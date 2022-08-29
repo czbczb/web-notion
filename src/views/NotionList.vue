@@ -2,6 +2,8 @@
 import { reactive } from "vue";
 import router from "../router/index";
 import NotionListItem from "../components/list/NotionListItem.vue";
+import articleApi from "../api/article";
+
 const state = reactive({
   pageList: [
     {
@@ -14,9 +16,14 @@ const state = reactive({
     },
   ],
 });
+
 const createPage = () => {
   router.push({ name: "create" });
 };
+// mock list
+articleApi.getList().then((res) => {
+  console.log(res);
+});
 </script>
 <template>
   <header class="notionListheader">
