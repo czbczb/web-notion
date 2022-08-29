@@ -14,7 +14,7 @@
 
 <script setup>
 import { reactive, onBeforeMount, onMounted } from "vue";
-import markdownCommand from '../markdownCommand'
+import markdownCommand from "../markdownCommand";
 const props = defineProps({
   config: Object,
   configItem: Object,
