@@ -31,7 +31,14 @@ import htmlWorker from "monaco-editor/esm/vs/language/html/html.worker?worker";
 import tsWorker from "monaco-editor/esm/vs/language/typescript/ts.worker?worker";
 import EditorWorker from "monaco-editor/esm/vs/editor/editor.worker?worker";
 import * as monaco from "monaco-editor";
-import { nextTick, toRaw, ref, reactive, onBeforeUnmount, onMounted } from "vue";
+import {
+  nextTick,
+  toRaw,
+  ref,
+  reactive,
+  onBeforeUnmount,
+  onMounted,
+} from "vue";
 import { useRoute } from "vue-router";
 import { format } from "sql-formatter";
 import articleApi from "../../api/article.js";
@@ -161,22 +168,20 @@ function changeLanguage() {
 
 const submitCode = () => {
   loading.value = true;
-  articleApi.runCode(text.value, route.query.identity).then(() => {
+  articleApi.runCode(text.value, route.query.identity).then((res) => {
     loading.value = false;
-    // if (res.data.code == 200) {
-    //   msg.value = res.data.data.msg;
-
-    //   if (res.data.data.status == 1) {
-    //     message.success(res.data.data.msg);
-    //   } else {
-    //     message.warning(res.data.data.msg);
-    //   }
-    // } else {
-    //   message.error(res.data.msg);
-    // }
+    if (res.data.code == 200) {
+      msg.value = res.data.data.msg;
+    } else {
+      message.error(res.data.msg);
+    }
     emit("updateConfigItem", {
       order: props.order,
-      config: { ...props.configItem, result: '运行成功', html: editor.getValue() },
+      config: {
+        ...props.configItem,
+        result: msg.value,
+        html: editor.getValue(),
+      },
     });
   });
 };
