@@ -2,6 +2,8 @@
   <div
     @keydown.enter.prevent="changeEnter"
     @keydown.enter.space="changeSpace"
+    @mousedown="mouseDownHandler"
+    @mouseup="mouseUpHandler"
     @input="inputText"
     ref="editItem"
     class="editItem p"
@@ -41,18 +43,38 @@ const emit = defineEmits([
   "addConfigItem",
   "setFocusOrder",
   "updateConfigItem",
+  "updateMarkerPosition"
 ]);
 
 onMounted(() => {
   editItem.value.innerHTML = props.configItem.html;
 });
+
 nextTick(() => {
   autofocusHandler(props.focusOrder);
 });
+
 function autofocusHandler(newAutofocus) {
   if (newAutofocus === props.order) {
     setAnchorPosition(editItem.value);
   }
+}
+function mouseDownHandler() {}
+function mouseUpHandler(event) {
+  const textLen = document.getSelection().toString().length;
+  const position = {
+    x: 0,
+    y: 0,
+  };
+  if (textLen === 0) {
+    emit('updateMarkerPosition', position)
+    return;
+  }
+  const x = textLen / 2;
+  position.x = x;
+  position.y = event.y;
+
+  emit('updateMarkerPosition', position)
 }
 
 // 设置光标位置

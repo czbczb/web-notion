@@ -1,5 +1,9 @@
 <template>
-  <LayoutItemVue v-for="(item, index) in config" :key="index">
+  <LayoutItemVue
+    v-for="(item, index) in config"
+    :key="index"
+    :markerPosition="state.markerPosition"
+  >
     <template #menu>
       <FloatMenuVue
         :config="config"
@@ -12,16 +16,24 @@
         @updateConfigItem="(params) => emit('updateConfigItem', params)"
       ></FloatMenuVue>
     </template>
+    <template #marker>
+      <MarkerItem
+        :markerPosition="state.markerPosition"
+        :order="index"
+        @updateConfigItem="(params) => emit('updateConfigItem', params)"
+      ></MarkerItem>
+    </template>
     <component
       :configItem="item"
       :order="index"
       :config="config"
       :focusOrder="focusOrder"
+      @updateMarkerPosition="updateMarkerPosition"
       @setFocusOrder="(params) => emit('setFocusOrder', params)"
       @removeConfigItem="(params) => emit('removeConfigItem', params)"
       @addConfigItem="(params) => emit('addConfigItem', params)"
       @updateConfigItem="(params) => emit('updateConfigItem', params)"
-      :is="CurrentCompoent[item.component]"
+      :is="state[item.component]"
     ></component>
   </LayoutItemVue>
 </template>
@@ -29,6 +41,7 @@
 <script setup>
 import FloatMenuVue from "./FloatMenu.vue";
 import LayoutItemVue from "./LayoutItem.vue";
+import MarkerItem from "./markerItem.vue";
 import { reactive, defineAsyncComponent, markRaw } from "vue";
 defineProps({
   config: Array,
@@ -36,7 +49,11 @@ defineProps({
 });
 
 // 动态引入组件
-const CurrentCompoent = reactive({
+const state = reactive({
+  markerPosition: {
+    X: 0,
+    y: 0,
+  },
   EditItem: markRaw(
     defineAsyncComponent(() => import("../form/ContenteditableItem.vue"))
   ),
@@ -45,6 +62,10 @@ const CurrentCompoent = reactive({
     defineAsyncComponent(() => import("../form/MonacoEditor.vue"))
   ),
 });
+
+function updateMarkerPosition(position) {
+  state.markerPosition = position;
+}
 
 const emit = defineEmits([
   "removeConfigItem",
