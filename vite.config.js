@@ -1,5 +1,6 @@
 import { fileURLToPath, URL } from "node:url";
 // import styleImport from "vite-plugin-style-import";
+import legacy from "@vitejs/plugin-legacy";
 import Components from "unplugin-vue-components/vite";
 import visualizer from "rollup-plugin-visualizer";
 import { AntDesignVueResolver } from "unplugin-vue-components/resolvers";
@@ -91,6 +92,17 @@ export default defineConfig({
     compressPlugin({
       ext: ".gz",
       deleteOriginFile: false,
+    }),
+    // Native ESM
+    legacy({
+      targets: ["defaults", "not IE 11"],
+    }),
+
+    // IE11
+    // 需要 regenerator-runtime
+    legacy({
+      targets: ["ie >= 11"],
+      additionalLegacyPolyfills: ["regenerator-runtime/runtime"],
     }),
   ],
   resolve: {
