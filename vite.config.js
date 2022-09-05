@@ -1,6 +1,7 @@
 import { fileURLToPath, URL } from "node:url";
 // import styleImport from "vite-plugin-style-import";
 import Components from "unplugin-vue-components/vite";
+import visualizer from 'rollup-plugin-visualizer';
 import { AntDesignVueResolver } from "unplugin-vue-components/resolvers";
 
 import { defineConfig } from "vite";
@@ -71,6 +72,14 @@ export default defineConfig({
       djs: "src/components.d.js",
 
     }),
+
+    // 依赖分析可视化
+    visualizer({
+      filename: './node_modules/.cache/visualizer/stats.html',
+      open: true,
+      gzipSize: true,
+      brotliSize: true,
+    })
   ],
   resolve: {
     alias: {
