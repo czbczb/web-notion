@@ -1,8 +1,9 @@
 import { fileURLToPath, URL } from "node:url";
 // import styleImport from "vite-plugin-style-import";
 import Components from "unplugin-vue-components/vite";
-import visualizer from 'rollup-plugin-visualizer';
+import visualizer from "rollup-plugin-visualizer";
 import { AntDesignVueResolver } from "unplugin-vue-components/resolvers";
+import compressPlugin from "vite-plugin-compression";
 
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
@@ -63,23 +64,26 @@ export default defineConfig({
       // allow auto import and register components
       include: [/\.vue$/, /\.vue\?vue/],
       imports: [
-        'vue',
-        'vue-router',
-        'vue-i18n',
-        '@vueuse/head',
-        '@vueuse/core',
+        "vue",
+        "vue-router",
+        "vue-i18n",
+        "@vueuse/head",
+        "@vueuse/core",
       ],
       djs: "src/components.d.js",
-
     }),
 
     // 依赖分析可视化
     visualizer({
-      filename: './node_modules/.cache/visualizer/stats.html',
+      filename: "./node_modules/.cache/visualizer/stats.html",
       open: true,
       gzipSize: true,
       brotliSize: true,
-    })
+    }),
+    compressPlugin({
+      ext: ".gz",
+      deleteOriginFile: false,
+    }),
   ],
   resolve: {
     alias: {
