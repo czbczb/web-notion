@@ -19,6 +19,8 @@
     "monaco-editor": "^0.34.0",
     "pinia": "^2.0.17",
     "sql-formatter": "^10.0.0",
+    "unplugin-vue-components": "^0.22.4",
+    "vite-plugin-style-import": "^2.0.0",
     "vue": "^3.2.37",
     "vue-router": "^4.1.3"
   },
