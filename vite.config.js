@@ -10,11 +10,19 @@ import vue from "@vitejs/plugin-vue";
 import vueJsx from "@vitejs/plugin-vue-jsx";
 import path from "path";
 import { viteMockServe } from "vite-plugin-mock";
+import { configManualChunk } from "./src/optimizer";
 // import { ConfigEnv } from 'vite'
 // import { UserConfigExport, ConfigEnv } from 'vite'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: configManualChunk,
+      },
+    },
+  },
   // 强制预构建插件包
   optimizeDeps: {
     include: [
