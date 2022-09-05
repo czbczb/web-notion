@@ -2,6 +2,9 @@ import { fileURLToPath, URL } from "node:url";
 // import styleImport from "vite-plugin-style-import";
 import legacy from "@vitejs/plugin-legacy";
 import Components from "unplugin-vue-components/vite";
+// 依赖按需自动导入
+import AutoImport from "unplugin-auto-import/vite";
+
 import visualizer from "rollup-plugin-visualizer";
 import { AntDesignVueResolver } from "unplugin-vue-components/resolvers";
 import compressPlugin from "vite-plugin-compression";
@@ -72,14 +75,18 @@ export default defineConfig({
 
       // allow auto import and register components
       include: [/\.vue$/, /\.vue\?vue/],
+
+      djs: "src/components.d.ts",
+    }),
+    AutoImport({
       imports: [
         "vue",
         "vue-router",
-        "vue-i18n",
-        "@vueuse/head",
-        "@vueuse/core",
+        // "vue-i18n",
+        // "@vueuse/head",
+        // "@vueuse/core",
       ],
-      djs: "src/components.d.js",
+      djs: "src/auto-imports.d.js",
     }),
 
     // 依赖分析可视化
