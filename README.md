@@ -13,11 +13,7 @@ See [Vite Configuration Reference](https://vitejs.dev/config/).
 ## Project Setup
 
 ```sh
-npm install -g pnpm
-
-pnpm add -g pnpm
-
-pnpm install
+npm install
 ```
 
 ### Compile and Hot-Reload for Development
