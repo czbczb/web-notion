@@ -102,13 +102,9 @@ export default defineConfig({
     }),
     // Native ESM
     legacy({
-      targets: ["defaults", "not IE 11"],
-    }),
-
-    // IE11
-    // 需要 regenerator-runtime
-    legacy({
-      targets: ["ie >= 11"],
+      targets: ["defaults", "ie >= 11"],
+      // IE11
+      // 需要 regenerator-runtime
       additionalLegacyPolyfills: ["regenerator-runtime/runtime"],
     }),
   ],
