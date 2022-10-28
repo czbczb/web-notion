@@ -2,7 +2,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: demo-web-prod
-  namespace: maxcloud-prod
+  namespace: demo-prod
   annotations:
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
@@ -10,10 +10,10 @@ metadata:
 spec:
   tls:
     - hosts:
-        - demo.spotmaxtech.com
-      secretName: spotmaxtech-secret
+        - demo.demo.com
+      secretName: demo-secret
   rules:
-    - host: demo.spotmaxtech.com
+    - host: demo.demo.com
       http:
         paths:
           - backend:
