@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: '2022-03-01T09:37:31Z'
+  name: demo
+  namespace: demo-ns
+  resourceVersion: '1589328658'
+  uid: 32e46fd7-4241-48c7-ad5d-834513f6b888
+spec:
+  clusterIP: 172.19.90.107
+  clusterIPs:
+    - 172.19.90.107
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+    - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+    - port: 80
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: demo
+  sessionAffinity: None
+  type: ClusterIP
+status:
+  loadBalancer: {}
