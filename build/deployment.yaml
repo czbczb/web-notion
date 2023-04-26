@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-web-prod
+  namespace: maxcloud-prod
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: demo-web-prod
+  template:
+    metadata:
+      name: demo-web-prod
+      labels:
+        app: demo-web-prod
+    spec:
+      imagePullSecrets:
+        - name: ali-ecr
+      containers:
+        - image: registry.cn-hongkong.aliyuncs.com/spotmax/demo-web-prod:v2.4.11.12
+          name: demo-web-prod
+          ports:
+            - containerPort: 80
+              protocol: TCP
+          env:
+            - name: GIN_MODE
+              value: "release"
+            - name: demo_web_test_port
+              value: "80"
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: aws-key
+                  key: key
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: aws-key
+                  key: secret
+          securityContext:
+              privileged: true

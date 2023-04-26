@@ -1,0 +1,43 @@
+pipeline {
+    agent {
+        label "docker-host"
+    }
+    environment {
+        Tag = sh(returnStdout: true,script: 'git describe --abbrev=0 --tags || echo ${Tag}').trim()        
+    }
+    stages {
+        stage("Docker build") {
+            steps {
+                echo 'Starting to build docker image'
+                script {
+                    docker.withServer('tcp://localhost:2375') {
+                        docker.withRegistry('https://registry.cn-hongkong.aliyuncs.com/', 'host-secret') {
+                            def image = docker.build("registry.cn-hongkong.aliyuncs.com/demo:${env.Tag}", "--no-cache -f ./build/Dockerfile .")
+                            image.push()
+                        }
+                    }
+                }
+
+                sh ("echo ${env.Tag}")
+            }
+        }
+        stage("Rollout") {
+            steps {
+            sh '''
+                image="registry.cn-hongkong.aliyuncs.com/demo:${tag}"
+                secret="xxxxxx"
+                sign=`echo -n "${image}|${secret}" | md5sum | awk '{print $1}'`
+                curl --location --request POST 'https://demo.com/api/external/bundle/upgrade' \
+                --header 'Content-Type: application/json' \
+                --data '{
+                    "bundle_id": 1666775803305733,
+                    "resource_name": "demo",
+                    "resource_kind": "deployment",
+                    "image": "'$image'",
+                    "sign": "'$sign'"
+                }'
+            '''
+            }
+        }
+    }
+}
