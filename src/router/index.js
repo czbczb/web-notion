@@ -19,6 +19,16 @@ const router = createRouter({
       name: "create",
       component: () => import("../views/NotionView.vue"),
     },
+    {
+      path: "/tts",
+      name: "tts",
+      component: () => import("../views/textToSpeed.vue"),
+    },
+    {
+      path: "/tts",
+      name: "textEffectioncy",
+      component: () => import("../views/textEffectioncy.vue"),
+    },
   ],
 });
 

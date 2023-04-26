@@ -2,14 +2,13 @@
 import { RouterLink, RouterView } from "vue-router";
 </script>
 
-
-
-
 <template>
   <header class="wrapper">
     <nav>
       <RouterLink to="/">Home</RouterLink>
       <RouterLink to="/describe">Describe</RouterLink>
+      <RouterLink to="/tts">TTS</RouterLink>
+      <RouterLink to="/textEffectioncy">打字效果</RouterLink>
     </nav>
   </header>
   <RouterView />
