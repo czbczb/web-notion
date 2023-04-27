@@ -3,6 +3,26 @@ import { reactive } from "vue";
 import router from "../router/index";
 import NotionListItem from "../components/list/NotionListItem.vue";
 import articleApi from "../api/article";
+import axios from "axios";
+
+axios.defaults.baseURL = "http://127.0.0.1:5173/api";
+
+axios({
+  method: "POST",
+  url: "/mrmax/helper",
+  headers: {
+    // 'content-type': 'application/octet-stream'
+    accept: "text/event-stream",
+    authorization: 'ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SmhaRzFwYmlJNk1Td2lZMjl0Y0dGdWVTSTZNU3dpWlhod0lqb3hOamd6TVRFNU16TXdMQ0puYjJRaU9qQXNJbWxoZENJNk1UWTRNalV4TkRVek1Dd2ljM1ZpSWpvaWVtOXVaMkpoYnk1amRXbEFiVzlpZG1semRHRXVZMjl0SW4wLjFOb3YtQ1ZsTWZ5TmZ1TVhJeVdJTFNtTmRIRllSX3VfcEI1QkFoWGt3eWM'
+  },
+  onDownloadProgress(event) {
+    console.log(event.target.responseText);
+    console.log(555)
+  },
+  data: {
+    issue: 'pod是什么'
+  }
+});
 
 const state = reactive({
   pageList: [
