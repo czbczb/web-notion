@@ -29,6 +29,11 @@ const router = createRouter({
       name: "textEffectioncy",
       component: () => import("../views/textEffectioncy.vue"),
     },
+    {
+      path: "/ttv",
+      name: "textEffectioncy",
+      component: () => import("../views/textToMp4.vue"),
+    },
   ],
 });
 
