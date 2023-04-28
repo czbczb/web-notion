@@ -9,7 +9,8 @@ axios.defaults.baseURL = "http://127.0.0.1:5173/api";
 
 axios({
   method: "POST",
-  url: "/mrmax/helper",
+  // url: "/mrmax/helper",
+  url: "/chat/process",
   headers: {
     // 'content-type': 'application/octet-stream'
     accept: "text/event-stream",
