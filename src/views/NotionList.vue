@@ -14,7 +14,7 @@ axios({
   headers: {
     // 'content-type': 'application/octet-stream'
     accept: "text/event-stream",
-    authorization: 'ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SmhaRzFwYmlJNk1Td2lZMjl0Y0dGdWVTSTZNU3dpWlhod0lqb3hOamd6TVRFNU16TXdMQ0puYjJRaU9qQXNJbWxoZENJNk1UWTRNalV4TkRVek1Dd2ljM1ZpSWpvaWVtOXVaMkpoYnk1amRXbEFiVzlpZG1semRHRXVZMjl0SW4wLjFOb3YtQ1ZsTWZ5TmZ1TVhJeVdJTFNtTmRIRllSX3VfcEI1QkFoWGt3eWM'
+    authorization: 'ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SmhaRzFwYmlJNk1Td2lZMjl0Y0dGdWVTSTZNU3dpWlhod0lqb3hOamd6TURrek5qQXpMQ0puYjJRaU9qQXNJbWxoZENJNk1UWTRNalE0T0Rnd015d2ljM1ZpSWpvaWVtOXVaMkpoYnk1amRXbEFiVzlpZG1semRHRXVZMjl0SW4wLl9oRmpsS3dLU0txQkFiUWR0bUxQUVk1OVpnTGYyd0JscDhyZzh5RUw0X0U'
   },
   onDownloadProgress(event) {
     console.log(event.target.responseText);
