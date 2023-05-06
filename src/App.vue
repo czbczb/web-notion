@@ -10,6 +10,7 @@ import { RouterLink, RouterView } from "vue-router";
       <RouterLink to="/tts">TTS</RouterLink>
       <RouterLink to="/ttv">TTV</RouterLink>
       <RouterLink to="/textEffectioncy">打字效果</RouterLink>
+      <RouterLink to="/d3Tree">d3Tree</RouterLink>
     </nav>
   </header>
   <RouterView />

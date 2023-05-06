@@ -34,6 +34,11 @@ const router = createRouter({
       name: "textEffectioncy",
       component: () => import("../views/textToMp4.vue"),
     },
+    {
+      path: "/d3Tree",
+      name: "d3Tree",
+      component: () => import("../views/d3Tree.vue"),
+    },
   ],
 });
 
