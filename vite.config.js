@@ -24,8 +24,8 @@ export default defineConfig({
     proxy: {
       //通过代理实现跨域
       "/api": {
-        // target: "https://maxcloud-api-test.spotmaxtech.com/api", //替换的域名地址
-        target: "http://localhost:3000", //替换的域名地址
+        target: "https://maxcloud-api-test.spotmaxtech.com/api", //替换的域名地址
+        // target: "http://localhost:3000/api", //替换的域名地址
         changeOrigin: true, //开启代理，表示允许跨域
         rewrite: (path) => path.replace(/^\/api/, ""), //重写路径，替换字符串"/path"
       },

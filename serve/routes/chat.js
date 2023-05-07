@@ -1,4 +1,4 @@
-var express = require("express");
+const express = require("express");
 var router = express.Router();
 
 /* GET home page. */
@@ -19,6 +19,21 @@ router.post("/process", async (req, res, next) => {
   await handle(3);
   await handle(4);
   res.send();
+});
+
+router.get("/stream", function (req, res) {
+  // 设置 Content-Type 为 text/event-stream
+  res.writeHead(200, {
+    "Content-Type": "text/event-stream",
+    "Cache-Control": "no-cache",
+    Connection: "keep-alive",
+  });
+
+  // 向客户端发送数据
+  setInterval(function () {
+    var data = new Date().toLocaleTimeString();
+    res.write("data: " + data + "\n\n");
+  }, 1000);
 });
 
 module.exports = router;
