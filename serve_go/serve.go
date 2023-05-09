@@ -2,8 +2,12 @@ package main
 
 import (
 	"fmt"
-	"github.com/gin-gonic/gin"
-	"time"
+	"io"
+    "time"
+
+    "github.com/gin-gonic/contrib/static"
+    "github.com/gin-gonic/gin"
+    "github.com/mattn/go-colorable"
 )
 
 func main() {
@@ -35,6 +39,24 @@ func main() {
 			c.Writer.Flush()
 		}
 	})
+
+	r.GET("/streamv3", func(c *gin.Context) {
+        chanStream := make(chan int, 10)
+        go func() {
+            defer close(chanStream)
+            for i := 0; i < 5; i++ {
+                chanStream <- i
+                time.Sleep(time.Second * 1)
+            }
+        }()
+        c.Stream(func(w io.Writer) bool {
+            if msg, ok := <-chanStream; ok {
+                c.SSEvent("message", msg)
+                return true
+            }
+            return false
+        })
+    })
 
 	if err := r.Run(":8081"); err != nil {
 		panic("Failed to start server: " + err.Error())

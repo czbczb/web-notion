@@ -3,47 +3,55 @@ import { reactive, ref } from "vue";
 import router from "../router/index";
 import NotionListItem from "../components/list/NotionListItem.vue";
 import articleApi from "../api/article";
-import axios from "axios";
+// import axios from "axios";
 
+// var stream = new EventSource("/api/chat/stream");
+// stream.addEventListener("message", (e)=> {
+//     console.log(e.data);
+// });
+var stream = new EventSource("/api/mrmax/helper");
+stream.addEventListener("message", (e)=> {
+    console.log(e.data);
+});
 
 const url = "https://maxcloud-api-test.spotmaxtech.com/api/mrmax/helper";
 const token = "ZXlKaGJHY2lPaUpJVXpJMU5pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SmhaRzFwYmlJNk1Td2lZMjl0Y0dGdWVTSTZNU3dpWlhod0lqb3hOamd6T0RBME5Ea3pMQ0puYjJRaU9qQXNJbWxoZENJNk1UWTRNekU1T1RZNU15d2ljM1ZpSWpvaWVtOXVaMkpoYnk1amRXbEFiVzlpZG1semRHRXVZMjl0SW4wLlg0WHd1azVSRlBRMDZxaVlPY0VPdTF1Y2MxYzFreldvMDhUQklDM3hnb3c"
 
 
-// *********第一种方式 on （不行）
-const sendAndReceiveStreamData = async () => {
-  const config = {
-    method: 'POST',
-    url,
-    headers: {
-      "Content-Type": "application/json",
-      Accept: 'application/octet-stream',
-      authorization: token,
-    },
-    responseType: 'stream',
-    data: JSON.stringify({
-      issue: "你知道k8s么",
-    }),
-  };
-  // 2. 发送带有流数据的 POST 请求
+// // *********第一种方式 on （不行）
+// const sendAndReceiveStreamData = async () => {
+//   const config = {
+//     method: 'POST',
+//     url,
+//     headers: {
+//       "Content-Type": "application/json",
+//       Accept: 'application/octet-stream',
+//       authorization: token,
+//     },
+//     responseType: 'stream',
+//     data: JSON.stringify({
+//       issue: "你知道k8s么",
+//     }),
+//   };
+//   // 2. 发送带有流数据的 POST 请求
 
-  const response = await axios(config);
-  console.log(response);
-  let data = ''
-  const decoder = new TextDecoder("utf-8");
-  response.data.on('data', chunk => {
-    console.log(decoder.decode(chunk))
-    data += chunk;
-  });
-  response.data.on('end', chunk => {
-    console.log(data)
-  });
-};
+//   const response = await axios(config);
+//   console.log(response);
+//   let data = ''
+//   const decoder = new TextDecoder("utf-8");
+//   response.data.on('data', chunk => {
+//     console.log(decoder.decode(chunk))
+//     data += chunk;
+//   });
+//   response.data.on('end', chunk => {
+//     console.log(data)
+//   });
+// };
 
-// 调用
-sendAndReceiveStreamData().catch((err) => {
-  console.error(err);
-});
+// // 调用
+// sendAndReceiveStreamData().catch((err) => {
+//   console.error(err);
+// });
 
 
 
@@ -189,9 +197,9 @@ articleApi.getList().then((res) => {
   </header>
   <div class="notionList">
     <NotionListItem v-for="item in state.pageList" :key="item.key" :pageItem="item"></NotionListItem>
-    <h1>
-      {{text}}</h1>
   </div>
+  <h1>
+      {{text}}</h1>
 </template>
 <style scoped>
 .notionListheader {
