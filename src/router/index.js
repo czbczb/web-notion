@@ -39,6 +39,11 @@ const router = createRouter({
       name: "d3Tree",
       component: () => import("../views/d3Tree.vue"),
     },
+    {
+      path: "/quillEditor",
+      name: "quillEditor",
+      component: () => import("../views/quillEditor.vue"),
+    },
   ],
 });
 

@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "@vitejs/plugin-legacy": "^2.0.1",
+    "@vueup/vue-quill": "^1.0.0-alpha.40",
     "ant-design-vue": "^3.2.11",
     "axios": "^1.4.0",
     "d3": "^7.8.4",
