@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>网络拓扑图</title>
+  <script src="http://d3js.org/d3.v7.min.js"></script>
+  <style>
+    body{
+      margin: 0;
+    }
+    .svgBox{
+      background-color: #f0f0f0; 
+      overflow: hidden; 
+      height: 100vh; 
+      width: 100vw; 
+      margin: 0 auto;
+    }
+    #mainsvg{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: -webkit-linear-gradient(top, transparent 15px, #ccc 0),
+          -webkit-linear-gradient(left, transparent 15px, #ccc 0);
+        background-size: 16px 16px;
+    }
+
+    
+    #menu {
+      position: absolute;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      padding: 5px;
+      box-shadow: 0 0 5px #aaa;
+      border-radius: 6px;
+    }
+    #menu ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    #menu li {
+      line-height: 30px;
+      cursor: pointer;
+      border-bottom: 1px solid #aaa;
+      margin-bottom: 5px;
+      width: 150px;
+    }
+    #menu li:hover {
+      background-color: #f1f1f1;
+    }
+
+    #menu>ul>#del{
+      color: red;
+    }
+
+  </style>
+</head>
+<body>
+  <div class="svgBox">
+    <svg id="mainsvg" class="svgs" height="100%" width="100%"></svg>
+  </div>
+
+
+  <div id="menu" style="display:none">
+    <ul>
+      <li>重命名</li>
+      <li id="add">添加下联交换机</li>
+      <li id="del">删除</li>
+    </ul>
+  </div>
+  
+</body>
+
+<script>
+// 数据
+let data = {
+    name: "中国",
+    children: [
+      {
+        name: "浙江",
+        children: [
+          {
+            name: "浙江s",
+            children: [
+              {
+                name: "浙江ss",
+              },
+              {
+                name: "浙江2",
+                children: [
+                  {
+                    name: "浙江3",
+                  },
+                  {
+                    name: "浙江4",
+                  }
+                ]
+              },
+            ]
+          },
+          {
+            name: "浙江5",
+            children: [
+              {
+                name: "浙江6",
+                children: [
+                  {
+                    name: "浙江sss",
+                  },
+                  {
+                    name: "浙江e2",
+                  },
+                ]
+              }
+            ]
+          },
+        ]
+      },
+      
+    ]
+  };
+
+
+// 定义矩形的宽高，折线据此确定横纵坐标
+const boxWidth = 200;
+const boxHeight = 170;
+  
+// 设置线条样式
+function elbow(d) {
+  let sourceX = d.source.x,
+    sourceY = d.source.y + 100, // 这个数字决定上面高度
+    targetX = d.target.x,
+    targetY = d.target.y;
+
+  return "M" + sourceX + "," + sourceY +
+    "V" + ((targetY - sourceY) / 4 + sourceY) +
+    "H" + targetX +
+    "V" + targetY;
+}
+
+let contextmenuName = null
+const render = () => {
+  // 移除
+  d3.selectAll('#gGroup').remove()
+  
+  // 获取容器
+  const svg = d3.select('#mainsvg')
+  // 容器宽度
+  const svgwidth = svg._groups[0][0].clientWidth
+  // 容器高度
+  const svgheight = svg._groups[0][0].clientHeight
+  // 外边距
+  const margin = {top: 100, right: 50, bottom: 100, left: 50}
+  // 宽度
+  const innerWidth = svgwidth - margin.left - margin.right
+  // 高度
+  const innerHeight = svgheight - margin.top - margin.bottom
+
+
+  // 给svg容器添加一个组,用于存放其他的组件
+  const g = svg.append('g')
+  // 设置id
+  .attr('id', 'gGroup')
+  // 设置g放大缩小
+  const zoom = d3.zoom()
+  svg.call(zoom.on('zoom', (e) => {
+    g.attr('transform', e.transform)
+  }))
+  // 移动到中间位置
+  svg.transition()
+  .duration(0) // 移动时间
+  .call(
+    zoom.transform, 
+    d3.zoomIdentity.translate(svgwidth / 2, margin.top).scale(1)
+  );
+
+
+  // 预处理处理数据的接口
+  let root = d3.hierarchy(data)
+  // 预处理获取xy的坐标
+  root = d3.tree()
+  .nodeSize([200, 230]) // 200是宽度, 150是下面的高度
+  (root)
+
+
+
+  // 添加组
+  g.selectAll('.link').data(root.links()).join('g')
+    .attr('class', 'link')
+    .attr('id', d => d.target.data.name + 'link')
+    // 线条
+    .append('path')
+    .attr('class', 'path')
+    .attr('fill', 'none')
+    .attr('stroke-width', '.2em')
+    .attr('stroke', (d, i) => {
+      return '#018903'
+    })
+    .attr('d', elbow)
+
+  // 矩形
+  g.selectAll('.node').data(root.descendants()).join('g')
+    .attr('class', 'node')
+    .attr('id', d => d.data.name)
+    .append('rect')
+    .attr('x', d => d.x - 85)
+    .attr('y', d => d.y)
+    .attr('width', 170)
+    .attr('height', 100)
+    .attr('rx', 4)
+    .attr('ry', 4)
+    .attr('fill', d => {
+      if (d.data.name == '中国'){
+        return 'none'
+      }else{
+        return '#fff'
+      }
+    })
+
+  // 添加图像
+  d3.selectAll('.node').data(root.descendants()).append('image')
+    .attr('href', d => {
+      if(d.data.name == '中国'){
+        return 'https://noc.ruijie.com.cn/macc5/img/network.bbdf5e66.png'
+      } else {
+        return 'https://noc.ruijie.com.cn/macc5/img/GW.cc09734c.svg'
+      }
+    })
+    .attr('class', 'img')
+    .attr('x', d => {
+      if (d.data.name == '中国'){
+        return d.x - 35
+      }else{
+        return d.x - 75
+      }
+    })
+    .attr('y', d => {
+      if (d.data.name == '中国'){
+        return d.y + 40
+      }else{
+        return d.y + 25
+      }
+    })
+    .attr('text-anchor', 'middle')
+    .attr('width', d => {
+      if (d.data.name == '中国'){
+        return 70
+      }else {
+        return 150
+      }
+    })
+
+    
+  // 添加文字
+  d3.selectAll('.node').data(root.descendants()).append('text')
+    .text('交换机')
+    .attr('x', d => {
+      if (d.data.name == '中国'){
+        return d.x
+      }else{
+        return d.x
+      }
+    })
+    .attr('y', d => {
+      if (d.data.name == '中国'){
+        return d.y + 40
+      }else{
+        return d.y + 54
+      }
+    })
+    .attr('text-anchor', 'middle')
+    .style("stroke", "#2b6afd")
+    .style("stroke-dasharray", "0")
+    .style("stroke-width", "0px")
+    .style('display', (d) => {
+      return d.data.name == '中国' ? 'none' : 'block'
+    })
+
+  // 添加文字
+  d3.selectAll('.node').data(root.descendants()).append('text')
+    .text(d => d.data.name)
+    .attr('x', d => {
+      if (d.data.name == '中国'){
+        return d.x
+      }else{
+        return d.x
+      }
+    })
+    .attr('y', d => {
+      if (d.data.name == '中国'){
+        return d.y + 40
+      }else{
+        return d.y + 85
+      }
+    })
+    .attr('text-anchor', 'middle')
+    .style('font-size', '12px')
+    .style("stroke", "#2b6afd")
+    .style("stroke-dasharray", "0")
+    .style("stroke-width", "0px")
+    .style('display', (d) => {
+      return d.data.name == '中国' ? 'none' : 'block'
+    })
+
+
+  // 拖动事件
+  let drag = d3.drag()
+    .on("start", dragstarted)
+    .on("drag", dragged)
+    .on("end", dragended);
+
+  // 单击事件
+  d3.selectAll(".node")
+    .call(drag);
+  
+  
+  // 被拖动覆盖的对象
+  let onOverObj = null
+  let newDraggObj = null
+  // 拖动的子元素
+  let childrenList = []
+  // 已经拖动
+  let ismove = false
+
+
+  // 拖动开始
+  function dragstarted(event, d) {
+    // 关闭菜单
+    if (document.querySelector('#menu').style.display != 'none') {
+      document.querySelector('#menu').style.display = 'none'
+      contextmenuName = null
+    }
+  }
+
+  // 拖动中
+  function dragged(event, d) {
+    ismove = true
+    // 获取所有子元素
+    function getAllchildren(arr) {
+      arr.forEach(it => {
+        childrenList.push(it.data.name)
+        if (it.children){
+          getAllchildren(it.children)
+        }
+      });
+    }
+
+    // 获取所有子元素
+    d.children ? getAllchildren(d.children) : ''
+
+    // 隐藏所有子元素
+    childrenList.forEach(it => {
+      d3.select('#' + it).style("display", "none");
+      d3.select('#' + it + 'link').style("display", "none");
+    });
+
+    let isCover = false // 判断是否一直再覆盖的元素上面
+    let _that = this // 当前对象
+
+    // 拖动时执行的操作, 设置g的位置,设置g的层级
+    d3.select(this).attr("transform", `translate(${event.x - d.x} , ${event.y - d.y})`)
+      .raise();
+    
+    //检查与其他元素是否有重叠
+    d3.selectAll(".node").filter(function (d1) { return d1 != d; }).each(function (d1) {
+      // 可以获取对象宽高
+      var bbox1 = this.getBoundingClientRect();
+      var bbox2 = _that.getBoundingClientRect();
+
+      // 将所有的节点设置边框
+      if (d3.select(this).attr('id') != '中国'){
+        d3.select(this).style("stroke", "#2b6afd")
+        .style("stroke-dasharray", "5")
+        .style("stroke-width", "4px")
+      }
+
+      // 如果覆盖了就保存
+      if (bbox1.left < bbox2.right && bbox1.right > bbox2.left &&
+        bbox1.top < bbox2.bottom && bbox1.bottom > bbox2.top) {
+        // 判断覆盖元素是否正确(不能是指定的第一个，不能是隐藏了的元素)
+        if (d3.select(this).attr('id') != '中国' && d3.select(this).attr('style').indexOf('display: none;') == -1){
+          // 设置覆盖元素对象
+          onOverObj = this
+          newDraggObj = _that
+          // 设置已有覆盖元素
+          isCover = true
+        } else {
+          onOverObj = null
+          newDraggObj = null
+        }
+      } else {
+        // 如果没有任何覆盖清除覆盖的元素对象
+        if (isCover == false){
+          onOverObj = null
+          newDraggObj = null
+        }
+      }
+    });
+
+    // 设置覆盖元素的边框
+    d3.select(onOverObj).style("stroke", "#2b6afd")
+    .style("stroke-dasharray", "0")
+    .style("stroke-width", "4px")    
+  }
+  
+  // 拖动结束
+  function dragended(event, d) {
+    // 结束拖动时执行的操作
+    // console.log(onOverObj, '覆盖的元素');
+    // console.log(newDraggObj, '拖动的元素');
+    // console.log(childrenList, '所有的子元素的id');
+
+    // 判断拖动与覆盖的元素是否为空
+    if (onOverObj && newDraggObj){
+      // 拖动的对象
+      draggName = d3.select(newDraggObj)._groups[0][0].__data__.data.name
+      // 覆盖的对象
+      overName = d3.select(onOverObj)._groups[0][0].__data__.data.name
+
+      // 拖动的所有对象
+      draggObj = null
+      // 推动后删除的对象
+      otherObj = null
+
+      // 获取拖动的所有的对象
+      function getObj(obj) {
+        if (obj.name == draggName){
+          draggObj = obj
+          return
+        } else {
+          obj.children?.forEach(it => {
+            getObj(it)
+          });
+        }
+      }
+      getObj(data)
+
+      // 删除被拖动的对象
+      function deleteNode(node, target) {
+        // 遍历到目标节点，直接返回null
+        if (node.name === target) {
+          return null;
+        }
+        // 遍历子节点
+        if (node.children) {
+          node.children = node.children.map(child => deleteNode(child, target)).filter(child => child !== null);
+        }
+        return node;
+      }
+      // 剔除被拖动的对象
+      otherObj = deleteNode(data, draggObj.name);
+
+      // 得到新的对象（将已经删除拖动的对象添加被拖动的对象到覆盖的的对象的children上面）
+      function setObj(obj) {
+        if (obj.name == overName){
+          obj.children ? obj.children.push(draggObj) : obj.children = [draggObj]
+          return
+        } else {
+          obj.children?.forEach(it => {
+            setObj(it)
+          });
+        }
+      }
+      setObj(otherObj)
+    }
+    if (ismove){
+      // 重新绘制
+      render()
+      ismove = false
+    }
+
+  }
+
+  // 获取要使用自定义菜单的元素
+  let target = document.querySelectorAll('.node');
+  // 获取自定义菜单元素
+  let menu = document.getElementById('menu');
+  // 绑定鼠标右键单击事件
+  target.forEach(it => {
+    if (it.id != '中国'){
+      it.addEventListener('contextmenu', function (event) {
+        // 取消默认的右键菜单
+        event.preventDefault();
+        // 隐藏自定义菜单
+        menu.style.display = 'none';
+        // 判断是否为鼠标右键
+        if (event.button === 2) {
+          // 设置自定义菜单的位置为鼠标点击的位置
+          menu.style.left = event.clientX + 20 + 'px';
+          menu.style.top = event.clientY + 'px';
+          // 显示自定义菜单
+          menu.style.display = 'block';
+        }
+        
+        contextmenuName = d3.select(this)._groups[0][0].__data__.data.name
+        
+      });
+      // 点击菜单项后隐藏自定义菜单
+      menu.addEventListener('click', function (event) {
+        menu.style.display = 'none';
+      })
+    }
+  })
+
+  // 监听单击事件关闭菜单
+  document.querySelector('body').addEventListener('click', () => {
+    if (menu.style.display != 'none') {
+      menu.style.display = 'none'
+      contextmenuName = null
+    }  
+  })
+}
+
+render()
+
+
+let numberid = '我是新增'
+// 添加事件
+document.querySelector('#add').addEventListener('click', () => {
+  console.log(contextmenuName);
+  if (contextmenuName){
+    function add(data){
+      if (data.name == contextmenuName){
+        numberid += 1
+        data.children ? data.children.push({name: '新的' + numberid}) : data.children = [{name: '新的' + numberid}]
+      } else {
+        data.children?.forEach(it => {
+          add(it)
+        });
+      }
+    }
+    add(data)
+
+    // 重新渲染
+    render()
+  }
+})
+
+
+// 删除事件
+document.querySelector('#del').addEventListener('click', () => {
+  console.log(contextmenuName);
+  if (contextmenuName){
+    // 删除被拖动的对象
+    function deleteNode(node, target) {
+      // 遍历到目标节点，直接返回null
+      if (node.name === target) {
+        return null;
+      }
+      // 遍历子节点
+      if (node.children) {
+        node.children = node.children.map(child => deleteNode(child, target)).filter(child => child !== null);
+      }
+      return node;
+    }
+    deleteNode(data, contextmenuName)
+
+    // 重新渲染
+    render()
+  }
+})
+
+
+
+</script>
+</html>
