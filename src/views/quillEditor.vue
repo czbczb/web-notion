@@ -62,16 +62,47 @@ const toBase64 = (url, callback) => {
   img.src = url;
 };
 
+const fileToBase64 = (file, callback) => {
+  // 创建FileReader对象
+  const reader = new FileReader();
+
+  // 将文件读取为Data URL
+  reader.readAsDataURL(file);
+
+  // 当读取完成时执行该函数
+  reader.onload = () => {
+    // 获取读取的结果，即base64编码的字符串
+    const base64String = reader.result;
+    callback(base64String);
+  };
+};
+
 const addPaste = (quill) => {
-  quill.clipboard.addMatcher("img", (node, delta) => {
-    const url = node.getAttribute("src");
-    // 转换 URL 成 base64
-    toBase64(url, (base64Url) => {
-      console.log(base64Url);
-      delta.insert({ image: base64Url });
-      quill.updateContents(delta);
-    });
-  });
+  quill.root.addEventListener(
+    "paste",
+    (evt) => {
+      if (
+        evt.clipboardData &&
+        evt.clipboardData.files &&
+        evt.clipboardData.files.length
+      ) {
+        evt.preventDefault();
+        [].forEach.call(evt.clipboardData.files, (file) => {
+          if (!file.type.match(/^image\/(gif|jpe?g|a?png|bmp)/i)) {
+            return;
+          }
+          fileToBase64(file, (url) => {
+            const index = quill.getSelection().index;
+            quill.insertEmbed(index, "image", url);
+            console.log(url);
+          });
+          // 释放内存
+          // URL.revokeObjectURL(url)
+        });
+      }
+    },
+    false
+  );
 };
 
 // 初始化编辑器
