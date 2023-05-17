@@ -886,7 +886,7 @@ function convertIpynbToMarkdown() {
     console.log("```\n" + item.source.join(""));
     temp +=
       item.cell_type === "code"
-        ? "```\n" + item.source.join("") + "\n```"
+        ? "```\n" + item.source.join("") + "\n```\n"
         : "\n" + item.source.join("") + "\n";
   });
   console.log(temp);
