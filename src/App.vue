@@ -12,6 +12,7 @@ import { RouterLink, RouterView } from "vue-router";
       <RouterLink to="/textEffectioncy">打字效果</RouterLink>
       <RouterLink to="/d3Tree">d3Tree</RouterLink>
       <RouterLink to="/quillEditor">quillEditor</RouterLink>
+      <RouterLink to="/jinjing360">jinjing360</RouterLink>
     </nav>
   </header>
   <RouterView />

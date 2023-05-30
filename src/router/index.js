@@ -44,6 +44,11 @@ const router = createRouter({
       name: "quillEditor",
       component: () => import("../views/quillEditor.vue"),
     },
+    {
+      path: "/jinjing360",
+      name: "jinjing360",
+      component: () => import("../views/map/tengxunMap.vue"),
+    },
   ],
 });
 
