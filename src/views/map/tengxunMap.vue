@@ -17,8 +17,8 @@
 import { ref, onMounted, reactive, nextTick } from "vue";
 import labels from "./label.js";
 
-const startName = ref("");
-const endName = ref("");
+const startName = ref("天通苑西三区");
+const endName = ref("凤凰岭");
 const mapContainer = ref(null);
 const map = ref(null);
 const markers = reactive([]);
