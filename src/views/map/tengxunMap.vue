@@ -9,57 +9,122 @@
       ></a-form-item>
       <a-button type="primary" @click="searchRoute">搜索</a-button>
     </a-row>
-
     <div ref="mapContainer" class="mapItem"></div>
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, reactive, nextTick } from "vue";
 import labels from "./label.js";
+
 const startName = ref("");
 const endName = ref("");
 const mapContainer = ref(null);
 const map = ref(null);
+const markers = reactive([]);
 
+const center = new qq.maps.LatLng(39.916527, 116.397128);
 onMounted(() => {
   map.value = new qq.maps.Map(mapContainer.value, {
-    center: new qq.maps.LatLng(39.916527, 116.397128),
+    center: center,
     zoom: 13,
   });
-
   setMaker();
+  nextTick(() => {
+    delayRenderMarker();
+  });
 });
 
+// 设置maker
 const setMaker = () => {
   for (let i = 0; i < labels.length; i++) {
     const label = labels[i];
-    const [lat, lng] = label.position;
+    const [lng, lat] = label.position;
+
+    const size = new qq.maps.Size(label.icon.size[0], label.icon.size[1]);
     const icon = new qq.maps.MarkerImage(
       label.icon.image, // 图片路径
-      new qq.maps.Size(label.icon.size), // 显示尺寸
+      size, // 显示尺寸
       null, // 偏移量
       null, // 锚点位置
-      new qq.maps.Size(label.icon.size) // 实际尺寸
+      size // 实际尺寸
     );
 
+    const position = new qq.maps.LatLng(lat, lng);
     const marker = new qq.maps.Marker({
-      position: new qq.maps.LatLng(lat, lng),
-      map: map.value,
+      position,
       icon,
+      // map: map.value,
+      map: null,
     });
 
     marker.setTitle(label.name);
-    // marker.setContent('这是标记的内容');
+    markers.push(marker);
+  }
+};
 
-    const info = new qq.maps.InfoWindow({
-      map: map.value,
-    });
-    info.setContent("详情");
-    qq.maps.event.addListener(marker, "click", () => {
-      info.open();
-      info.setPosition(lat);
-    });
+const delayRenderMarker = () => {
+  let count = 0;
+
+  // 监听地图的 bounds_changed 事件
+  qq.maps.event.addListener(map.value, "bounds_changed", () => {
+    renderMarker(count);
+  });
+
+  qq.maps.event.addListener(map.value, "click", (event) => {
+    console.log(666);
+    for (let i = 0; i < markers.length; i++) {
+      const marker = markers[i];
+      if (event.latLng.equals(new qq.maps.LatLng(marker.lat, marker.lng))) {
+        const label = labels[i];
+
+        // 在这里编写点击事件的处理逻辑
+        const [lng, lat] = label.position;
+        const position = new qq.maps.LatLng(lat, lng);
+
+        const info = new qq.maps.InfoWindow({
+          map: map.value,
+        });
+        info.setContent(label.name);
+        qq.maps.event.addListener(marker, "click", () => {
+          info.open();
+          info.setPosition(position);
+        });
+        break;
+      }
+    }
+  });
+
+  // 监听地图的 idle 事件
+  // qq.maps.event.addListener(map.value, "idle", () => {
+  //   renderMarker(count);
+  // });
+};
+
+// 渲染视口的marker
+const renderMarker = (count) => {
+  let currentIndex = 0;
+  if (count >= markers.length) {
+    return;
+  }
+  while (currentIndex <= markers.length) {
+    if (currentIndex > markers.length) {
+      break;
+    }
+    const bounds = map.value.getBounds();
+    const label = labels[currentIndex];
+    const marker = markers[currentIndex];
+    if (
+      marker &&
+      bounds.contains(markers[currentIndex].getPosition()) &&
+      !label.isRender
+    ) {
+      labels[currentIndex].isRender = true;
+      marker.setMap(map.value);
+      currentIndex++;
+      count++;
+    }
+    currentIndex++;
   }
 };
 
