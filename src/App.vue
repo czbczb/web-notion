@@ -13,6 +13,7 @@ import { RouterLink, RouterView } from "vue-router";
       <RouterLink to="/d3Tree">d3Tree</RouterLink>
       <RouterLink to="/quillEditor">quillEditor</RouterLink>
       <RouterLink to="/jinjing360">jinjing360</RouterLink>
+      <RouterLink to="/virtualScroller">virtualScroller</RouterLink>
     </nav>
   </header>
   <RouterView />

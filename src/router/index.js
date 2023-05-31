@@ -49,6 +49,11 @@ const router = createRouter({
       name: "jinjing360",
       component: () => import("../views/map/tengxunMap.vue"),
     },
+    {
+      path: "/virtualScroller",
+      name: "virtualScroller",
+      component: () => import("../views/virtualScroller.vue"),
+    },
   ],
 });
 
