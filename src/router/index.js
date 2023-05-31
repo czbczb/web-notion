@@ -8,17 +8,17 @@ const routes = [
       {
         path: "list",
         name: "list",
-        component: () => import("../views/NotionList.vue"),
+        component: () => import("../views/notion/NotionList.vue"),
       },
       {
         path: "describe",
         name: "describe",
-        component: () => import("../views/DescribeView.vue"),
+        component: () => import("../views/notion/DescribeView.vue"),
       },
       {
         path: "create",
         name: "create",
-        component: () => import("../views/NotionView.vue"),
+        component: () => import("../views/notion/NotionView.vue"),
       },
     ],
   },
@@ -31,13 +31,13 @@ const routes = [
       {
         path: "tts",
         name: "tts",
-        component: () => import("../views/textToSpeed.vue"),
+        component: () => import("../views/textToAll/textToSpeed.vue"),
       },
 
       {
         path: "ttv",
         name: "ttv",
-        component: () => import("../views/textToMp4.vue"),
+        component: () => import("../views/textToAll/textToMp4.vue"),
       },
     ],
   },
@@ -49,13 +49,13 @@ const routes = [
       {
         path: "d3Tree",
         name: "d3Tree",
-        component: () => import("../views/d3Tree.vue"),
+        component: () => import("../views/graph/d3Tree.vue"),
       },
 
       {
         path: "jinjing360",
         name: "jinjing360",
-        component: () => import("../views/map/tengxunMap.vue"),
+        component: () => import("../views/graph/map/tengxunMap.vue"),
       },
     ],
   },
@@ -68,6 +68,11 @@ const routes = [
     path: "/virtualScroller",
     name: "virtualScroller",
     component: () => import("../views/virtualScroller.vue"),
+  },
+  {
+    path: "/postReadStream",
+    name: "postReadStream",
+    component: () => import("../views/postReadStream.vue"),
   },
   {
     path: "/hotAnimation",

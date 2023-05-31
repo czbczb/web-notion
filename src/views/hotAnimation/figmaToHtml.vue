@@ -1,4 +1,5 @@
 <template>
+  <h1>code fun和figma结合：设计图到代码</h1>
   <div class="flex-col items-center page">
     <div class="section"></div>
     <div class="flex-col section_2">

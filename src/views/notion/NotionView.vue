@@ -22,10 +22,10 @@
   </Notionlayout>
 </template>
 <script setup>
-import NotionContent from "../components/designer/NotionContent.vue";
-import NotionNav from "../components/designer/NotionNav.vue";
-import Notionlayout from "../components/designer/Notionlayout.vue";
-import configJson from "../components/config";
+import NotionContent from "@/components/designer/NotionContent.vue";
+import NotionNav from "@/components/designer/NotionNav.vue";
+import Notionlayout from "@/components/designer/Notionlayout.vue";
+import configJson from "@/components/config";
 import { reactive, computed } from "vue";
 
 let config = reactive(configJson);
