@@ -14,161 +14,139 @@
 </template>
 
 <script setup>
-import { ref, onMounted, reactive, nextTick } from "vue";
+import { ref, onMounted } from "vue";
 import labels from "./label.js";
+import { ico } from "./img.js";
 
 const startName = ref("天通苑西三区");
 const endName = ref("凤凰岭");
 const mapContainer = ref(null);
 const map = ref(null);
-const markers = reactive([]);
 
-const center = new qq.maps.LatLng(39.916527, 116.397128);
+const center = [116.397128, 39.916527];
 onMounted(() => {
-  map.value = new qq.maps.Map(mapContainer.value, {
-    center: center,
-    zoom: 13,
+  map.value = new AMap.Map(mapContainer.value, {
+    zoom: 12,
+    center,
+    showIndoorMap: false,
+    viewMode: "2D",
+    expandZoomRange: true,
   });
-  setMaker();
-  nextTick(() => {
-    delayRenderMarker();
-  });
+  delayRenderMarker();
 });
 
-// 设置maker
-const setMaker = () => {
-  for (let i = 0; i < labels.length; i++) {
-    const label = labels[i];
-    const [lng, lat] = label.position;
-
-    const size = new qq.maps.Size(label.icon.size[0], label.icon.size[1]);
-    const icon = new qq.maps.MarkerImage(
-      label.icon.image, // 图片路径
-      size, // 显示尺寸
-      null, // 偏移量
-      null, // 锚点位置
-      size // 实际尺寸
-    );
-
-    const position = new qq.maps.LatLng(lat, lng);
-    const marker = new qq.maps.Marker({
-      position,
-      icon,
-      // map: map.value,
-      map: null,
+const delayRenderMarker = () => {
+  map.value.on("complete", function () {
+    // 创建 AMap.LabelsLayer 图层
+    var layer = new AMap.LabelsLayer({
+      zooms: [3, 20],
+      zIndex: 100,
+      // 关闭标注避让，默认为开启，v1.4.15 新增属性
+      animation: false,
+      // 关闭标注淡入动画，默认为开启，v1.4.15 新增属性
+      collision: false,
     });
 
-    marker.setTitle(label.name);
-    markers.push(marker);
-  }
-};
+    // 将图层添加到地图
+    map.value.add(layer);
 
-const delayRenderMarker = () => {
-  let count = 0;
+    const markers = getMarker();
+    // 批量渲染
+    layer.add(markers);
 
-  // 监听地图的 bounds_changed 事件
-  qq.maps.event.addListener(map.value, "bounds_changed", () => {
-    renderMarker(count);
-  });
+    // 设置marker的偏移量
+    new AMap.Marker({
+      offset: new AMap.Pixel(-75, -40),
+    });
 
-  qq.maps.event.addListener(map.value, "click", (event) => {
-    console.log(666);
-    for (let i = 0; i < markers.length; i++) {
-      const marker = markers[i];
-      if (event.latLng.equals(new qq.maps.LatLng(marker.lat, marker.lng))) {
-        const label = labels[i];
-
-        // 在这里编写点击事件的处理逻辑
-        const [lng, lat] = label.position;
-        const position = new qq.maps.LatLng(lat, lng);
-
-        const info = new qq.maps.InfoWindow({
-          map: map.value,
-        });
-        info.setContent(label.name);
-        qq.maps.event.addListener(marker, "click", () => {
-          info.open();
-          info.setPosition(position);
-        });
-        break;
-      }
-    }
-  });
-
-  // 监听地图的 idle 事件
-  // qq.maps.event.addListener(map.value, "idle", () => {
-  //   renderMarker(count);
-  // });
-};
-
-// 渲染视口的marker
-const renderMarker = (count) => {
-  let currentIndex = 0;
-  if (count >= markers.length) {
-    return;
-  }
-  while (currentIndex <= markers.length) {
-    if (currentIndex > markers.length) {
-      break;
-    }
-    const bounds = map.value.getBounds();
-    const label = labels[currentIndex];
-    const marker = markers[currentIndex];
-    if (
-      marker &&
-      bounds.contains(markers[currentIndex].getPosition()) &&
-      !label.isRender
-    ) {
-      labels[currentIndex].isRender = true;
-      marker.setMap(map.value);
-      currentIndex++;
-      count++;
-    }
-    currentIndex++;
-  }
-};
-
-const searchPath = (start, end) => {
-  var drivingService = new qq.maps.DrivingService({
-    complete: (result) => {
-      var path = result.detail.polylinePath;
-      // 绘制路径
-      new qq.maps.Polyline({
-        map: map.value,
-        path: path,
-        strokeColor: "#FF0000",
-        strokeWeight: 3,
+    // 添加控件
+    map.value.plugin(["AMap.ControlBar"], function () {
+      var controlBar = new AMap.ControlBar({
+        position: {
+          right: "10px",
+          top: "10px",
+        },
       });
-    },
+      map.value.addControl(controlBar);
+    });
   });
-  drivingService.search(start, end);
+};
+
+const getMarker = () => {
+  const markers = [];
+  var infoWindow = new AMap.InfoWindow({ offset: new AMap.Pixel(0, -8) });
+  for (var i = 0; i <= labels.length - 1; i++) {
+    const label = labels[i];
+    const d = label.time;
+    const resultDate =
+      (new Date().getTime() - new Date(d.replace(/-/g, "/")).getTime()) /
+      (1000 * 3600);
+    if (resultDate <= 24 * 3 - 1) {
+      label.icon = ico[3];
+    } else label.icon = ico[label.type];
+
+    var labelMarker = new AMap.LabelMarker(label);
+    // 事件
+    labelMarker.on("click", (e) => {
+      var position = e.data.data && e.data.data.position;
+      if (position) {
+        infoWindow.setContent(e.target.content);
+        infoWindow.open(map.value, e.target.getPosition());
+      }
+    });
+
+    labelMarker.content = "<div class ='area'>" + label.name + "</div>";
+
+    labelMarker.on("mouseout", function () {
+      map.value.remove(labelMarker);
+    });
+
+    markers.push(labelMarker);
+  }
+  return markers;
 };
 
 const searchRoute = () => {
-  var startAddress = document.getElementById("start").value;
-  var endAddress = document.getElementById("end").value;
-  var start = "";
-  // 使用腾讯地图API进行地址转坐标
-  var geocoder = new qq.maps.Geocoder({
-    complete: function (result) {
-      if (result.detail && result.detail.location) {
-        start = result.detail.location;
-        // 继续搜索终点坐标
-        geocoder.getLocation(endAddress);
-      }
-    },
+  const avoidmarkers = [];
+  for (var i = 0; i <= labels.length - 1; i++) {
+    const label = labels[i];
+    console.log(label.position);
+    const [lng, lat] = label.position
+    avoidmarkers.push(
+      new AMap.Marker({
+        position: new AMap.LngLat(lng, lat),
+      })
+    );
+  }
+  // 搜索POI
+  AMap.service("AMap.PlaceSearch", function () {
+    var placeSearch = new AMap.PlaceSearch({
+      pageSize: 5,
+      pageIndex: 1,
+      city: "010",
+      map: map.value,
+      panel: "panel",
+    });
+    placeSearch.search("北京大学东门");
   });
-  geocoder.getLocation(startAddress);
+  console.log(avoidmarkers);
+  // 绘制路线
+  var driving = new AMap.Driving({
+    policy: AMap.DrivingPolicy.LEAST_TIME,
+    map: map.value,
+    avoidmarkers,
+  });
 
-  // 获取终点坐标并搜索路径
-  geocoder = new qq.maps.Geocoder({
-    complete: (result) => {
-      if (result.detail && result.detail.location) {
-        var end = result.detail.location;
-        searchPath(start, end);
+  const path = driving.search(
+    [{ keyword: "北京大学东门" }, { keyword: "北京邮电大学" }],
+    function (status, result) {
+      if (status === "complete") {
+        console.log(result);
+        // 成功返回结果
       }
-    },
-  });
+    }
+  );
+  console.log(path);
 };
 </script>
 
