@@ -3,6 +3,7 @@
     class="scroller"
     :items="list.article"
     :item-size="32"
+    :buffer="200"
     key-field="id"
     v-slot="{ item }"
   >
@@ -23,7 +24,7 @@ onMounted(() => {
 
 const initState = () => {
   const articles = [];
-  Array.from({ length: 200000 })
+  Array.from({ length: 300000 })
     .fill({ name: "test" })
     .map((item, index) => {
       item = {
