@@ -1,75 +1,62 @@
 <script setup>
-import { RouterLink, RouterView } from "vue-router";
+import { RouterView, useRouter } from "vue-router";
+import { ref } from "vue";
+import { routes } from "@/router";
+
+const router = useRouter();
+const routerConfig = ref([]);
+routerConfig.value = routes;
+
+const headerStyle = ref({
+  position: "fixed",
+  zIndex: 1,
+  width: "100%",
+  padding: 0,
+});
+const contentStyle = ref({
+  padding: "0 50px",
+  marginTop: "64px",
+  background: "#fff",
+});
+
+const goRouter = (event) => {
+  console.log(event);
+  router.push({ name: event.key });
+};
 </script>
 
 <template>
-  <header class="wrapper">
-    <nav>
-      <RouterLink to="/">Home</RouterLink>
-      <RouterLink to="/describe">Describe</RouterLink>
-      <RouterLink to="/tts">TTS</RouterLink>
-      <RouterLink to="/ttv">TTV</RouterLink>
-      <RouterLink to="/textEffectioncy">打字效果</RouterLink>
-      <RouterLink to="/d3Tree">d3Tree</RouterLink>
-      <RouterLink to="/quillEditor">quillEditor</RouterLink>
-      <RouterLink to="/jinjing360">jinjing360</RouterLink>
-      <RouterLink to="/virtualScroller">virtualScroller</RouterLink>
-    </nav>
-  </header>
-  <RouterView />
+  <a-layout class="layout">
+    <a-layout-header theme="light" :style="headerStyle">
+      <a-menu
+        class="menuWrapper"
+        mode="horizontal"
+        @click="goRouter"
+        :style="{ lineHeight: '64px' }"
+      >
+        <template v-for="menu in routerConfig">
+          <a-sub-menu v-if="menu.children" :key="menu.name">
+            <template #title>
+              <strong>{{ menu.name }}</strong>
+            </template>
+            <a-menu-item v-for="sub in menu.children" :key="sub.name">
+              <strong>
+                {{ sub.title || sub.name }}
+              </strong></a-menu-item
+            >
+          </a-sub-menu>
+
+          <a-menu-item v-else :key="menu.name">
+            <strong>{{ menu.title || menu.name }}</strong>
+          </a-menu-item>
+        </template>
+      </a-menu>
+    </a-layout-header>
+
+    <a-layout-content :style="contentStyle">
+      <RouterView />
+    </a-layout-content>
+  </a-layout>
 </template>
 
-<style scoped>
-header {
-  height: 60px;
-  background: #eee;
-}
-
-nav {
-  width: 100%;
-  font-size: 12px;
-  text-align: center;
-}
-
-nav a.router-link-exact-active {
-  color: var(--color-text);
-}
-
-nav a.router-link-exact-active:hover {
-  background-color: transparent;
-}
-
-nav a {
-  display: inline-block;
-  padding: 0 1rem;
-  border-left: 1px solid var(--color-border);
-}
-
-nav a:first-of-type {
-  border: 0;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-  }
-
-  header.wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 10;
-  }
-
-  nav {
-    text-align: left;
-    font-size: 1rem;
-    padding: 1rem 0;
-  }
-}
-</style>
+<style scoped></style>

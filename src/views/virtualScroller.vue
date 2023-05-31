@@ -13,23 +13,28 @@
 </template>
 
 <script setup>
-import { reactive } from "vue";
+import { reactive, onMounted } from "vue";
 
-const list = reactive({
-  article: [],
+const list = reactive({ article: [] });
+
+onMounted(() => {
+  initState();
 });
 
-const arr = Array.from({ length: 200 }).fill({name: 'test'});
-const articles = []
-arr.map((item, index) => {
-  item = {
-    id: index,
-    name: "test" + index,
-  };
-  articles.push(item)
-});
-console.log(articles);
-list.article = articles
+const initState = () => {
+  const articles = [];
+  Array.from({ length: 200000 })
+    .fill({ name: "test" })
+    .map((item, index) => {
+      item = {
+        id: index,
+        name: "test" + index,
+      };
+      articles.push(item);
+    });
+
+  list.article = articles;
+};
 </script>
 
 <style lang="less" scoped>

@@ -89,7 +89,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .chat-gpt {
     padding: 80px;
   width: 33rem;
