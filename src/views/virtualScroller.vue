@@ -1,4 +1,5 @@
 <template>
+  <h1>30万数据渲染</h1>
   <RecycleScroller
     class="scroller"
     :items="list.article"
