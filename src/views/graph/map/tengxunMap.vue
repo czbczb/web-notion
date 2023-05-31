@@ -107,11 +107,23 @@ const getMarker = () => {
 };
 
 const searchRoute = () => {
+  var geocoder = new AMap.Geocoder({
+  city: '北京'
+});
+
+// 调用 getLocation 方法获取地址的经纬度坐标
+geocoder.getLocation('北京市朝阳区建国路93号', function(status, result) {
+  if (status === 'complete' && result.geocodes.length) {
+    var position = result.geocodes[0].location;
+    console.log(position);
+  } else {
+    console.error(result.info);
+  }
+});
   const avoidmarkers = [];
   for (var i = 0; i <= labels.length - 1; i++) {
     const label = labels[i];
-    console.log(label.position);
-    const [lng, lat] = label.position
+    const [lng, lat] = label.position;
     avoidmarkers.push(
       new AMap.Marker({
         position: new AMap.LngLat(lng, lat),
@@ -129,6 +141,9 @@ const searchRoute = () => {
     });
     placeSearch.search("北京大学东门");
   });
+  driving.search([{ keyword: "北京大学东门" }], (res) => {
+    console.log(res);
+  });
   console.log(avoidmarkers);
   // 绘制路线
   var driving = new AMap.Driving({
@@ -137,15 +152,10 @@ const searchRoute = () => {
     avoidmarkers,
   });
 
-  const path = driving.search(
-    [{ keyword: "北京大学东门" }, { keyword: "北京邮电大学" }],
-    function (status, result) {
-      if (status === "complete") {
-        console.log(result);
-        // 成功返回结果
-      }
-    }
-  );
+  const path = driving.search([
+    { keyword: "北京大学东门" },
+    { keyword: "北京邮电大学" },
+  ]);
   console.log(path);
 };
 </script>
