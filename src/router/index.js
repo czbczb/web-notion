@@ -101,6 +101,12 @@ const routes = [
         component: () => import("../views/hotAnimation/figmaToHtml.vue"),
         title: "figma转换为html",
       },
+      {
+        path: "triangleAnimation",
+        name: "triangleAnimation",
+        component: () => import("../views/hotAnimation/triangleAnimation.vue"),
+        title: "三角形",
+      },
     ],
   },
 ];
