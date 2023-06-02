@@ -9,12 +9,21 @@
       contentType="html"
     />
   </div>
+  <h1>{{state.data.name}}</h1>
 </template>
 
 <script setup>
 import { QuillEditor } from "@vueup/vue-quill";
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
-import { reactive, onMounted, ref, toRaw, watch } from "vue";
+import { reactive, onMounted, ref, toRaw, watch, markRaw } from "vue";
+
+const state = reactive({
+  count: 0,
+  data: markRaw({name: 'test'})
+})
+
+console.log(state, toRaw(state.data.name))
+state.data.name = 'test1'
 
 const props = defineProps(["value"]);
 const content = ref("");
