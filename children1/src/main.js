@@ -1,16 +1,30 @@
-import { createApp } from 'vue'
-import './style.css'
-import App from './App.vue'
+import { createApp } from "vue";
+import "./style.css";
+import App from "./App.vue";
+import router from "./router";
+import {
+  renderWithQiankun,
+  qiankunWindow,
+} from "vite-plugin-qiankun/dist/helper";
 
-export function mount(props) {
-  const app = createApp(App);
-  app.config.globalProperties.$qiankunProps = props;
-  app.mount('#app');
-}
+let app;
 
-// 如果是开发环境，直接调用 mount 函数
-if (process.env.NODE_ENV === 'development') {
-  mount();
-}
+const render = (container) => {
+  app = createApp(App);
+  app.use(router).mount(container ? container.querySelector("#app") : "#app");
+};
 
-createApp(App).mount('#app')
+const initQianKun = () => {
+  renderWithQiankun({
+    mount(props) {
+      const { container } = props;
+      render(container);
+    },
+    bootstrap() {},
+    unmount() {
+      app.unmount();
+    },
+  });
+};
+
+qiankunWindow.__POWERED_BY_QIANKUN__ ? initQianKun() : render();

@@ -4,8 +4,8 @@ registerMicroApps([
   {
     name: "children1",
     entry: "//localhost:8080",
-    container: "#app",
-    activeRule: "/parent/child",
+    container: "#sub-container",
+    activeRule: "/children1",
   },
   // {
   //   name: "children2",

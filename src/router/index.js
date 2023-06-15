@@ -23,9 +23,11 @@ const routes = [
     ],
   },
   {
-    path: "/parent/child", // 这里与上面的 activeRule 对应
+    // history模式需要通配所有路由，详见vue-router文档
+    path: "/children1/:pathMatch(.*)*", // 这里与上面的 activeRule 对应
     name: "ChildAppContainer",
     title: "children1",
+    meta: {},
     component: () => import("../views/children/ChildAppContainer.vue"), // 这里用一个容器组件来作为该路由的组件
   },
 
