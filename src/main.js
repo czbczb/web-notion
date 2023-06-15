@@ -8,6 +8,8 @@ import { RecycleScroller } from "vue-virtual-scroller";
 
 import "vue-virtual-scroller/dist/vue-virtual-scroller.css";
 import "./assets/main.css";
+import "./registerMicroApps.js";
+
 const app = createApp(App);
 
 app.component("RecycleScroller", RecycleScroller);

@@ -22,6 +22,12 @@ const routes = [
       },
     ],
   },
+  {
+    path: "/parent/child", // 这里与上面的 activeRule 对应
+    name: "ChildAppContainer",
+    title: "children1",
+    component: () => import("../views/children/ChildAppContainer.vue"), // 这里用一个容器组件来作为该路由的组件
+  },
 
   {
     path: "/textToAll",
