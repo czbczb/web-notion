@@ -1,38 +1,28 @@
 @startuml
-' Define components
-!define Microservice
-!define Storage
-!define Client
-
-' Define package
-package "Microservice" {
-  [Microservice]
+class Foo1 {
+  You can use
+  several lines
+  ..
+  as you want
+  and group
+  ==
+  things together.
+  __
+  You can have as many groups
+  as you want
+  --
+  End of class
 }
 
-package "Storage" {
-  [Storage]
+class User {
+  .. Simple Getter ..
+  + getName()
+  + getAddress()
+  .. Some setter ..
+  + setName()
+  __ private data __
+  int age
+  -- encrypted --
+  String password
 }
-
-actor Client
-
-' Define GRPC protocol
-!define GRPCProtocol
-interface GRPCProtocol {
-  + InvokeService(data: Data): Token
-  + GetProcessedData(token: Token): Data
-}
-
-' Implement interfaces
-[Microservice] -right-|> GRPCProtocol
-[Client] -down-|> GRPCProtocol
-
-' Define relationships
-[Client] -> [Microservice] : 1. InvokeService
-[Microservice] -> [Storage] : 2. Store processed data
-[Microservice] --> [Client] : 3. Return token
-
-[Client] -> [Microservice] : 4. GetProcessedData
-[Microservice] -> [Storage] : 5. Retrieve processed data
-[Microservice] --> [Client] : 6. Return processed data
-
 @enduml
