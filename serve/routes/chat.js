@@ -21,18 +21,17 @@ router.post("/process", async (req, res, next) => {
   res.send();
 });
 
-router.get("/stream", function (req, res) {
-  // 设置 Content-Type 为 text/event-stream
-  res.writeHead(200, {
-    "Content-Type": "text/event-stream",
-    "Cache-Control": "no-cache",
-    Connection: "keep-alive",
-  });
+router.get("/chat", function (req, res) {
+  let i = 0;
+  const timer = setInterval(() => {
+    i++;
 
-  // 向客户端发送数据
-  setInterval(function () {
-    var data = new Date().toLocaleTimeString();
-    res.write("data: " + data + "\n\n");
+    console.log(i);
+    if (i === 360) {
+      res.write(JSON.stringify({ test: `test end` }));
+      res.send();
+      clearInterval(timer);
+    }
   }, 1000);
 });
 

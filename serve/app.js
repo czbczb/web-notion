@@ -29,7 +29,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
 app.use("/api/text", textRouter);
-app.use("/api/chat", chatRouter);
+app.use("/max_bot", chatRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

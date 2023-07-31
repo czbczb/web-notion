@@ -34,6 +34,7 @@
     "lint-staged": "^13.0.3",
     "mockjs": "^1.1.0",
     "monaco-editor": "^0.34.0",
+    "nomnoml": "^1.6.2",
     "pinia": "^2.0.17",
     "qiankun": "^2.10.9",
     "rollup-plugin-visualizer": "^5.8.1",
