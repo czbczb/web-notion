@@ -1,0 +1,33 @@
+当读取文件并发送响应时，可以使用 Flask 的 `stream_with_context` 和 `time.sleep` 来实现每100毫秒返回一个单词或一个字。这样可以实现逐步读取和响应。
+
+请修改你的代码如下：
+
+```python
+from flask import Flask, request, Response, stream_with_context
+from flask_cors import CORS
+import time
+
+app = Flask(__name__)
+CORS(app)  # 允许所有来源跨域访问
+
+@app.route("/demo", methods=["POST"])
+def send_demo():
+    def generate():
+        with open("demo.txt", "r") as f:
+            for line in f:
+                words = line.split()
+                for word in words:
+                    yield word + ' '
+                    time.sleep(0.1)
+    
+    return Response(stream_with_context(generate()), mimetype="text/plain")
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=3035)
+```
+
+在这个修改后的代码中，我们封装了一个生成器函数 `generate()`。它会逐行读取文件，并按照单词进行拆分。然后，它会在每个单词之间添加一个空格，并通过 `yield` 返回给客户端。
+
+为了实现每100毫秒返回一个单词的效果，我们使用了 `time.sleep(0.1)`，即使脚本暂停100毫秒，然后继续生成下一个单词。这样就能够逐步读取并返回数据。
+
+请注意，这种方式在处理较大文件时可能会有性能问题，因为它会阻塞服务器的进程。如果文件大小较大，导致请求时间过长，请考虑使用其他方法解决该问题，例如将文件内容缓存在内存中或使用异步方式处理。
