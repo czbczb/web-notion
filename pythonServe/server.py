@@ -13,7 +13,7 @@ def send_demo():
                 words = line.split()
                 for word in words:
                     yield word + ' '
-                    time.sleep(0.1)
+                    # time.sleep(0.1)
     
     return Response(stream_with_context(generate()), mimetype="text/plain")
 
