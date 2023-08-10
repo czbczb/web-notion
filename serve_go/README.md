@@ -21,5 +21,4 @@ brew link go@1.17       // 绑定版本关系
 source ~/.zshrc         // 更新配置文件
 
 go version              // 查看更新后的版本
-
-
+```
