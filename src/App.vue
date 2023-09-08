@@ -14,7 +14,7 @@ const headerStyle = ref({
   padding: 0,
 });
 const contentStyle = ref({
-  padding: "0 50px",
+  padding: "20px 50px",
   marginTop: "64px",
   background: "#fff",
 });

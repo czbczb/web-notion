@@ -10,8 +10,11 @@ import "vue-virtual-scroller/dist/vue-virtual-scroller.css";
 import "./assets/main.css";
 import "./registerMicroApps.js";
 
+import { AVPlugin } from 'vue-audio-visual'
+
 const app = createApp(App);
 
+app.use(AVPlugin)
 app.component("RecycleScroller", RecycleScroller);
 
 app.use(createPinia());

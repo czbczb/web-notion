@@ -73,6 +73,11 @@ const routes = [
     component: () => import("../views/quillEditor.vue"),
   },
   {
+    path: "/video",
+    name: "playVideo",
+    component: () => import("../views/video/playVideo.vue"),
+  },
+  {
     path: "/virtualScroller",
     name: "virtualScroller",
     component: () => import("../views/virtualScroller.vue"),

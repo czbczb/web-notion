@@ -3,9 +3,7 @@
     <h1>post方式读取stream的5种方式</h1>
     {{ text }}
     <h1>1、HTTP之SSE技术</h1>
-    <pre>
-     
-    </pre>
+    <pre></pre>
     <h1>2、xhr的onDownloadProgress</h1>
     <p></p>
     <h1>3、fetch</h1>
@@ -220,46 +218,45 @@ fetchStreamData(url)
     console.error("获取数据失败：", error);
   });
 
+// function getFetch(data) {
+//   const http = {
+//     botServe: 222,
+//   }
+//   const defaultURL = `${http.botServe}/chat`;
+//   // const url = 'http://127.0.0.1:3035/demo'
+//   fetch(defaultURL, {
+//     method: "POST",
+//     headers: {
+//       "Content-Type": "application/json",
+//       authorization: this.user.token,
+//     },
+//     body: JSON.stringify(data),
+//   }).then(async (response) => {
+//     const reader = response.body.getReader();
+//     const decoder = new TextDecoder("utf-8");
 
+//     // 逐块读取流数据
+//     while (true) {
+//       const { value, done } = await reader.read();
+//       if (done) {
+//         console.log("流式读取完成");
+//         this.loading = false;
+//         reader.closed();
+//         break;
+//       }
 
-
-
-function getFetch(data) {
-      const defaultURL = `${http.botServe}/chat`
-      // const url = 'http://127.0.0.1:3035/demo'
-      fetch(defaultURL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          authorization: this.user.token,
-        },
-        body: JSON.stringify(data),
-      }).then(async (response) => {
-        const reader = response.body.getReader()
-        const decoder = new TextDecoder('utf-8')
-
-        // 逐块读取流数据
-        while (true) {
-          const { value, done } = await reader.read()
-          if (done) {
-            console.log('流式读取完成')
-            this.loading = false
-            reader.closed()
-            break
-          }
-
-          const result = decoder.decode(value)
-          for (let i = 0; i < result.length; i++) {
-            setTimeout(() => {
-              // 使用TextDecoder将 Uint8Array 转换为字符串
-              this.updateChatMessage(result[i])
-              this.storeDataSources()
-              this.$refs.chatMessageContent.scrollToBottom()
-            }, 100)
-          }
-        }
-      })
-    },
+//       const result = decoder.decode(value);
+//       for (let i = 0; i < result.length; i++) {
+//         setTimeout(() => {
+//           // 使用TextDecoder将 Uint8Array 转换为字符串
+//           this.updateChatMessage(result[i]);
+//           this.storeDataSources();
+//           this.$refs.chatMessageContent.scrollToBottom();
+//         }, 100);
+//       }
+//     }
+//   });
+// }
 </script>
 
 <style lang="less" scoped></style>
