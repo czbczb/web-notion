@@ -65,6 +65,11 @@ const routes = [
         name: "jinjing360",
         component: () => import("../views/graph/map/tengxunMap.vue"),
       },
+      {
+        path: "globalMap",
+        name: "globalMap",
+        component: () => import("../views/graph/globalMapWithNode.vue"),
+      },
     ],
   },
   {

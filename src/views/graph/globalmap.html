@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src='https://unpkg.com/@antv/l7'></script>
+  <style>
+    body,
+    #map {
+      height: 100vh;
+      width: 100vw;
+      margin: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="map"></div>
+  <script>
+    const scene = new L7.Scene({
+      id: 'map',
+      map: new L7.GaodeMap({
+        center: [116.3956, 39.9392],
+        zoom: 2,
+        style: 'light'
+      })
+    });
+
+    scene.on('loaded', () => {
+      fetch('https://gw.alipayobjects.com/os/basement_prod/d3564b06-670f-46ea-8edb-842f7010a7c6.json')
+        .then(res => res.json())
+        .then(data => {
+          data = data.stations
+          data.forEach(item => {
+            item.g.reverse()
+          })
+          // console.log(data);
+          const layer = new L7.PointLayer()
+            .source(data, {
+              parser: {
+                type: 'json',
+                coordinates: 'g'
+              }
+            })
+            .shape('circle')
+            .color('a', (value) => {
+                // 大于0小于50的绿色
+              if (value > 0 && value < 50) {
+                return '#00ff00'
+              } else if (value > 50 && value < 100) {
+                // 大于50小于100的蓝色
+                return '#0000ff'
+              } else if (value > 100) {
+                // 大于100的红色
+                return '#ff0000'
+              }
+            })
+            .size('a', (value) => {
+              // 根据value值设置点的大小
+              let a = value / 100 + 2;
+              return a;
+            })
+            .active(true);
+          scene.addLayer(layer);
+        });
+    });
+  </script>
+</body>
+
+</html>
