@@ -97,6 +97,11 @@ const routes = [
     name: "hotAnimation",
     children: [
       {
+        path: "animationTimeLine",
+        name: "animationTimeLine",
+        component: () => import("../views/hotAnimation/animationTimeLine.vue"),
+      },
+      {
         path: "mouseScrollx",
         name: "mouseScrollx",
         component: () => import("../views/hotAnimation/mouseScrollx.vue"),
