@@ -97,6 +97,11 @@ const routes = [
     name: "hotAnimation",
     children: [
       {
+        path: "cubicBezier",
+        name: "cubicBezier",
+        component: () => import("../views/hotAnimation/cubicBezier.vue"),
+      },
+      {
         path: "animationTimeLine",
         name: "animationTimeLine",
         component: () => import("../views/hotAnimation/animationTimeLine.vue"),
