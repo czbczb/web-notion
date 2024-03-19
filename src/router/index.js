@@ -78,6 +78,11 @@ const routes = [
     component: () => import("../views/quillEditor.vue"),
   },
   {
+    path: "/vue3Dnd",
+    name: "vue3Dnd",
+    component: () => import("../views/vueDnd/index.vue"),
+  },
+  {
     path: "/video",
     name: "playVideo",
     component: () => import("../views/video/playVideo.vue"),
