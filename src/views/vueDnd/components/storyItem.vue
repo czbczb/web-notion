@@ -20,19 +20,14 @@ const props = defineProps({
   } 
 })
 
-// interface DragItem {
-//   index: number
-//   id: string
-//   type: string
-// }
-
 const card = ref()
 const [dropCollect, drop] = useDrop({
   accept: 'card',
   collect(monitor) {
     return {
       handlerId: monitor.getHandlerId(),
-      isShallowOver: monitor.isOver({ shallow: true })
+      isShallowOver: monitor.isOver({ shallow: true }),
+      item: monitor.getItem()
     }
   },
   hover(item, monitor) {
@@ -88,14 +83,17 @@ const [collect, drag] = useDrag({
   item: () => {
     return { id: props.id, index: props.index }
   },
-  collect: (monitor) => ({
+  collect: (monitor) => {
+    return {
     isDragging: monitor.isDragging(),
-  }),
+    item: monitor.getItem()
+  }
+  },
 })
 
 const { handlerId, isShallowOver } = toRefs(dropCollect)
 const { isDragging } = toRefs(collect)
-const opacity = computed(() => (unref(isDragging) ? 0 : 1))
+const opacity = computed(() => (unref(isDragging) ? 0.4 : 1))
 
 const setRef = (el) => {
   card.value = drag(drop(el))
@@ -124,7 +122,7 @@ const setRef = (el) => {
 }
 .indicator {
   position: absolute;
-  bottom: 0;
+  top: 0;
   width: 100%;
   height: 2px;
   background: #000;

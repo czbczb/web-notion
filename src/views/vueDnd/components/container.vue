@@ -91,7 +91,7 @@ const state = reactive({
       storyList: [
         {
           id: 2,
-          name: 'story2',
+          name: 'story3',
           taskList: [
             {
               id: 1,
@@ -128,24 +128,36 @@ const state = reactive({
   ]
 })
 
-const moveStory = (dragIndex, hoverIndex) => {
-  const item = cards.value[dragIndex]
-  cards.value.splice(dragIndex, 1)
-  cards.value.splice(hoverIndex, 0, item)
+const moveStory = (dragIndex, hoverIndex, progressIndex) => {
+  console.log('moveStory', dragIndex, hoverIndex, progressIndex);
+  const item = state.progressList[progressIndex].storyList[dragIndex]
+  console.log('item', item, state.progressList[progressIndex].storyList);
+
+  state.progressList[progressIndex].storyList.splice(dragIndex, 1)
+  state.progressList[progressIndex].storyList.splice(hoverIndex, 0, item)
 }
 
 const handleDrop = (targetProgressIndex, {id, index}) => {
   console.log(targetProgressIndex, id, index);
-  state.progressList[targetProgressIndex].storyList.splice(index, 0, {...state.progressList[0].storyList[index]})
-  state.progressList[0].storyList.splice(index, 1)
+  // 删除原有progress的story
+  const sourceProgressIndex = getSourceProgressIndex(id, index)
+  const dragStory = {...state.progressList[sourceProgressIndex].storyList[index]}
+  state.progressList[sourceProgressIndex].storyList.splice(index, 1)
+
+  // 将story添加到目标progress
+  state.progressList[targetProgressIndex].storyList.splice(index, 0, dragStory)
+}
+
+const getSourceProgressIndex = ()=> {
+  return 0
 }
 </script>
 
 <template>
   <div class="progressLayout">
-      <ProgressItem v-for="(progress, index) in state.progressList" :key="progress.id" :accept="['card']" @drop="handleDrop(index, $event)" :state="progress.state">
+      <ProgressItem v-for="(progress, progressIndex) in state.progressList" :key="progress.id" :accept="['card']" @drop="handleDrop(progressIndex, $event)" :state="progress.state">
         <StoryItem v-for="(story, index) in progress.storyList" :id="story.id" :key="story.id" :text="story.name" :index="index"
-          :move-card="moveStory" >
+          :move-card="(dragIndex, hoverIndex)=> moveStory(dragIndex, hoverIndex,progressIndex)" >
         </StoryItem>
       </ProgressItem>
   </div>
