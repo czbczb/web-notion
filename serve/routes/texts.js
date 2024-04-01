@@ -2,8 +2,8 @@ const express = require("express");
 const { spawn } = require("child_process");
 const path = require("path");
 const { Buffer } = require('buffer');
-const { log } = require("console");
-
+var request = require('request');
+const fs = require('fs');
 var router = express.Router();
 
 /**
@@ -52,7 +52,7 @@ async function textToVideo(textContent, outputPath) {
         reject(new Error(`Python process exited with code ${code}`));
       }
     });
-  }).catch((err)=> {
+  }).catch((err) => {
     Promise.reject(err)
   });
 }
@@ -73,5 +73,49 @@ router.get("/textToVideo", async (req, res, next) => {
     res.send(error);
   }
 });
+
+router.get('/testUrl', function (req, res, next) {
+  var find_link = function (link, collback) {
+
+    var f = function (link) {
+      var options = {
+        url: link,
+        followRedirect: false,
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Accept-Charset': 'UTF-8;',
+          'User-Agent': 'Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.2.8) Firefox/3.6.8',
+        }
+      }
+
+      request(options, function (error, response, body) {
+        console.log(response.statusCode);
+        if (response.statusCode == 301 || response.statusCode == 302) {
+          var location = response.headers.location;
+          console.log('location: ' + location);
+          f(location);
+        } else {
+          collback(link);
+        }
+      })
+    }
+
+    f(link);
+  }
+
+  find_link("https://alidocs.dingtalk.com/core/api/resources/img/5eecdaf48460cde51600ba23323ecf71c5bbf0d65fb42b63596bf165a99da72501ef4d921a0d25fc65a117e9692870641dbb3b498f28ce60728ab55250dbd565747fad13c75f7af3ebecd74aed7ec017090a1e078894fc82f39f100446eb8627?tmpCode=41bb2016-5998-4c40-9247-683a65361498", function (link) {
+    console.log(link);
+    downloadImg(link)
+    res.send(link);
+  });
+})
+
+function downloadImg(url, path ='./image.jpg') {
+  request(url)
+    .pipe(fs.createWriteStream(path))
+    .on('finish', () => {
+      console.log('图片下载成功');
+    });
+}
 
 module.exports = router;
