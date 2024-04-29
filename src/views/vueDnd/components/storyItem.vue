@@ -14,10 +14,6 @@ const props = defineProps({
     type: Number,
     default: Number,
   },
-  moveCard:{
-    type: Function,
-    default: () => null
-  } 
 })
 
 const card = ref()
@@ -68,8 +64,6 @@ const [dropCollect, drop] = useDrop({
     }
 
     // Time to actually perform the action
-    props.moveCard(dragIndex, hoverIndex)
-
     // Note: we're mutating the monitor item here!
     // Generally it's better to avoid mutations,
     // but it's good here for the sake of performance

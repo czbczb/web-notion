@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { reactive } from 'vue'
 import StoryItem from './storyItem.vue'
 import ProgressItem from './progressItem.vue'
 
@@ -7,7 +7,7 @@ const state = reactive({
   progressList: [
     {
       id: 1,
-      state: 'test1',
+      state: '待办',
       storyList: [
         {
           id: 1,
@@ -17,37 +17,35 @@ const state = reactive({
               id: 1,
               text: 'Write a cool JS library',
             },
+          ]
+        },
+        {
+          id: 11,
+          name: 'story11',
+          taskList: [
             {
-              id: 2,
-              text: 'Make it generic enough',
+              id: 1,
+              text: 'Write a cool JS library',
             },
+            
+          ]
+        },
+        {
+          id: 12,
+          name: 'story12',
+          taskList: [
             {
-              id: 3,
-              text: 'Write README',
+              id: 1,
+              text: 'Write a cool JS library',
             },
-            {
-              id: 4,
-              text: 'Create some examples',
-            },
-            {
-              id: 5,
-              text: 'Spam in Twitter and IRC to promote it (note that this element is taller than the others)',
-            },
-            {
-              id: 6,
-              text: '???',
-            },
-            {
-              id: 7,
-              text: 'PROFIT',
-            },
+            
           ]
         }
       ]
     },
     {
       id: 2,
-      state: 'test2',
+      state: '进行中',
       storyList: [
         {
           id: 2,
@@ -57,29 +55,25 @@ const state = reactive({
               id: 1,
               text: 'Write a cool JS library',
             },
+          ]
+        },
+        {
+          id: 23,
+          name: 'story23',
+          taskList: [
             {
-              id: 2,
-              text: 'Make it generic enough',
+              id: 1,
+              text: 'Write a cool JS library',
             },
+          ]
+        },
+        {
+          id: 24,
+          name: 'story24',
+          taskList: [
             {
-              id: 3,
-              text: 'Write README',
-            },
-            {
-              id: 4,
-              text: 'Create some examples',
-            },
-            {
-              id: 5,
-              text: 'Spam in Twitter and IRC to promote it (note that this element is taller than the others)',
-            },
-            {
-              id: 6,
-              text: '???',
-            },
-            {
-              id: 7,
-              text: 'PROFIT',
+              id: 1,
+              text: 'Write a cool JS library',
             },
           ]
         }
@@ -87,7 +81,7 @@ const state = reactive({
     },
     {
       id: 3,
-      state: 'test3',
+      state: '已完成',
       storyList: [
         {
           id: 2,
@@ -128,36 +122,42 @@ const state = reactive({
   ]
 })
 
-const moveStory = (dragIndex, hoverIndex, progressIndex) => {
-  console.log('moveStory', dragIndex, hoverIndex, progressIndex);
-  const item = state.progressList[progressIndex].storyList[dragIndex]
-  console.log('item', item, state.progressList[progressIndex].storyList);
-
-  state.progressList[progressIndex].storyList.splice(dragIndex, 1)
-  state.progressList[progressIndex].storyList.splice(hoverIndex, 0, item)
-}
-
 const handleDrop = (targetProgressIndex, {id, index}) => {
   console.log(targetProgressIndex, id, index);
-  // 删除原有progress的story
-  const sourceProgressIndex = getSourceProgressIndex(id, index)
-  const dragStory = {...state.progressList[sourceProgressIndex].storyList[index]}
-  state.progressList[sourceProgressIndex].storyList.splice(index, 1)
+  const storyIndex = state.progressList[targetProgressIndex].storyList.findIndex(story => story.id === id)
 
-  // 将story添加到目标progress
-  state.progressList[targetProgressIndex].storyList.splice(index, 0, dragStory)
+  // 同一个状态移动
+  if(storyIndex !== -1){
+    const data = state.progressList[targetProgressIndex].storyList
+    const dragRow = {...data[storyIndex]}
+    data.splice(storyIndex, 1)
+    data.splice(index, 0, dragRow)
+    return
+  }
+
+  const progressPosition = getSourceProgressIndex(id)
+  const targetStoryList = state.progressList[targetProgressIndex].storyList
+  const sourceStoryList = state.progressList[progressPosition.index].storyList
+  const dragRow = {...sourceStoryList[progressPosition.storyIndex]}
+  sourceStoryList.splice(progressPosition.storyIndex, 1)
+  targetStoryList.splice(index, 0, dragRow)
 }
 
-const getSourceProgressIndex = ()=> {
-  return 0
+const getSourceProgressIndex = (id)=> {
+  for(let i=0; i<state.progressList.length; i++) {
+    const progress = state.progressList[i]
+    const storyIndex = progress.storyList.findIndex(story=> story.id === id)
+    if(storyIndex !== -1){
+      return {index: i, storyIndex}
+    }
+  }
 }
 </script>
 
 <template>
   <div class="progressLayout">
       <ProgressItem v-for="(progress, progressIndex) in state.progressList" :key="progress.id" :accept="['card']" @drop="handleDrop(progressIndex, $event)" :state="progress.state">
-        <StoryItem v-for="(story, index) in progress.storyList" :id="story.id" :key="story.id" :text="story.name" :index="index"
-          :move-card="(dragIndex, hoverIndex)=> moveStory(dragIndex, hoverIndex,progressIndex)" >
+        <StoryItem v-for="(story, index) in progress.storyList" :id="story.id" :key="story.id" :text="story.name" :index="index">
         </StoryItem>
       </ProgressItem>
   </div>

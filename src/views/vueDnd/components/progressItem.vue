@@ -33,7 +33,7 @@ const border = computed(() =>
     :style="{ border }"
     data-testid="dustbin"
   >
-  <div>{{ state }}</div>
+  <div class="progressHeader">{{ state }}</div>
     <slot></slot>
   </div>
 </template>
@@ -48,5 +48,9 @@ const border = computed(() =>
   font-size: 1rem;
   line-height: normal;
   float: left;
+}
+.progressHeader {
+  color: #ccc;
+  background: #383838;
 }
 </style>
