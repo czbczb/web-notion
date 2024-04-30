@@ -84,7 +84,7 @@ const state = reactive({
       state: '已完成',
       storyList: [
         {
-          id: 2,
+          id: 35,
           name: 'story3',
           taskList: [
             {
@@ -148,6 +148,7 @@ const getSourceProgressIndex = (id)=> {
     const progress = state.progressList[i]
     const storyIndex = progress.storyList.findIndex(story=> story.id === id)
     if(storyIndex !== -1){
+
       return {index: i, storyIndex}
     }
   }
@@ -166,7 +167,7 @@ const getSourceProgressIndex = (id)=> {
 <style lang="less" scoped>
 .progressLayout {
   display: flex; 
-  flex-direction: row;
+  flex-direction: column;
   width: 100%;
 }
 </style>
