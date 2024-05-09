@@ -70,6 +70,11 @@ const routes = [
         name: "globalMap",
         component: () => import("../views/graph/globalMapWithNode.vue"),
       },
+      {
+        path: "antvS2",
+        name: "antvS2",
+        component: () => import("../views/graph/antvS2.vue"),
+      },
     ],
   },
   {

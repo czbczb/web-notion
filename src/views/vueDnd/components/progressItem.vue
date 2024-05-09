@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { useDrop } from 'vue3-dnd'
-import { computed, unref } from 'vue'
-import { toRefs } from '@vueuse/core'
+import { computed, unref, toRefs } from 'vue'
 
 const props = defineProps({
   accept: Array,

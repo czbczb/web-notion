@@ -1,7 +1,7 @@
 <script setup>
-import { computed, ref, unref } from 'vue'
+import { computed, ref, unref, toRefs } from 'vue'
 import { useDrag, useDrop } from 'vue3-dnd'
-import { toRefs } from '@vueuse/core'
+// import { toRefs } from '@vueuse/core'
 
 const props = defineProps({
   id: {
