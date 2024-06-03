@@ -29,6 +29,10 @@
     "@antv/s2": "2.0.0-next.19",
     "@antv/s2-vue": "2.0.0-next.13",
     "@vitejs/plugin-legacy": "^2.0.1",
+    "@vue-flow/background": "^1.3.0",
+    "@vue-flow/controls": "^1.1.2",
+    "@vue-flow/core": "^1.34.1",
+    "@vue-flow/minimap": "^1.5.0",
     "@vueup/vue-quill": "^1.0.0-alpha.40",
     "ant-design-vue": "^3.2.11",
     "axios": "^1.4.0",
@@ -52,6 +56,7 @@
     "vue": "^3.2.37",
     "vue-audio-visual": "^3.0.5",
     "vue-router": "^4.1.3",
+    "vue-super-flow": "^1.3.8",
     "vue-virtual-scroller": "^2.0.0-beta.8",
     "vue3-dnd": "^2.1.0",
     "web-streams-polyfill": "^3.2.1"

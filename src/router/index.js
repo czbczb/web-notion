@@ -55,6 +55,16 @@ const routes = [
     name: "graph",
     children: [
       {
+        path: "vueFlow",
+        name: "vueFlow",
+        component: () => import("../views/graph/vueFlow/flow.vue"),
+      },
+      {
+        path: "vueSuperFlow",
+        name: "vueSuperFlow",
+        component: () => import("../views/graph/vueSuperFlow/index.vue"),
+      },
+      {
         path: "d3Tree",
         name: "d3Tree",
         component: () => import("../views/graph/d3Tree.vue"),
