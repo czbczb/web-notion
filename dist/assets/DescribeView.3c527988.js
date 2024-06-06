@@ -1,0 +1,1 @@
+import{_ as e}from"./_plugin-vue_export-helper.cdc0426e.js";import{k as s,o as c,q as t}from"./antdv.415263d7.js";const _={},o={class:"describe"},n=t("h1",null,"This is an describe page",-1),r=[n];function i(a,d){return c(),s("div",o,r)}const p=e(_,[["render",i]]);export{p as default};
