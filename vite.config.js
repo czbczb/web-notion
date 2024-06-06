@@ -40,6 +40,10 @@ export default defineConfig({
       output: {
         manualChunks: configManualChunk,
       },
+      input: {
+        main: path.resolve(process.cwd(), 'index.html'),
+        // 如果你有其他入口点,可以在这里添加
+      }
     },
   },
   // 强制预构建插件包
