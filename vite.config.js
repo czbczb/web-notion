@@ -20,6 +20,7 @@ import { configManualChunk } from "./src/optimizer";
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: "https://czbczb.github.io/web-notion/",
   server: {
     proxy: {
       //通过代理实现跨域

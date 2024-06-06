@@ -3,11 +3,6 @@
     <div id="chat-dialog" class="chat-dialog" ref="chatDialogRef">
       <div id="chat-list" class="chat-list" ref="chatListRef">
         <div v-for="(item, index) in chatList" :key="index">
-          <img
-            v-if="item.status && index % 2 == 0"
-            src="../../public/img/speak1.gif"
-            alt=""
-          />
           <div :class="index % 2 == 0 ? 'odd' : 'even'">{{ item.content }}</div>
         </div>
       </div>
