@@ -20,7 +20,7 @@ import { configManualChunk } from "./src/optimizer";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: "https://czbczb.github.io/web-notion/",
+  base: "https://czbczb.github.io/",
 
   server: {
     proxy: {
