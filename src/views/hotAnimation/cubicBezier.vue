@@ -49,7 +49,7 @@ const getData = () => {
 };
 </script>
 
-<style>
+<style lang="less">
 .content {
   height: 100vh;
   padding-top: 100px;
