@@ -56,8 +56,8 @@ async function textToVideo(textContent, outputPath) {
     Promise.reject(err)
   });
 }
-/* GET users listing. */
-router.get("/textToVideo", async (req, res, next) => {
+/* GET users listingtextToVideo. */
+router.get("/", async (req, res, next) => {
   // console.log(req.params) // 获取路由id,此时路由为/textToVideo/:id
   // console.log(req.query) // 获取?id=1
   try {

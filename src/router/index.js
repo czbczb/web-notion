@@ -113,6 +113,11 @@ const routes = [
     component: () => import("../views/postReadStream.vue"),
   },
   {
+    path: "/wordFormat",
+    name: "wordFormat",
+    component: () => import("@/views/word/wordFormat.vue"),
+  },
+  {
     path: "/hotAnimation",
     name: "hotAnimation",
     children: [

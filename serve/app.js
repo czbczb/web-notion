@@ -8,6 +8,7 @@ const indexRouter = require("./routes/index");
 
 const chatRouter = require("./routes/chat");
 const textRouter = require("./routes/texts");
+const docxRouter = require("./routes/docx");
 
 var app = express();
 
@@ -28,9 +29,9 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
-app.use("/api/text", textRouter);
 app.use("/max_bot", chatRouter);
-app.use("/api/text", textRouter);
+app.use("/text", textRouter);
+app.use("/docx", docxRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
