@@ -5,7 +5,7 @@ import { message } from "ant-design-vue";
 const http = axios.create({
   // baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
   // withCredentials: true, // send cookies when cross-domain requests
-  timeout: 5000, // request timeout
+  timeout: 1000 * 60 * 10, // request timeout
 });
 
 // request interceptor
