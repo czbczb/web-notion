@@ -33,7 +33,7 @@
     </a-form-item>
     <a-row justify="center" style="margin-bottom: 20px;">
      <a-button type="primary" @click="convertToHtml" style="margin-right: 10px;">Convert to HTML</a-button>
-     <a-button type="primary" @click="startTranslate" :loading="loading">开始翻译</a-button>
+     <a-button type="primary" @click="translateHandle" :loading="loading">开始翻译</a-button>
    </a-row>
   </a-form>
   <div class="docMain" >
@@ -63,20 +63,14 @@ import { templates } from './config.js';
 import { convertWordSizeToPx } from './utils.js';
 import floatMenu from './floatMenu.vue';
 import svgPathLine from './svgPathLine.vue';
+import history from './history.js'
 
 
 const language = ref('英语');
 const reportTemplateKey = ref('seasonReport');
 const uploadedFile = ref(null);
-const prompt = computed(()=> `将这个html字符串中的所有中文，翻译为${language.value}。需要注意一下几点：
-1、不要翻译dom元素,dom元素的数量和格式不要改变, 所有html元素都要，不要合并和删除，保留原样，你只需要翻译元素内的中文。
-2、翻译时表格的所有样式都需要保留，表格的行数和列数必须保持一致，如果有合并的行或者列，需要保持原有的合并状态。
-3、请注意翻译时数字的格式。
-4、翻译时一个p元素里面有多个span的时候，这多个span元素都要保留。
-6、所有dom元素不要合并，保留和我传递给你一样的dom结构。
-7、注意保留「」符号需要保留不能丢失。
-7、只返回我给你的内容，不要提供任何多余的话。
-`);
+const prompt = ref(`翻译时一个p元素里面有多个span的时候，这多个span元素都要保留`);
+
 
 const previewRef = ref(null);
 const translateRef = ref(null);
@@ -85,8 +79,15 @@ const promptHtml = ref("");
 const mergedHtml = ref("");
 const styleElementMap = ref(null);
 
-const systemMessage = ref(
-  "You are ChatGPT, a large language model trained by OpenAI. Follow the user's instructions carefully. Respond using string."
+const systemMessage = computed(() => 
+  `你是一个翻译助手，并且精通javascript，html，csss。 熟悉其专业术语。按照以下要求返回一个字符串：
+  不要翻译html标签，只翻译内容。
+  将这个html字符串中的所有中文，翻译为${language.value}。
+  带有order属性的标签一个都不能少，不带order的属性的标签一个不能多
+  翻译时表格的所有样式都需要保留，表格的行数和列数必须保持一致，如果有合并的行或者列，需要保持原有的合并状态。
+  注意保留「」符号需要保留不能丢失。
+  `
+  // "You are ChatGPT, a large language model trained by OpenAI. Follow the user's instructions carefully. Respond using string."
 );
 
 // 翻译
@@ -99,15 +100,7 @@ const position = ref({})
 const currentEl = ref(null);
 const targetEl = ref(null);
 
-const displayContent = computed(() => {
-
-  const val = transformRes.value ? createDisplayContent(
-    unref(transformRes.value),
-    unref(styleElementMap)
-  ): ''
-  console.log(displayContent.toString())
-  return val;
-});
+const displayContent = ref(null);
 
 const reportTemplate = computed(() =>{
   return templates[reportTemplateKey.value]
@@ -175,7 +168,7 @@ function mergeSpanElements(htmlString) {
   let count = 0
   hasStyleEl.forEach((el) => {
     if(el.getAttribute('style')) {
-      el.setAttribute('i', count);
+      el.setAttribute('order', count);
       count += 1;
     }
   })
@@ -197,7 +190,7 @@ function createStyleElementMap(htmlString) {
         el: element,
       });
       // 设置 style 的 index 标记
-      element.setAttribute("i", maps.length - 1)
+      element.setAttribute("order", maps.length - 1)
       element.removeAttribute("style");
     }
   });
@@ -227,25 +220,30 @@ function createStyleElementMap(htmlString) {
   return { maps, docStr: doc.documentElement.outerHTML.toString() };
 }
 
-function createDisplayContent(transformValue, mapObj) {
-   if(transformRes === ""){
+function createDisplayContent() {
+  console.log(transformRes.value)
+  if(!transformRes.value) {
+    displayContent.value = ''
     return
-   }
-  let displayContent = transformValue;
+  }
+  const mapObj = styleElementMap.value
+
   const parser = new DOMParser();
-  const doc = parser.parseFromString(displayContent, "text/html");
-  const elements = [];
+  const doc = parser.parseFromString(transformRes.value, "text/html");
+  const transLateElements = [];
   doc.querySelectorAll("*").map((item) => {
-    const index = item.getAttribute("i");
+    const index = item.getAttribute("order");
     if (index) {
-      elements.push(item)
+      transLateElements.push(item)
     }
   });
 
-  console.log(elements, styleElementMap.value);
-  elements.forEach((item, index) => {
-    item.setAttribute('style', styleElementMap.value[index].style)
-    // item.removeAttribute('i')
+  transLateElements.forEach((item, index) => {
+    const order = item.getAttribute("order")
+    if(order){
+      item.setAttribute('style', mapObj[order].style)
+    }
+    // item.removeAttribute('order')
   });
   
   mapObj?.forEach(item=> {
@@ -257,38 +255,43 @@ function createDisplayContent(transformValue, mapObj) {
     }
   })
 
-  return doc.documentElement.outerHTML;
+  displayContent.value = doc.documentElement.outerHTML;
 }
 
-const startTranslate = async () => {
+async function startTranslate() {
+  if (!promptHtml.value) {
+    return 
+  }
+
+  loading.value = true;
+  const params = {
+    prompt: `${prompt.value}
+    ${promptHtml.value.toString()}`,
+    history: history,
+    systemMessage: systemMessage.value,
+  };
   
-  if (promptHtml.value) {
-    const params = {
-      prompt: `${prompt.value}
-      ${promptHtml.value.toString()}`,
-      history: [],
-      systemMessage: systemMessage.value,
-    };
-    loading.value = true;
-    api
-      .htmlToDocx(params)
-      .then((res) => {
-        transformRes.value = res.data;
-        loading.value = false;
-      })
-      .catch((err) => {
-        console.log(err);
-        loading.value = false;
-      });
+  try {
+    const res = await api.htmlToDocx(params)
+    transformRes.value = res.data;
+    loading.value = false
+  } catch (err) {
+    console.log(err);
+    loading.value = false;
   }
 };
+
+const translateHandle = async () => {
+  await startTranslate();
+  createDisplayContent();
+}
 
 
 
 // 操作dom
 const addEvent = () => {
   previewRef.value.addEventListener('click', (event)=> {
-    if(event.target.getAttribute('i') === undefined) {
+    if(event.target.getAttribute('order') === undefined) {
       return
     }
     removeActiveClass()
@@ -298,7 +301,7 @@ const addEvent = () => {
     }
   })
   // previewRef.value.addEventListener('mouseout', (event)=> {
-  //   if(event.target.getAttribute('i') === undefined) {
+  //   if(event.target.getAttribute('order') === undefined) {
   //     return
   //   }
   //   if(event.target.classList.contains('active')){
@@ -311,14 +314,14 @@ const addEvent = () => {
 const removeActiveClass = () => {
   if(!currentEl.value) return 
   currentEl.value.classList.remove('active');
-  targetEl.value.classList.remove('active')
+  targetEl.value?.classList.remove('active')
 
   currentEl.value = null;
   targetEl.value = null;
 }
 
 const getTargetEl = () => {
-  const traslateElIndex = currentEl.value.getAttribute('i');
+  const traslateElIndex = currentEl.value.getAttribute('order');
   return translateRef.value.querySelector(`[i="${traslateElIndex}"]`);
 }
 
