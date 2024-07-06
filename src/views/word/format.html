@@ -1,0 +1,308 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta key="generator" value="docx2html">
+    <title>test</title>
+    <style>
+        *, body {
+            padding: 0;
+            margin: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="display: flex;">
+        <div id="dom1" style="width: 200px;height: 500px; background-color: red;"></div>
+        <div style="width: 50px;">
+            <svg id="svgContainer" width="100%" height="780px">
+            </svg>
+        </div>
+        <div id="dom2" style="width: 500px;height: 700px; background-color: red; margin-top: 80px;"></div>
+    </div>
+    
+    <script>
+        window.onload = function() {
+            var dom1 = document.getElementById('dom1');
+            var dom2 = document.getElementById('dom2');
+            var svg = document.getElementById('svgContainer');
+            var rect1 = dom1.getBoundingClientRect();
+            var rect2 = dom2.getBoundingClientRect();
+    
+            var point1_dom1_RT = {
+                x: 0, // dom1的右上边顶点的x坐标
+                y: rect1.top
+            };
+            var point2_dom2_LT = {
+                x: 50, // dom2的左边上顶点的x坐标
+                y: rect2.top
+            };
+            var point3_dom2_LB = {
+                x: 50, // dom2的左边下顶点的x坐标
+                y: rect2.bottom
+            };
+            var point4_dom1_RB = {
+                x: 0, // dom1的右下边顶点的x坐标
+                y: rect1.bottom
+            };
+    
+            var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+            var d = `M ${point1_dom1_RT.x},${point1_dom1_RT.y} 
+                    C ${point1_dom1_RT.x + 20},${point1_dom1_RT.y} ${point2_dom2_LT.x - 20},${point2_dom2_LT.y} ${point2_dom2_LT.x},${point2_dom2_LT.y}
+                    L ${point3_dom2_LB.x},${point3_dom2_LB.y}
+                    C ${point3_dom2_LB.x - 20},${point3_dom2_LB.y} ${point4_dom1_RB.x},${point4_dom1_RB.y - 20} ${point4_dom1_RB.x},${point4_dom1_RB.y}
+                    Z`;
+            path.setAttribute('d', d);
+            path.setAttribute('fill', '#f6ffed'); // 填充区域颜色
+            path.setAttribute('stroke', '#b7eb8f'); // 线条颜色
+            path.setAttribute('stroke-width', '1'); // 线条宽度
+    
+            svg.appendChild(path);
+        }
+    </script>
+    
+    <div id="A" i="0">
+        <style></style>
+        <section i="1">
+            <p class=" _1" i="2"><span class=" _9"
+                    i="3">香港交易及結算所有限公司及香港聯合交易所有限公司對本公告的內容概不負責，對其準確性或完整性亦不發表任何聲明，亦明確表示，概不對因本公告全部或任何部分內容而產生或因依賴該等內容而引致的任何損失承擔任何責任。</span>
+            </p>
+            <p class=" _1" i="4"><span class=" _9" i="5"></span><span class=" _9" i="6">Mobvista Inc.</span>
+            </p>
+            <p class=" _1" i="7"><span class=" _9" i="8">匯量科技有限公司</span></p>
+            <p class=" _1" i="9"><span class=" _9" i="10">（於開曼群島註冊成立的有限公司）</span></p>
+            <p class=" _1" i="11"><span class=" _9" i="12">（股份代碼： 1860）</span></p>
+            <p class=" _1" i="13"><span class=" _9" i="14">截至二零二四年三月三十一日止三个月业绩公告</span></p>
+            <table class=" _13 _26" id="A6" x0="1" x1="1" x2="1" x3="1" x4="1" x5="1" x6="1" x7="1"
+                x8="1" x9="1" x10="1" x11="1">
+                <colgroup>
+                    <col i="15">
+                    <col i="16">
+                    <col i="17">
+                    <col i="18">
+                    <col i="19">
+                    <col i="20">
+                </colgroup>
+                <tbody>
+                    <tr>
+                        <td>
+                            <p class=" _1"><span class=" _9" i="21">财务摘要</span></p>
+                        </td>
+                        <td colspan="5">
+                            <p class=" _1" i="22"></p>
+                            <p class=" _1" i="23"><span class=" _9" i="24">截至下列日期止三个月</span></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p class=" _1"></p>
+                        </td>
+                        <td>
+                            <p class=" _1"><span class=" _9" i="25">2024年</span></p>
+                            <p class=" _1"><span class=" _9" i="26">3月31日</span></p>
+                            <p class=" _1"><span class=" _9" i="27">千美元</span></p>
+                            <p class=" _1"><span class=" _9" i="28">(未经审核)</span></p>
+                        </td>
+                        <td>
+                            <p class=" _1"><span class=" _9" i="29">2023年</span></p>
+                            <p class=" _1"><span class=" _9" i="30">12月31日</span></p>
+                            <p class=" _1"><span class=" _9" i="31">千美元</span></p>
+                            <p class=" _1"><span class=" _9" i="32">(未经审核)</span></p>
+                        </td>
+                        <td>
+                            <p class=" _1"><span class=" _9" i="33">2023年</span></p>
+                            <p class=" _1"><span class=" _9" i="34">3月31日</span></p>
+                            <p class=" _1"><span class=" _9" i="35">千美元</span></p>
+                            <p class=" _1"><span class=" _9" i="36">(未经审核)</span></p>
+                        </td>
+                        <td>
+                            <p class=" _1"><span class=" _9" i="37">同比变动</span></p>
+                            <p class=" _1"></p>
+                        </td>
+                        <td>
+                            <p class=" _1"><span class=" _9" i="38">环比变动</span></p>
+                            <p class=" _1"></p>
+                            <p class=" _1"></p>
+                            <p class=" _1"></p>
+                            <p class=" _1"></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p class=" _1"><span class=" _9" i="39">收 益</span></p>
+                        </td>
+                        <td>
+                            <p class=" _1" i="40"><span class=" _9" i="41">301,482</span></p>
+                        </td>
+                        <td>
+                            <p class=" _1" i="42"><span class=" _9" i="43">278,589</span></p>
+                        </td>
+                        <td>
+                            <p class=" _1" i="44"><span class=" _9" i="45">244,554</span></p>
+                        </td>
+                        <td>
+                            <p class=" _1" i="46"><span class=" _9" i="47">23.3%</span></p>
+                        </td>
+                        <td>
+                            <p class=" _1" i="48"><span class=" _9" i="49">8.2%</span></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p class=" _1"><span class=" _9" i="50">淨收入</span><span class=" _9"
+                                    i="51">(1)</span></p>
+                        </td>
+                        <td>
+                            <p class=" _1" i="52"><span class=" _9" i="53">82,155</span></p>
+                        </td>
+                        <td>
+                            <p class=" _1" i="54"><span class=" _9" i="55">74,519</span></p>
+                        </td>
+                        <td>
+                            <p class=" _1" i="56"><span class=" _9" i="57">64,363</span></p>
+                        </td>
+                        <td>
+                            <p class=" _1" i="58"><span class=" _9" i="59">27.6%</span></p>
+                        </td>
+                        <td>
+                            <p class=" _1" i="60"><span class=" _9" i="61">10.2%</span></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p class=" _1"><span class=" _9" i="62">毛利</span></p>
+                        </td>
+                        <td>
+                            <p class=" _1" i="63"><span class=" _9" i="64">61,819</span></p>
+                        </td>
+                        <td>
+                            <p class=" _1" i="65"><span class=" _9" i="66">58,829</span></p>
+                        </td>
+                        <td>
+                            <p class=" _1" i="67"><span class=" _9" i="68">46,912</span></p>
+                        </td>
+                        <td>
+                            <p class=" _1" i="69"><span class=" _9" i="70">31.8%</span></p>
+                        </td>
+                        <td>
+                            <p class=" _1" i="71"><span class=" _9" i="72">5.1%</span></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p class=" _1"><span class=" _9" i="73">期內利潤╱（虧損）</span></p>
+                        </td>
+                        <td>
+                            <p class=" _1" i="74"><span class=" _9" i="75">7,154</span></p>
+                        </td>
+                        <td>
+                            <p class=" _1" i="76"><span class=" _9" i="77">6,805</span></p>
+                        </td>
+                        <td>
+                            <p class=" _1" i="78"><span class=" _9" i="79">3,201</span></p>
+                        </td>
+                        <td>
+                            <p class=" _1" i="80"><span class=" _9" i="81">123.5%</span></p>
+                        </td>
+                        <td>
+                            <p class=" _1" i="82"><span class=" _9" i="83">5.1%</span></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p class=" _1"><span class=" _9" i="84">經調整後利潤╱（虧損）淨額</span><span class=" _9"
+                                    i="85">(2)</span></p>
+                        </td>
+                        <td>
+                            <p class=" _1" i="86"><span class=" _9" i="87">8,869</span></p>
+                        </td>
+                        <td>
+                            <p class=" _1" i="88"><span class=" _9" i="89">6,114</span></p>
+                        </td>
+                        <td>
+                            <p class=" _1" i="90"><span class=" _9" i="91">4,510</span></p>
+                        </td>
+                        <td>
+                            <p class=" _1" i="92"><span class=" _9" i="93">96.6%</span></p>
+                        </td>
+                        <td>
+                            <p class=" _1" i="94"><span class=" _9" i="95">45.1%</span></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p class=" _1"><span class=" _9" i="96">經調整息稅折舊及</span></p>
+                            <p class=" _1"><span class=" _9" i="97">攤銷前盈利/(亏损)</span><span class=" _9"
+                                    i="98">(3)</span></p>
+                        </td>
+                        <td>
+                            <p class=" _1" i="99"><span class=" _9" i="100">29,717</span></p>
+                        </td>
+                        <td>
+                            <p class=" _1" i="101"><span class=" _9" i="102">29,891</span></p>
+                        </td>
+                        <td>
+                            <p class=" _1" i="103"><span class=" _9" i="104">26,071</span></p>
+                        </td>
+                        <td>
+                            <p class=" _1" i="105"><span class=" _9" i="106">14.0%</span></p>
+                        </td>
+                        <td>
+                            <p class=" _1" i="107"><span class=" _9" i="108">-0.6%</span></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="6">
+                            <p class=" _1"></p>
+                            <p class=" _1"><span class=" _9" i="109">附注：</span></p>
+                            <p class=" _1"><span class=" _9"
+                                    i="110">(1)淨收入不是基於國際財務報告口徑衡量，我們將淨收入定義為減去分配給流量發佈者的成本後的經調整收入；</span></p>
+                            <p class=" _1"><span class=" _9"
+                                    i="111">(2)經調整後利潤╱（虧損）淨額不是基於國際財務報告口徑衡量，我們將經調整後利潤╱（虧損）淨額定義為報告期内（定義見下文）溢利╱（虧損），並就股份酬金、以公平值計量且其變動計入損益的金融資產投資損失及衍生金融負債公平值變動（收益）╱
+                                    損失通過加回予以調整；</span></p>
+                            <p class=" _1"><span class=" _9"
+                                    i="112">(3)經調整息稅折舊及攤銷前盈利/(亏损)不是基於國際財務報告口徑衡量，我們將經調整息稅折舊及攤銷前盈利定義為報告期内息稅折舊及攤銷前盈利╱（虧損），並就股份酬金、以公平值計量且其變動計入損益的金融資產投資損失、研發團隊重組費用、北京熱雲科技有限公司（「熱雲」）併購律師費、匯兌損失、出售子公司及頭部媒體代理業務收益通過加回或扣除予以調整；</span>
+                            </p>
+                            <p class=" _1"></p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <p class=" _1"></p>
+            <p class=" _1"></p>
+            <p class=" _1"></p>
+            <p class=" _1"></p>
+            <p class=" _1"></p>
+            <p class=" _1"></p>
+            <p class=" _1"></p>
+            <p class=" _1"></p>
+            <p class=" _1"></p>
+            <p class=" _1"></p>
+            <p class=" _1"></p>
+            <p class=" _1"><span class=" _9"
+                    i="113">匯量科技有限公司（「本公司」）董事（「董事」）會（「董事會」），謹此公佈本公司及其附屬公司（「本集團」）截至2024年3月31日止三个月（「報告期内」）之未經審核季度業績。該季度業績已由本公司之審核委員會審閱。</span>
+            </p>
+            <p class=" _1"></p>
+            <p class=" _1"><span class=" _9" i="114">业务回顾</span></p>
+            <p class=" _1"></p>
+            <p class=" _1"><span class=" _9"
+                    i="115">进入2024年以来，本集团基本面持续向好，自2022年第四季度扭亏为盈以来，本集团已经连续六个季度实现盈利，收入和利润在2024年第一季度也创下了历史新高。</span></p>
+            <p class=" _1"></p>
+            <p class=" _1"><span class=" _9"
+                    i="116">报告期内，程序化广告平台Mintegral录得收入283.6百万美元，同比增长25.4%，环比增长10.3%。得益于2022年基建的升级以及2023年的持续投入，Mintegral的智能出价产品也进一步得到了市场的验证，ROAS（Return
+                    On Ad Spend）的智能出价模式成为</span><span class=" _9"
+                    i="117">了开发者在Mintegral的主流选择。随着Mintegral平台智能出价能力的提升，我们在新的垂类上也有了质的突破，广告预算结构进一步丰富。游戏品类中，我们正在向以IAP(In
+                    App
+                    Purchases)为代表的中重度游戏扩张，同时也向大量的非游戏品类，如电商，社交等垂类扩张。报告期内，Mintegral上的游戏品类录得收入208.8百万美元，同比增长14.7%，环比增长8.5%。电商则成为了非游戏品类重要的推动力，Mintegral上的非游戏品类录得收入74.7百万美元，同比增长69.7%，环比增长15.5%。报告期内，智能出价产品贡献的收入占Mintegral总收入超过了60%，成为了Mintegral收入和利润增长的主要驱动力。报告期内，非程序化广告业务录得收入13.7百万美元，</span><span
+                    class=" _9"
+                    i="118">同比下降8.4%，环比下降20.0%。相较于程序化投放方式，非程序化广告业务受宏观环境变化影响更大，但依然是本集团重要的收入和利润来源。营销技术方面，我们积极推动新产品的海外市场拓展，在持续打磨产品矩阵的同时兼顾降本增效。报告期内，营销技术业务录得收入4.2百万美元，同比上涨18.5%，环比下跌2.3%。</span>
+            </p>
+            <p class=" _1"></p>
+            <p class=" _1"><span class=" _9"
+                    i="119">2024年第一季度，本集团的规模效应进一步凸显，经营杠杆不断扩大，报告期内，本集团录得净利润7.2百万美金，同比增长123.5%，环比增长5.1%。</span><i
+                    id="_GoBack"></i></p>
+        </section>
+    </div>\n</body>
+
+</html>
