@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <!-- 引入 Element UI 样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 引入 Element UI JavaScript -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <title>Upload File</title>
+</head>
+
+<body>
+    <div id="app" class="main">
+      <el-button @click="loadComponent">加载组件</el-button>
+      <component :is="componentToShow"></component>
+
+      <div v-if="fileList.length === 0" class="upload-main">
+        <h3>请上传文件，稍后获取翻译结果</h1>
+          <el-upload
+            class="upload-demo"
+            drag
+            accept=".doc,.docx"
+            v-model="uploadedFile"
+            :on-change="handleFileUpload"
+            :before-upload="beforeUpload"
+            :show-file-list="false"
+            :auto-upload="false"
+          >
+            <i class="el-icon-upload"></i>
+            <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
+            <div class="el-upload__tip" slot="tip">只能上传.doc/.docx文件，且不超过40M</div>
+          </el-upload>
+          
+          <p v-if="uploadError">{{ uploadError }}</p>
+          <p v-if="uploadedFile">Uploaded file: {{ uploadedFile.name }}</p>
+          <el-button size="small" type="primary" :loading="loading" class="uploadBtn" @click="uploadedFileHandle">确认上传文件</el-button>
+      </div>
+      
+
+      <!-- result -->
+      <el-card v-else :body-style="{width: '400px'}" shadow="never" class="box-card" v-loading="loading">
+        <div slot="header" class="clearfix">
+          <el-row justify="space-between">
+            <el-col :span="12" class="file-list-header">翻译结果</el-col>
+            <el-col :span="12" class="file-clear">
+              <el-button size="mini" type="danger" @click="clearFile" icon="el-icon-close" circle></el-button>
+            </el-col>
+          </el-row>
+        </div>
+        <div v-for="fileName in fileList" :key="fileName" class="file-item">
+          <el-link type="primary" :href="getFileName(fileName)">{{ fileName }}</el-link>
+        </div>
+      </el-card>
+  </div>
+    
+    <script>  
+        new Vue({
+          el: '#app',
+          data() {
+            return {
+                message: '',
+                uploadedFile: null,
+                uploadError: null,
+                loading: false,
+                path: '',
+                fileList: [],
+                componentToShow: null,
+                // host: 'http://127.0.0.1:8080',
+                onlineHost: 'https://financial-report.spotmaxtech.com'
+            }
+          },
+          methods: {
+
+            async loadComponent() {
+              const component = await new Promise((resolve) => {
+                setTimeout(() => {
+                  resolve({
+                    template: `<div>
+                      <p>{{ message }}</p>
+                      <el-button @click="increment">加</el-button>
+                      Count: {{ count }}
+                      <el-button @click="decrement">减</el-button>
+                      </div>`,
+                    data: function() {
+                      return {
+                        message: '这是一个动态加载的组件',
+                        count: 0
+                      };
+                    },
+                    methods: {
+                      increment: function() {
+                        this.count++;
+                      },
+                      decrement: function() {
+                        this.count--;
+                      }
+                    }
+                  });
+                }, 1000);
+              });
+              this.componentToShow = component;
+            },
+            handleFileUpload(file, fileList) {
+                this.uploadedFile = file.raw
+            },
+
+            clearFile() {
+              this.uploadedFile = null
+              this.fileList = []
+            },
+
+            beforeUpload() {
+              if (file.type !== 'application/msword' && file.type !== 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+                this.uploadError = '只能上传 .doc 或 .docx 文件'
+                return false
+              }
+              if (file.size > 40 * 1024 * 1024) {
+                this.uploadError = '文件大小不能超过 40MB'
+                return false
+              }
+              this.uploadedFile = file
+              this.uploadError = null
+              return true
+            },
+
+            async uploadedFileHandle() {
+              if (!this.uploadedFile) {
+                return
+              }
+              try {
+                this.loading = true
+                const formData = new FormData()
+                formData.append('file', this.uploadedFile)
+
+                const res = await axios.post(this.onlineHost + '/upload', formData, {
+                  headers: {
+                    'Content-Type': 'multipart/form-data',
+                    accept: 'application/json, text/plain, */*'
+                  }
+                })
+                this.path = res.data.path
+                localStorage.setItem('uploadpath', this.path)
+                await this.getTranslateRes()
+              } catch (error) {
+                this.uploadError = 'Error uploading file'
+                this.loading = false
+                console.error(error)
+              }
+                
+            },
+
+            getTranslateRes(){
+              setTimeout(async () => {
+                try {
+                  const res = await axios.get(`${this.onlineHost}/list_file/${this.path}`, {
+                    headers: {
+                      accept: 'application/json'
+                    }
+                  })
+                  this.fileList = res.data
+                  if(res.data.length === 3){
+                    localStorage.removeItem('uploadpath')
+                    this.loading = false
+                  }else {
+                    await this.getTranslateRes()
+                  }
+                } catch (error) {
+                  this.loading = false
+                  console.log(error)
+                }
+              }, 1000)
+              
+            },
+            getFileName(fileName) {
+              return `${this.onlineHost}/download/${this.path}/${fileName}`
+            }
+          },
+          mounted() {
+            if(localStorage.getItem('uploadpath')){
+              this.getTranslateRes()
+            }
+          }
+        })
+      </script>
+
+      <style>
+        .main {
+          min-width: 1200px;
+          text-align: center;
+          height: 100vh;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+        }
+        .upload-main {
+          height: 500px;
+        }
+
+        .box-card {
+          width: 380px;
+          height: 300px;
+        }
+
+        .uploadBtn {
+          width: 350px;
+          margin-bottom: 10px;
+        }
+        .file-list-header {
+          text-align: left;
+        }
+        .file-item {
+          text-align: left;
+        }
+        .file-clear {
+          text-align: right;
+        }
+      </style>
+</body>
+
+</html>
