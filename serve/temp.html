@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="generator" content="pandoc" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>Untitled</title>
+    <style>
+        html {
+            color: #1a1a1a;
+            background-color: #fdfdfd;
+        }
+
+        body {
+            margin: 0 auto;
+            max-width: 36em;
+            padding-left: 50px;
+            padding-right: 50px;
+            padding-top: 50px;
+            padding-bottom: 50px;
+            hyphens: auto;
+            overflow-wrap: break-word;
+            text-rendering: optimizeLegibility;
+            font-kerning: normal;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                font-size: 0.9em;
+                padding: 12px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+        }
+
+        @media print {
+            html {
+                background-color: white;
+            }
+
+            body {
+                background-color: transparent;
+                color: black;
+                font-size: 12pt;
+            }
+
+            p,
+            h2,
+            h3 {
+                orphans: 3;
+                widows: 3;
+            }
+
+            h2,
+            h3,
+            h4 {
+                page-break-after: avoid;
+            }
+        }
+
+        p {
+            margin: 1em 0;
+        }
+
+        a {
+            color: #1a1a1a;
+        }
+
+        a:visited {
+            color: #1a1a1a;
+        }
+
+        img {
+            max-width: 100%;
+        }
+
+        svg {
+            height: auto;
+            max-width: 100%;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            margin-top: 1.4em;
+        }
+
+        h5,
+        h6 {
+            font-size: 1em;
+            font-style: italic;
+        }
+
+        h6 {
+            font-weight: normal;
+        }
+
+        ol,
+        ul {
+            padding-left: 1.7em;
+            margin-top: 1em;
+        }
+
+        li>ol,
+        li>ul {
+            margin-top: 0;
+        }
+
+        blockquote {
+            margin: 1em 0 1em 1.7em;
+            padding-left: 1em;
+            border-left: 2px solid #e6e6e6;
+            color: #606060;
+        }
+
+        code {
+            font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+            font-size: 85%;
+            margin: 0;
+            hyphens: manual;
+        }
+
+        pre {
+            margin: 1em 0;
+            overflow: auto;
+        }
+
+        pre code {
+            padding: 0;
+            overflow: visible;
+            overflow-wrap: normal;
+        }
+
+        .sourceCode {
+            background-color: transparent;
+            overflow: visible;
+        }
+
+        hr {
+            background-color: #1a1a1a;
+            border: none;
+            height: 1px;
+            margin: 1em 0;
+        }
+
+        table {
+            margin: 1em 0;
+            border-collapse: collapse;
+            width: 100%;
+            overflow-x: auto;
+            display: block;
+            font-variant-numeric: lining-nums tabular-nums;
+        }
+
+        table caption {
+            margin-bottom: 0.75em;
+        }
+
+        tbody {
+            margin-top: 0.5em;
+            border-top: 1px solid #1a1a1a;
+            border-bottom: 1px solid #1a1a1a;
+        }
+
+        th {
+            border-top: 1px solid #1a1a1a;
+            padding: 0.25em 0.5em 0.25em 0.5em;
+        }
+
+        td {
+            padding: 0.125em 0.5em 0.25em 0.5em;
+        }
+
+        header {
+            margin-bottom: 4em;
+            text-align: center;
+        }
+
+        #TOC li {
+            list-style: none;
+        }
+
+        #TOC ul {
+            padding-left: 1.3em;
+        }
+
+        #TOC>ul {
+            padding-left: 0;
+        }
+
+        #TOC a:not(:hover) {
+            text-decoration: none;
+        }
+
+        code {
+            white-space: pre-wrap;
+        }
+
+        span.smallcaps {
+            font-variant: small-caps;
+        }
+
+        div.columns {
+            display: flex;
+            gap: min(4vw, 1.5em);
+        }
+
+        div.column {
+            flex: auto;
+            overflow-x: auto;
+        }
+
+        div.hanging-indent {
+            margin-left: 1.5em;
+            text-indent: -1.5em;
+        }
+
+        /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+        ul.task-list[class] {
+            list-style: none;
+        }
+
+        ul.task-list li input[type="checkbox"] {
+            font-size: inherit;
+            width: 0.8em;
+            margin: 0 0.8em 0.2em -1.6em;
+            vertical-align: middle;
+        }
+
+        .display.math {
+            display: block;
+            text-align: center;
+            margin: 0.5rem auto;
+        }
+    </style>
+</head>
+
+<body>
+    <p>香港交易及結算所有限公司及香港聯合交易所有限公司對本公告的內容概不負責，對其準確性或完整性亦不發表任何聲明，亦明確表示，概不對因本公告全部或任何部分內容而產生或因依賴該等內容而引致的任何損失承擔任何責任。</p>
+    <blockquote>
+        <p><strong>Mobvista Inc.</strong></p>
+        <p><strong>匯量科技有限公司</strong></p>
+        <p>（於開曼群島註冊成立的有限公司）</p>
+        <p><strong>（股份代碼： 1860）</strong></p>
+    </blockquote>
+    <p><strong>截至二零二四年三月三十一日止三个月业绩公告</strong></p>
+    <table style="width:100%;">
+        <colgroup>
+            <col style="width: 23%" />
+            <col style="width: 15%" />
+            <col style="width: 15%" />
+            <col style="width: 15%" />
+            <col style="width: 14%" />
+            <col style="width: 14%" />
+        </colgroup>
+        <tbody>
+            <tr>
+                <td style="text-align: left;"><strong>财务摘要</strong></td>
+                <td colspan="5" style="text-align: center;"><strong>截至下列日期止三个月</strong></td>
+            </tr>
+            <tr>
+                <td style="text-align: left;"></td>
+                <td style="text-align: center;">
+                    <p><strong>2024年</strong></p>
+                    <p><strong>3月31日</strong></p>
+                    <p><strong>千美元</strong></p>
+                    <p><strong>(未经审核)</strong></p>
+                </td>
+                <td style="text-align: center;">
+                    <p><strong>2023年</strong></p>
+                    <p><strong>12月31日</strong></p>
+                    <p><strong>千美元</strong></p>
+                    <p><strong>(未经审核)</strong></p>
+                </td>
+                <td style="text-align: center;">
+                    <p><strong>2023年</strong></p>
+                    <p><strong>3月31日</strong></p>
+                    <p><strong>千美元</strong></p>
+                    <p><strong>(未经审核)</strong></p>
+                </td>
+                <td style="text-align: center;"><strong>同比变动</strong></td>
+                <td style="text-align: center;"><strong>环比变动</strong></td>
+            </tr>
+            <tr>
+                <td style="text-align: left;">收 益</td>
+                <td style="text-align: right;"><strong>301,482</strong></td>
+                <td style="text-align: right;">278,589</td>
+                <td style="text-align: right;">244,554</td>
+                <td style="text-align: right;">23.3%</td>
+                <td style="text-align: right;">8.2%</td>
+            </tr>
+            <tr>
+                <td style="text-align: left;">淨收入<sup>(1)</sup></td>
+                <td style="text-align: right;"><strong>82,155</strong></td>
+                <td style="text-align: right;">74,519</td>
+                <td style="text-align: right;">64,363</td>
+                <td style="text-align: right;">27.6%</td>
+                <td style="text-align: right;">10.2%</td>
+            </tr>
+            <tr>
+                <td style="text-align: left;">毛利</td>
+                <td style="text-align: right;"><strong>61,819</strong></td>
+                <td style="text-align: right;">58,829</td>
+                <td style="text-align: right;">46,912</td>
+                <td style="text-align: right;">31.8%</td>
+                <td style="text-align: right;">5.1%</td>
+            </tr>
+            <tr>
+                <td style="text-align: left;">期內利潤╱（虧損）</td>
+                <td style="text-align: right;"><strong>7,154</strong></td>
+                <td style="text-align: right;">6,805</td>
+                <td style="text-align: right;">3,201</td>
+                <td style="text-align: right;">123.5%</td>
+                <td style="text-align: right;">5.1%</td>
+            </tr>
+            <tr>
+                <td style="text-align: left;">經調整後利潤╱（虧損）淨額<sup>(2)</sup></td>
+                <td style="text-align: right;"><strong>8,869</strong></td>
+                <td style="text-align: right;">6,114</td>
+                <td style="text-align: right;">4,510</td>
+                <td style="text-align: right;">96.6%</td>
+                <td style="text-align: right;">45.1%</td>
+            </tr>
+            <tr>
+                <td style="text-align: left;">
+                    <p>經調整息稅折舊及</p>
+                    <p>攤銷前盈利/(亏损)<sup>(3)</sup></p>
+                </td>
+                <td style="text-align: right;"><strong>29,717</strong></td>
+                <td style="text-align: right;">29,891</td>
+                <td style="text-align: right;">26,071</td>
+                <td style="text-align: right;">14.0%</td>
+                <td style="text-align: right;">-0.6%</td>
+            </tr>
+            <tr>
+                <td colspan="6" style="text-align: left;">
+                    <p>附注：</p>
+                    <p>(1)淨收入不是基於國際財務報告口徑衡量，我們將淨收入定義為減去分配給流量發佈者的成本後的經調整收入；</p>
+                    <p>(2)經調整後利潤╱（虧損）淨額不是基於國際財務報告口徑衡量，我們將經調整後利潤╱（虧損）淨額定義為報告期内（定義見下文）溢利╱（虧損），並就股份酬金、以公平值計量且其變動計入損益的金融資產投資損失及衍生金融負債公平值變動（收益）╱
+                        損失通過加回予以調整；</p>
+                    <p>(3)經調整息稅折舊及攤銷前盈利/(亏损)不是基於國際財務報告口徑衡量，我們將經調整息稅折舊及攤銷前盈利定義為報告期内息稅折舊及攤銷前盈利╱（虧損），並就股份酬金、以公平值計量且其變動計入損益的金融資產投資損失、研發團隊重組費用、北京熱雲科技有限公司（「熱雲」）併購律師費、匯兌損失、出售子公司及頭部媒體代理業務收益通過加回或扣除予以調整；
+                    </p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <p>匯量科技有限公司（「本公司」）董事（「董事」）會（「董事會」），謹此公佈本公司及其附屬公司（「本集團」）截至2024年3月31日止三个月（「報告期内」）之未經審核季度業績。該季度業績已由本公司之審核委員會審閱。</p>
+    <p><strong>业务回顾</strong></p>
+    <p>进入2024年以来，本集团基本面持续向好，自2022年第四季度扭亏为盈以来，本集团已经连续六个季度实现盈利，收入和利润在2024年第一季度也创下了历史新高。</p>
+    <p>报告期内，程序化广告平台Mintegral录得收入283.6百万美元，同比增长25.4%，环比增长10.3%。得益于2022年基建的升级以及2023年的持续投入，Mintegral的智能出价产品也进一步得到了市场的验证，ROAS（Return
+        On Ad
+        Spend）的智能出价模式成为了开发者在Mintegral的主流选择。随着Mintegral平台智能出价能力的提升，我们在新的垂类上也有了质的突破，广告预算结构进一步丰富。游戏品类中，我们正在向以IAP(In
+        App
+        Purchases)为代表的中重度游戏扩张，同时也向大量的非游戏品类，如电商，社交等垂类扩张。报告期内，Mintegral上的游戏品类录得收入208.8百万美元，同比增长14.7%，环比增长8.5%。电商则成为了非游戏品类重要的推动力，Mintegral上的非游戏品类录得收入74.7百万美元，同比增长69.7%，环比增长15.5%。报告期内，智能出价产品贡献的收入占Mintegral总收入超过了60%，成为了Mintegral收入和利润增长的主要驱动力。报告期内，非程序化广告业务录得收入13.7百万美元，同比下降8.4%，环比下降20.0%。相较于程序化投放方式，非程序化广告业务受宏观环境变化影响更大，但依然是本集团重要的收入和利润来源。营销技术方面，我们积极推动新产品的海外市场拓展，在持续打磨产品矩阵的同时兼顾降本增效。报告期内，营销技术业务录得收入4.2百万美元，同比上涨18.5%，环比下跌2.3%。
+    </p>
+    <p>2024年第一季度，本集团的规模效应进一步凸显，经营杠杆不断扩大，报告期内，本集团录得净利润7.2百万美金，同比增长123.5%，环比增长5.1%。</p>
+</body>
+
+</html>

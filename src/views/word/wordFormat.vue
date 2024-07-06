@@ -44,7 +44,17 @@
       <svgPathLine v-if="currentEl && targetEl" :dom1="currentEl" :dom2="targetEl"></svgPathLine>
     </div>
 
-    <a-card title="翻译结果" class="previewCard">
+    <a-card class="previewCard">
+      <template #title>
+      <a-row justify="space-between">
+        <a-col>翻译结果</a-col>
+        <a-col>
+          <a-button :loading="saveLoading" shape="circle" size="small" @click="downLoadDoc">
+            <template #icon><SaveOutlined /></template>
+          </a-button>
+         </a-col>
+      </a-row>
+      </template>
       <div v-html="displayContent" ref="translateRef"></div>
     </a-card>
 
@@ -57,7 +67,7 @@
 <script setup>
 import { ref, computed, unref, onMounted } from "vue";
 import docx2html from "docx2html";
-import { UploadOutlined } from "@ant-design/icons-vue";
+import { UploadOutlined, SaveOutlined  } from "@ant-design/icons-vue";
 import api from "@/api/article.js";
 import { templates } from './config.js';
 import { convertWordSizeToPx } from './utils.js';
@@ -93,6 +103,7 @@ const systemMessage = computed(() =>
 // 翻译
 const transformRes = ref("");
 const loading = ref(false);
+const saveLoading = ref(false);
 
 // 菜单
 const visibleMenu = ref(false);
@@ -272,7 +283,7 @@ async function startTranslate() {
   };
   
   try {
-    const res = await api.htmlToDocx(params)
+    const res = await api.translateHtml(params)
     transformRes.value = res.data;
     loading.value = false
   } catch (err) {
@@ -284,6 +295,21 @@ async function startTranslate() {
 const translateHandle = async () => {
   await startTranslate();
   createDisplayContent();
+}
+
+const downLoadDoc = () => {
+  if(!displayContent.value){
+    alert('翻译结果为空')
+    return
+  }
+  saveLoading.value = true;
+  api.saveHtmlToDocx({html: displayContent.value }).then(res=> {
+    console.log(res)
+    saveLoading.value = false;
+  }).catch(err => {
+    console.log(err)
+    saveLoading.value = false;
+  })
 }
 
 

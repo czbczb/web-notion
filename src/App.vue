@@ -2,6 +2,14 @@
 import { RouterView, useRouter } from "vue-router";
 import { ref } from "vue";
 import { routes } from "@/router";
+import { message } from 'ant-design-vue'
+
+// 全局配置 message
+message.config({
+  top: 100, // 消息距离顶部的位置
+  duration: 3, // 消息显示的时长，单位秒
+});
+window.$message = message
 
 const router = useRouter();
 const routerConfig = ref([]);
