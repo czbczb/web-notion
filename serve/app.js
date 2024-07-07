@@ -29,7 +29,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
-app.use("/max_bot", chatRouter);
+app.use("/chat", chatRouter);
 app.use("/text", textRouter);
 app.use("/docx", docxRouter);
 

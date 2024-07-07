@@ -34,6 +34,8 @@
     "@vue-flow/controls": "^1.1.2",
     "@vue-flow/core": "^1.34.1",
     "@vue-flow/minimap": "^1.5.0",
+    "@vue/compiler-dom": "^3.4.31",
+    "@vue/compiler-sfc": "^3.4.31",
     "@vueup/vue-quill": "^1.0.0-alpha.40",
     "ant-design-vue": "^3.2.11",
     "axios": "^1.4.0",

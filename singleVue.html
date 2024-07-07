@@ -74,30 +74,24 @@
             }
           },
           methods: {
-
             async loadComponent() {
               const component = await new Promise((resolve) => {
                 setTimeout(() => {
                   resolve({
-                    template: `<div>
-                      <p>{{ message }}</p>
-                      <el-button @click="increment">加</el-button>
-                      Count: {{ count }}
-                      <el-button @click="decrement">减</el-button>
-                      </div>`,
-                    data: function() {
+                    template: `<div> <p>{{ message }}</p> <el-button @click="increment">加</el-button>Count: {{ count }}<el-button @click="decrement">减</el-button></div>`,
+                    data: new Function(`function t() {
                       return {
                         message: '这是一个动态加载的组件',
                         count: 0
                       };
-                    },
+                    }`),
                     methods: {
-                      increment: function() {
+                      increment: new Function(`function t() {
                         this.count++;
-                      },
-                      decrement: function() {
+                      }`),
+                      decrement: new Function(`function t() {
                         this.count--;
-                      }
+                      }`)
                     }
                   });
                 }, 1000);

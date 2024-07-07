@@ -1,4 +1,6 @@
 const express = require("express");
+const { chatReplyCluade3Process } = require('../components/cluade3');
+
 var router = express.Router();
 
 /* GET home page. */
@@ -33,6 +35,18 @@ router.get("/chat", function (req, res) {
       clearInterval(timer);
     }
   }, 1000);
+});
+router.post("/claude3", async function (req, res) {
+  const response = await chatReplyCluade3Process({
+    prompt: req.body.prompt,
+    history: req.body.history,
+    systemMessage: req.body.systemMessage,
+  }).catch((error) => {
+    console.log(error);
+  });
+  res.send({
+    data: response,
+  });
 });
 
 module.exports = router;

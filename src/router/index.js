@@ -103,6 +103,22 @@ const routes = [
     component: () => import("../views/video/playVideo.vue"),
   },
   {
+    path: "/dynamicComponent",
+    name: "dynamicComponent",
+    children: [
+      {
+        path: 'com1',
+        name: 'com1',
+        component: () => import("../views/dynamicComponent/index.vue"),
+      },
+      {
+        path: 'com2',
+        name: 'com2',
+        component: () => import("../views/dynamicComponent/index2.vue"),
+      },
+    ]
+  },
+  {
     path: "/virtualScroller",
     name: "virtualScroller",
     component: () => import("../views/virtualScroller.vue"),
