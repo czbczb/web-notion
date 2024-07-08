@@ -127,6 +127,7 @@ export default defineConfig({
     alias: {
       // 别名处理
       "@": fileURLToPath(new URL("./src", import.meta.url)),
+      vue: "vue/dist/vue.esm-bundler.js",
     },
   },
   css: {

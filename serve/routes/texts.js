@@ -1,9 +1,9 @@
 const express = require("express");
 const { spawn } = require("child_process");
 const path = require("path");
-const { Buffer } = require('buffer');
-var request = require('request');
-const fs = require('fs');
+const { Buffer } = require("buffer");
+var request = require("request");
+const fs = require("fs");
 var router = express.Router();
 
 /**
@@ -34,7 +34,7 @@ async function textToVideo(textContent, outputPath) {
 
     // 注册 stderr 的 data 事件
     pythonProcess.stderr.on("data", (data) => {
-      console.log(data)
+      console.log(data);
       stderrChunks.push(data);
     });
 
@@ -53,7 +53,7 @@ async function textToVideo(textContent, outputPath) {
       }
     });
   }).catch((err) => {
-    Promise.reject(err)
+    Promise.reject(err);
   });
 }
 /* GET users listingtextToVideo. */
@@ -74,47 +74,75 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-router.get('/testUrl', function (req, res, next) {
+router.get("/testUrl", function (req, res, next) {
   var find_link = function (link, collback) {
-
     var f = function (link) {
       var options = {
         url: link,
         followRedirect: false,
         headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-          'Accept-Charset': 'UTF-8;',
-          'User-Agent': 'Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.2.8) Firefox/3.6.8',
-        }
-      }
+          "Content-Type": "application/x-www-form-urlencoded",
+          "Accept-Charset": "UTF-8;",
+          "User-Agent":
+            "Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.2.8) Firefox/3.6.8",
+          Accept:
+            "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+          "Accept-Encoding": "gzip, deflate, br, zstd",
+          "Accept-Language": "zh-CN,zh;q=0.9",
+          Cookie:
+            "cna=A5hsHVCUBDkCAW/L7VI8XLBD; account=oauth_k1%3AX2XiXU3klqiBUgYkeWS9lH9Fo6heglm27it0D1jZ%2BWNUhHT5n7A4OPRVH8Sf48cf5PYMUNnt3BZRe16t6rPD%2F5kEF2cEsnEOJQjT0DcXzAE%3D; deviceid=0c0dd99734ff4dc0ad9cde5edad26108; pub_uid=wufHhMBg42fExWXv1h22kg%3D%3D; XSRF-TOKEN=a4be2c92-842e-4707-8b46-f735b61d740a; ding_doc_unified_login=true; tfstk=fUPoAjXv5mt6Wz8dqSc5d8RwqmXYP3GQTkdKvXnF3mofPXeRAkm38mFLyyF-8XqbVvP-wzEctmzE4eMILrF3aV0rYBkPLpzQG3uFUzEHHogtNU9ITvm4FlrndaiKYDqL88QA61U7PXGUxGCO6hqagQFoYHheVkZn5GIO6sU7PXGFXJF0wDhmRmurzLRPoxuK0BRUY0k20V0sTDrETZ0q-23yYQRe0juez9REjWPbggVhLo_x91IXzYiaz0z8ySz2Xczz4BRE04DlSzoDTBP03n0G2cfD0mUU5Jk0t_O-OregxJrV8Bo33VqiWuC2ZXy4m5DalGASq-r7tbH1te00IrruZXXMPqFuu5M3NgAqqoa4BbNNcBqakPFShWjM0Dw-5juunwJq4vSyPKJNSRdIuwF2dpMrlqm6B4N4V9465W7cod6SUqgRXWQDLCMrl45OoZv68YujyGC..; isg=BAkJXx16iz9Li3WpsS03CzW1GDNjVv2IDKdKlKt-n_Av8ikE86YJWFkhNFbEnpXA",
+          Priority: "u=0, i",
+          "Sec-Ch-Ua":
+            '"Not/A)Brand";v="8", "Chromium";v="126", "Google Chrome";v="126"',
+          "Sec-Ch-Ua-Mobile": "?0",
+
+          "Sec-Ch-Ua-Platform": "macOS",
+          "Sec-Fetch-Dest": "document",
+
+          "Sec-Fetch-Mode": "navigate",
+
+          "Sec-Fetch-Site": "none",
+
+          "Sec-Fetch-User": "?1",
+
+          "Upgrade-Insecure-Requests": 1,
+        },
+      };
 
       request(options, function (error, response, body) {
         console.log(response.statusCode);
         if (response.statusCode == 301 || response.statusCode == 302) {
           var location = response.headers.location;
-          console.log('location: ' + location);
+          console.log("headers: " + JSON.stringify(response.headers));
+          console.log("location: " + location);
+          console.log(body);
           f(location);
         } else {
           collback(link);
         }
-      })
-    }
+      });
+    };
 
     f(link);
-  }
+  };
 
-  find_link("https://alidocs.dingtalk.com/core/api/resources/img/5eecdaf48460cde51600ba23323ecf71c5bbf0d65fb42b63596bf165a99da72501ef4d921a0d25fc65a117e9692870641dbb3b498f28ce60728ab55250dbd565747fad13c75f7af3ebecd74aed7ec017090a1e078894fc82f39f100446eb8627?tmpCode=41bb2016-5998-4c40-9247-683a65361498", function (link) {
+  const link =
+    "https://alidocs.dingtalk.com/core/api/resources/img/5eecdaf48460cde550abb3a7cd99f1d0483c1b00da3e91ef596bf165a99da72501ef4d921a0d25fc65a117e9692870640fffdcb56606a2a6e76cb28e5408b514ea0ad5e90f24812a98ceb272bd899417574582e222c9a1bc9508fd59fedd0e8f?tmpCode=82817398-e66d-4bac-9940-5af5b7cb1ce0";
+
+  const redirectLink =
+    "https://alidocs2.oss-cn-zhangjiakou.aliyuncs.com/res/mPdnp8dYEjBpnw98/img/decd092c-ee6e-4f02-8c46-26a620df68b4.png?Expires=1720438971&OSSAccessKeyId=LTAI1XUz8ModxrPd&Signature=3fcuoGBRiuEzHZzz99Zvvd%2B2dRg%3D&";
+  find_link(link, function (link) {
     console.log(link);
-    downloadImg(link)
+    downloadImg(link);
     res.send(link);
   });
-})
+});
 
-function downloadImg(url, path ='./image.jpg') {
+function downloadImg(url, path = "./image.jpg") {
   request(url)
     .pipe(fs.createWriteStream(path))
-    .on('finish', () => {
-      console.log('图片下载成功');
+    .on("finish", () => {
+      console.log("图片下载成功");
     });
 }
 
