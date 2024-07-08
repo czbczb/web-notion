@@ -219,7 +219,7 @@ function createStyleElementMap(htmlString) {
 
   const scriptElements = doc.querySelectorAll("script");
   scriptElements.forEach((el) => {
-    if (sc.textContent !== "") {
+    if (el.textContent !== "") {
       maps.push({
         style: `<script>${el.textContent}<//script>`,
         el,
