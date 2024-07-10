@@ -1,10 +1,7 @@
 <template>
   <div>
     <button @click="loadComponent">加载组件</button>
-    <component
-      :is="dynamicComponent"
-      v-if="dynamicComponent"
-    ></component>
+    <component :is="dynamicComponent" v-if="dynamicComponent"></component>
   </div>
 </template>
 
@@ -25,9 +22,8 @@ const loadComponent = async () => {
           <h1>{{message}}</h1>
         </template>
         <script setup>
-          import { ref } from 'vue';
           const message = ref(20);
-        <//script>
+        <\/script>
         <style>
           h1 {
             border: 1px solid #ccc;
@@ -38,16 +34,31 @@ const loadComponent = async () => {
   const parseObj = parse(componentString);
 
   const { script, scriptSetup, template, styles } = parseObj.descriptor;
+  console.log(template, styles);
+  const scriptContent = script ? script.content : scriptSetup.content;
+  console.log(script, scriptSetup);
+  const compiledScript = compileScript(parseObj.descriptor, {
+    id: "dynamic-component",
+  });
+
   // 创建一个新的 Vue 组件
   const component = defineAsyncComponent(() => {
     return new Promise((resolve) => {
       // 动态创建一个新的组件
       resolve({
-        template: `<div>${template}</div>`,
+        template: `<div>${template.content}</div>`,
         setup() {
-          // 动态执行 script 部分
-          const scriptFunction = new Function("ref", script);
-          return scriptFunction(ref);
+          const scriptExports = {};
+          const module = { exports: scriptExports };
+          const scriptFunction = new Function(
+            "exports",
+            "module",
+            "require",
+            compiledScript.content
+          );
+          scriptFunction(scriptExports, module, require);
+
+          return scriptExports.default.setup();
         },
         // 动态添加 style 部分
         mounted() {
@@ -73,6 +84,6 @@ const loadComponent = async () => {
 
   // 设置动态组件
   dynamicComponent.value = component;
-  console.log(dynamicComponent.value)
+  console.log(dynamicComponent.value);
 };
 </script>
