@@ -6,6 +6,7 @@
       :showUploadList="true"
       @change="handleChange"
       @drop="handleChange"
+      accept=".mp4"
       :customRequest="customRequest"
     >
       <p class="ant-upload-drag-icon">

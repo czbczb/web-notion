@@ -3,19 +3,27 @@ const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
 const ffmpeg = require("fluent-ffmpeg");
-const Scorm2004 = require("scorm2004");
+const scormPackager = require("simple-scorm-packager");
 
-var router = express.Router();
+const router = express.Router();
+
 // 设置上传目录和文件大小限制
 const upload = multer({
   dest: "uploads/",
   limits: { fileSize: 100 * 1024 * 1024 }, // 限制为100MB
 });
 
-/* GET home page. */
+// 创建输出目录函数
+const ensureDirectoryExists = (directory) => {
+  if (!fs.existsSync(directory)) {
+    fs.mkdirSync(directory, { recursive: true });
+  }
+};
+
+/* POST 上传文件 */
 router.post("/upload", upload.single("file"), (req, res) => {
   if (!req.file) {
-    return res.status(400).send("No file uploaded.");
+    return res.status(400).send("没有上传文件。");
   }
 
   const filePath = req.file.path;
@@ -23,42 +31,61 @@ router.post("/upload", upload.single("file"), (req, res) => {
     req.file.originalname,
     path.extname(req.file.originalname)
   );
-  const outputPath = `converted/${fileNameWithoutExt}.mp4`;
+
+  const sourceOutputDir = path.join(__dirname, "convertedSource");
+  ensureDirectoryExists(sourceOutputDir);
+
+  const outputPath = path.join(sourceOutputDir, `${fileNameWithoutExt}.mp4`);
 
   ffmpeg(filePath)
     .output(outputPath)
     .on("end", () => {
+      const scormOutputDir = path.join(__dirname, "scorm-packages");
+      ensureDirectoryExists(scormOutputDir);
+
       const scormConfig = {
-        version: "2004",
-        courseId: fileNameWithoutExt,
+        version: "2004.3",
+        organization: "东指科技",
         title: fileNameWithoutExt,
-        organization: "Example Organization",
-        entryUrl: outputPath,
+        identifier: fileNameWithoutExt,
+
+        language: "zh-CN",
+        outputFolder: scormOutputDir,
+        masteryScore: 80,
+        startingPage: `inde.html`,
+        source: sourceOutputDir, // 确保是字符串路径, // 包含课程文件的目录
+        package: {
+          version: "1.0.0",
+          zip: true,
+          author: "zongbao.cui",
+          description: "A test of the course packaging module",
+          rights: `©${new Date().getFullYear()} My Amazing Company. All right reserved.`,
+          vcard: {
+            author: "zongbao cui",
+            org: "东指科技",
+            tel: "13581711930",
+            address: "西安高新三期",
+            mail: "czb2402@163.com",
+            url: "https://mydomain.com",
+          },
+        },
       };
 
-      const scormOutputDir = "scorm-packages/";
-      const scormOutputPath = path.join(scormOutputDir, `${fileNameWithoutExt}.zip`);
-
-      const scorm = new Scorm2004(scormConfig);
-
-      scorm.createPackage((err, result) => {
-        if (err) {
-          console.error("SCORM Package Error:", err);
-          return res.status(500).send("SCORM Package Error");
-        }
-
-        fs.writeFileSync(scormOutputPath, result);
+      // 创建 SCORM 包
+      scormPackager(scormConfig, (msg) => {
+        console.log("********************************");
+        console.log(msg);
         res.json({ fileName: `${fileNameWithoutExt}.zip` });
       });
     })
     .on("error", (err) => {
-      console.error("FFmpeg Error:", err);
-      res.status(500).send("File Conversion Error");
+      console.error("FFmpeg 错误:", err);
+      res.status(500).send("文件转换错误");
     })
     .run();
 });
 
-// 下载SCORM课件
+// 下载 SCORM 课件
 router.get("/download/:fileName", (req, res) => {
   const fileName = req.params.fileName;
   const filePath = path.join(__dirname, "scorm-packages", fileName);
@@ -66,7 +93,7 @@ router.get("/download/:fileName", (req, res) => {
   if (fs.existsSync(filePath)) {
     res.download(filePath);
   } else {
-    res.status(404).send("File not found.");
+    res.status(404).send("文件未找到。");
   }
 });
 

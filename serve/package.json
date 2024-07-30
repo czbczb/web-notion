@@ -18,6 +18,7 @@
     "jade": "~1.11.0",
     "morgan": "~1.9.1",
     "multer": "1.4.5-lts.1",
-    "request": "^2.88.2"
+    "request": "^2.88.2",
+    "simple-scorm-packager": "^0.2.7"
   }
 }
