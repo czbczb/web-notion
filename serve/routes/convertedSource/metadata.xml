@@ -5,7 +5,7 @@
     <metadataSchema>ADL SCORM 2004.3</metadataSchema>
     <identifier>
       <catalog>URI</catalog>
-      <entry>com.示例组织.testscrrom.d70b55d4-d7ce-402b-a687-65e4a274302b</entry>
+      <entry>z.东指科技.testscrrom.856fc853-e396-44ca-a241-a1db2ce8d19e</entry>
     </identifier>
     <language>zh-CN</language>
     <contribute>
@@ -15,18 +15,23 @@
       </role>
       <entity><![CDATA[BEGIN:VCARD
 VERSION:2.1
-ORG:示例组织
+FN:zongbao cui
+ORG:东指科技
+TEL;WORK;VOICE:13581711930
+ADR;WORK:;;西安高新三期
+EMAIL;PREF;INTERNET:czb2402@163.com
+URL:https://mydomain.com
 END:VCARD  ]]></entity>
       <date>
-        <dateTime>2024-07-30</dateTime>
-        <description language="zh-CN"><![CDATA[1722333330062]]></description>
+        <dateTime>1722398187886</dateTime>
+        <description language="zh-CN"><![CDATA[1722396169753]]></description>
       </date>
     </contribute>
   </metametadata>
   <general>
     <identifier>
       <catalog>URI</catalog>
-      <entry>com.示例组织.testscrrom.d70b55d4-d7ce-402b-a687-65e4a274302b</entry>
+      <entry>z.东指科技.testscrrom.856fc853-e396-44ca-a241-a1db2ce8d19e</entry>
     </identifier>
     <title>
       <string language="zh-CN"><![CDATA[test scrrom]]></string>
@@ -43,6 +48,15 @@ END:VCARD  ]]></entity>
       <source>LOMv1.0</source>
       <value>1</value>
     </aggregationLevel>
+    <keyword>
+      <string language="zh-CN"><![CDATA[scorm]]></string>
+    </keyword>
+    <keyword>
+      <string language="zh-CN"><![CDATA[test]]></string>
+    </keyword>
+    <keyword>
+      <string language="zh-CN"><![CDATA[course]]></string>
+    </keyword>
   </general>
   <lifeCycle>
     <version>
@@ -55,11 +69,16 @@ END:VCARD  ]]></entity>
     <contribute>
       <entity><![CDATA[BEGIN:VCARD
 VERSION:2.1
-ORG:示例组织
+FN:zongbao cui
+ORG:东指科技
+TEL;WORK;VOICE:13581711930
+ADR;WORK:;;西安高新三期
+EMAIL;PREF;INTERNET:czb2402@163.com
+URL:https://mydomain.com
 END:VCARD  ]]></entity>
       <date>
-        <dateTime>2024-07-30</dateTime>
-        <description language="zh-CN"><![CDATA[1722333330062]]></description>
+        <dateTime>1722398187886</dateTime>
+        <description language="zh-CN"><![CDATA[1722396169753]]></description>
       </date>
     </contribute>
     <contribute>
@@ -69,11 +88,16 @@ END:VCARD  ]]></entity>
       </role>
       <entity><![CDATA[BEGIN:VCARD
 VERSION:2.1
-ORG:示例组织
+FN:zongbao cui
+ORG:东指科技
+TEL;WORK;VOICE:13581711930
+ADR;WORK:;;西安高新三期
+EMAIL;PREF;INTERNET:czb2402@163.com
+URL:https://mydomain.com
 END:VCARD  ]]></entity>
       <date>
-        <dateTime>2024-07-30</dateTime>
-        <description language="zh-CN"><![CDATA[1722333330062]]></description>
+        <dateTime>1722398187886</dateTime>
+        <description language="zh-CN"><![CDATA[1722396169753]]></description>
       </date>
     </contribute>
     <contribute>
@@ -83,12 +107,17 @@ END:VCARD  ]]></entity>
       </role>
       <entity><![CDATA[BEGIN:VCARD
 VERSION:2.1
+FN:zongbao cui
 NOTE:version 1.0.0 
-ORG:示例组织
+ORG:东指科技
+TEL;WORK;VOICE:13581711930
+ADR;WORK:;;西安高新三期
+EMAIL;PREF;INTERNET:czb2402@163.com
+URL:https://mydomain.com
 END:VCARD  ]]></entity>
       <date>
-        <dateTime>2024-07-30</dateTime>
-        <description language="zh-CN"><![CDATA[1722333330062]]></description>
+        <dateTime>1722398187886</dateTime>
+        <description language="zh-CN"><![CDATA[1722396169753]]></description>
       </date>
     </contribute>
     <contribute>
@@ -98,11 +127,16 @@ END:VCARD  ]]></entity>
       </role>
       <entity><![CDATA[BEGIN:VCARD
 VERSION:2.1
-ORG:示例组织
+FN:zongbao cui
+ORG:东指科技
+TEL;WORK;VOICE:13581711930
+ADR;WORK:;;西安高新三期
+EMAIL;PREF;INTERNET:czb2402@163.com
+URL:https://mydomain.com
 END:VCARD  ]]></entity>
       <date>
-        <dateTime>2024-07-30</dateTime>
-        <description language="zh-CN"><![CDATA[1722333330062]]></description>
+        <dateTime>1722398187886</dateTime>
+        <description language="zh-CN"><![CDATA[1722396169753]]></description>
       </date>
     </contribute>
   </lifeCycle>
@@ -110,8 +144,8 @@ END:VCARD  ]]></entity>
     <format>text/html</format>
     <format>application/x-javascript</format>
     <format>text/css</format>
-    <size>3105573</size>
-    <location>converted/test scrrom.mp4</location>
+    <size>3226787</size>
+    <location>index.html</location>
     <duration>
       <duration>PT0H0M0S</duration>
       <description>
@@ -157,7 +191,7 @@ END:VCARD  ]]></entity>
       <value>no</value>
     </copyrightAndOtherRestrictions>
     <description>
-      <string language="zh-CN"><![CDATA[© 示例组织. All rights reserved.]]></string>
+      <string language="zh-CN"><![CDATA[©2024 My dongzhi Company. All right reserved.]]></string>
     </description>
   </rights>
 </lom>

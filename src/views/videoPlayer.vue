@@ -2,24 +2,43 @@
   <div>
     <a-upload-dragger
       :beforeUpload="beforeUpload"
-      :fileList="fileList"
+      v-model:fileList="fileList"
       :showUploadList="true"
       @change="handleChange"
       @drop="handleChange"
       accept=".mp4"
-      :customRequest="customRequest"
     >
-      <p class="ant-upload-drag-icon">
-        <inbox-outlined></inbox-outlined>
-      </p>
-      <p class="ant-upload-text">Click or drag file to this area to upload</p>
-      <p class="ant-upload-hint">Support for a single</p>
-      <p class="ant-upload-hint">limit 100 M</p>
+      <div>
+        <p class="ant-upload-drag-icon">
+          <inbox-outlined></inbox-outlined>
+        </p>
+        <p class="ant-upload-text">Click or drag file to this area to upload</p>
+        <p class="ant-upload-hint">Support for a single</p>
+        <p class="ant-upload-hint">limit 100 M</p>
+      </div>
     </a-upload-dragger>
-    <a-progress v-if="uploading" :percent="progress" />
-    <a-button type="primary" v-if="downloadLink" @click="downloadScorm"
-      >下载SCORM课件</a-button
-    >
+    <a-row align="center" style="padding-top: 10px">
+      <a-button type="primary" @click="customRequest" :loading="uploading"
+        >上传</a-button
+      >
+    </a-row>
+    <a-card v-if="downloadLinks.length > 0" title="转换后的课件内容">
+      <a-list bordered :data-source="downloadLinks">
+        <template #renderItem="{ item }">
+          <a-list-item
+            >{{ item }}
+            <template #actions>
+              <a-button
+                type="primary"
+                v-if="downloadLinks"
+                @click="downloadScorm"
+                >下载SCORM课件</a-button
+              >
+            </template>
+          </a-list-item>
+        </template>
+      </a-list>
+    </a-card>
   </div>
 </template>
 
@@ -31,8 +50,7 @@ import scromApi from "@/api/scrom";
 
 const fileList = ref([]);
 const uploading = ref(false);
-const progress = ref(0);
-const downloadLink = ref("");
+const downloadLinks = ref([]);
 
 const beforeUpload = (file) => {
   const isMp4 = file.type === "video/mp4";
@@ -43,52 +61,45 @@ const beforeUpload = (file) => {
   if (!isLt50M) {
     message.error("文件必须小于50MB!");
   }
-  return isMp4 && isLt50M;
+  return false;
 };
 
-const handleChange = (info) => {
-  if (info.file.status === "done") {
-    message.success(`${info.file.name} 文件上传成功`);
-    uploading.value = false;
-    progress.value = 100;
-    downloadLink.value = `http://localhost:3000/download/${info.file.response.fileName}`;
-  } else if (info.file.status === "error") {
-    message.error(`${info.file.name} 文件上传失败`);
-    uploading.value = false;
+const handleChange = ({ file, fileList }) => {
+  console.log(file, fileList);
+  if (file.status === "done") {
+    fileList.value = fileList;
+  } else if (file.status === "error") {
+    fileList.value = [];
   }
 };
 
-const customRequest = ({ file, onProgress, onSuccess, onError }) => {
+const customRequest = () => {
+  if (fileList.value.length === 0) {
+    return;
+  }
   const formData = new FormData();
-  formData.append("file", file);
-
+  fileList.value.map((file) => {
+    formData.append("file", file.originFileObj);
+  });
+  uploading.value = true;
   scromApi
     .uploadMp4(formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
-      onUploadProgress: (progressEvent) => {
-        if (progressEvent.lengthComputable) {
-          const percent = Math.round(
-            (progressEvent.loaded / progressEvent.total) * 100
-          );
-          progress.value = percent;
-          onProgress({ percent });
-        }
-      },
     })
-    .then((response) => {
-      onSuccess(response.data);
+    .then((res) => {
+      downloadLinks.value = [res.fileName];
+      uploading.value = false;
     })
-    .catch((error) => {
-      onError(error);
+    .catch(() => {
+      uploading.value = false;
+      message.error("转换失败");
     });
-
-  uploading.value = true;
 };
 
 const downloadScorm = () => {
-  window.open(downloadLink.value, "_blank");
+  window.open(downloadLinks.value, "_blank");
 };
 </script>
 

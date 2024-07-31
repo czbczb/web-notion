@@ -42,24 +42,29 @@ router.post("/upload", upload.single("file"), (req, res) => {
     .on("end", () => {
       const scormOutputDir = path.join(__dirname, "scorm-packages");
       ensureDirectoryExists(scormOutputDir);
+      const packageVersion = "1.0.0";
+      const dateTimestamp = new Date().getTime();
 
       const scormConfig = {
         version: "2004.3",
         organization: "东指科技",
         title: fileNameWithoutExt,
-        identifier: fileNameWithoutExt,
+        // identifier: "00",
 
         language: "zh-CN",
-        outputFolder: scormOutputDir,
-        masteryScore: 80,
-        startingPage: `inde.html`,
+        masteryScore: 80, // 掌握分数
+        startingPage: `index.html`,
         source: sourceOutputDir, // 确保是字符串路径, // 包含课程文件的目录
         package: {
-          version: "1.0.0",
+          version: packageVersion,
+          name: fileNameWithoutExt,
           zip: true,
+          date: dateTimestamp,
+          outputFolder: scormOutputDir,
           author: "zongbao.cui",
           description: "A test of the course packaging module",
-          rights: `©${new Date().getFullYear()} My Amazing Company. All right reserved.`,
+          keywords: ["scorm", "test", "course"],
+          rights: `©${new Date().getFullYear()} My dongzhi Company. All right reserved.`,
           vcard: {
             author: "zongbao cui",
             org: "东指科技",
@@ -73,9 +78,20 @@ router.post("/upload", upload.single("file"), (req, res) => {
 
       // 创建 SCORM 包
       scormPackager(scormConfig, (msg) => {
-        console.log("********************************");
-        console.log(msg);
-        res.json({ fileName: `${fileNameWithoutExt}.zip` });
+        if (msg === "Done") {
+          const zipFileName = `${fileNameWithoutExt.replace(
+            " ",
+            ""
+          )}_v${packageVersion}_${dateTimestamp}.zip`;
+
+          res.json({
+            fileName: zipFileName,
+          });
+        } else {
+          res.json({
+            message: msg,
+          });
+        }
       });
     })
     .on("error", (err) => {
