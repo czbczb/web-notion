@@ -9,7 +9,7 @@ const indexRouter = require("./routes/index");
 const chatRouter = require("./routes/chat");
 const textRouter = require("./routes/texts");
 const docxRouter = require("./routes/docx");
-const scromRouter = require("./routes/scrom");
+const scormRouter = require("./routes/scorm");
 
 var app = express();
 
@@ -33,7 +33,7 @@ app.use("/", indexRouter);
 app.use("/chat", chatRouter);
 app.use("/text", textRouter);
 app.use("/docx", docxRouter);
-app.use("/scrom", scromRouter);
+app.use("/scorm", scormRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

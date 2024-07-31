@@ -25,16 +25,8 @@
     <a-card v-if="downloadLinks.length > 0" title="转换后的课件内容">
       <a-list bordered :data-source="downloadLinks">
         <template #renderItem="{ item }">
-          <a-list-item
-            >{{ item }}
-            <template #actions>
-              <a-button
-                type="primary"
-                v-if="downloadLinks"
-                @click="downloadScorm"
-                >下载SCORM课件</a-button
-              >
-            </template>
+          <a-list-item>
+            <a :href="item.path">{{ item.name }}</a>
           </a-list-item>
         </template>
       </a-list>
@@ -46,7 +38,7 @@
 import { ref } from "vue";
 import { InboxOutlined } from "@ant-design/icons-vue";
 import { message } from "ant-design-vue";
-import scromApi from "@/api/scrom";
+import scormApi from "@/api/scorm";
 
 const fileList = ref([]);
 const uploading = ref(false);
@@ -82,24 +74,20 @@ const customRequest = () => {
     formData.append("file", file.originFileObj);
   });
   uploading.value = true;
-  scromApi
+  scormApi
     .uploadMp4(formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
     })
     .then((res) => {
-      downloadLinks.value = [res.fileName];
+      downloadLinks.value = res.data;
       uploading.value = false;
     })
     .catch(() => {
       uploading.value = false;
       message.error("转换失败");
     });
-};
-
-const downloadScorm = () => {
-  window.open(downloadLinks.value, "_blank");
 };
 </script>
 
