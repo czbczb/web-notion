@@ -94,7 +94,7 @@ const routes = [
   },
   {
     path: "/videoPlayer",
-    name: "videoPlayer",
+    name: "mp4ToScorm",
     component: () => import("../views/videoPlayer.vue"),
   },
   {
