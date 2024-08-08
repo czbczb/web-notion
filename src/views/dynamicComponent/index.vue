@@ -12,22 +12,24 @@
           type="primary"
           >发送</a-button
         >
-        <a-card>
-          <a-card-title>
-            <a-button @click="renderComponent" type="primary">渲染</a-button>
-          </a-card-title>
-          <div>{{ codeStr }}</div>
-        </a-card>
       </a-col>
     </a-row>
 
-    <component :is="dinamicComponent"></component>
+    <a-card style="margin-top: 20px">
+      <template #title> 回复内容 </template>
+      <template #extra>
+        <a-button @click="renderComponent" type="primary">渲染</a-button>
+      </template>
+      <component v-if="showComponent" :is="dinamicComponent"></component>
+      <div v-else>{{ codeStr }}</div>
+    </a-card>
   </div>
 </template>
 
 <script setup>
 import { ref, defineAsyncComponent } from "vue";
 import api from "@/api/article.js";
+import * as designIcons from "@ant-design/icons-vue"
 import { loadModule } from "vue3-sfc-loader";
 import * as Vue from "vue";
 
@@ -42,6 +44,7 @@ import * as Vue from "vue";
 //     ]
 // }
 const history = ref([]);
+const showComponent = ref(false)
 
 const systemMessage =
   ref(`你是一个资深的前端助手，并且精通javascript，html，css、vue3，vue-routers资深前端。
@@ -67,19 +70,22 @@ const decrement = () => {
 }
 <//script>
 
-<style lang="scss" scoped>
+<style>
 .count-number {
   color: #0B6EE2;
 }
 </style>
 `);
 
-const prompt = ref(`实现todoList`);
+const prompt = ref(`实现todoList, 功能完整， 使用ant-design-vue实现`);
 const loading = ref(false);
 const codeStr = ref("");
 const dinamicComponent = ref(null);
 
 const sendIssue = async () => {
+  showComponent.value = false;
+
+  loading.value = true;
   const params = {
     prompt: `${prompt.value}`,
     history: history.value,
@@ -87,12 +93,15 @@ const sendIssue = async () => {
   };
   const res = await api.claude3(params);
   codeStr.value = res.data;
+  loading.value = false;
 };
 
 const renderComponent = async () => {
+  showComponent.value = true;
   const options = {
     moduleCache: {
       vue: Vue,
+      "@ant-design/icons-vue": designIcons,
     },
     async getFile() {
       return codeStr.value;
@@ -107,12 +116,10 @@ const renderComponent = async () => {
     },
   };
   dinamicComponent.value = defineAsyncComponent(async () => {
-    loading.value = true;
     const res = await loadModule(
       "http://localhost:8080/remote-component.vue",
       options
     );
-    loading.value = false;
 
     return res;
   });
