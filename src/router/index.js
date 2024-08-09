@@ -116,16 +116,6 @@ const routes = [
         name: 'com1',
         component: () => import("../views/dynamicComponent/index.vue"),
       },
-      {
-        path: 'com2',
-        name: 'com2',
-        component: () => import("../views/dynamicComponent/index2.vue"),
-      },
-      {
-        path: 'com3',
-        name: 'com3',
-        component: () => import("../views/dynamicComponent/index3.vue"),
-      },
     ]
   },
   {
