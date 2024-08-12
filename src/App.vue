@@ -25,9 +25,8 @@ const headerStyle = ref({
   padding: 0,
 });
 const contentStyle = ref({
-  padding: "20px 50px",
+  padding: "20px 0",
   marginTop: "64px",
-  background: "#fff",
 });
 
 const goRouter = (event) => {

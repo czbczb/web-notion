@@ -1,14 +1,14 @@
-import { reactive, readonly, computed } from 'vue';
+import { reactive, readonly, computed, ref } from "vue";
 
 // 从localStorage中获取sessions，假设其格式为JSON字符串
 const getSessionsFromStorage = () => {
-  const sessionsStr = localStorage.getItem('sessions');
+  const sessionsStr = localStorage.getItem("sessions");
   return sessionsStr ? JSON.parse(sessionsStr) : [];
 };
 
 // 将sessions存储到localStorage
 const saveSessionsToStorage = (sessions) => {
-  localStorage.setItem('sessions', JSON.stringify(sessions));
+  localStorage.setItem("sessions", JSON.stringify(sessions));
 };
 
 // useSession hook
@@ -18,21 +18,44 @@ const useSession = () => {
 
   // 当前的 sessionId
   const currentSessionId = computed({
-    get: () => localStorage.getItem('currentSessionId'),
+    get: () => localStorage.getItem("currentSessionId"),
     set: (id) => {
-      localStorage.setItem('currentSessionId', id);
-    }
+      localStorage.setItem("currentSessionId", id);
+    },
   });
+  // 当前的 visibleHistory
+  const visibleHistory = reactive({
+    visible: JSON.parse(localStorage.getItem("visibleHistory"))
+  }
+  );
+
+  const toggleHistory = () => {
+    console.log(visibleHistory.value)
+    if(visibleHistory.value === undefined || visibleHistory.value === false){
+      visibleHistory.visible = true;
+      localStorage.setItem("visibleHistory", true);
+    }else {
+      visibleHistory.visible = false;
+      localStorage.setItem("visibleHistory", false);
+    }
+    
+    console.log(visibleHistory.value,);
+  };
 
   // 当前的 history
   const currentHistory = computed(() => {
-    const session = sessions.find(s => s.id.toString() === currentSessionId.value);
+    const session = sessions.find(
+      (s) => s.id.toString() === currentSessionId.value
+    );
     return session ? session.history : [];
   });
 
   // 删除会话
   const deleteSession = (id) => {
-    sessions.splice(sessions.findIndex(s => s.id === id), 1);
+    sessions.splice(
+      sessions.findIndex((s) => s.id === id),
+      1
+    );
     saveSessionsToStorage(sessions);
   };
 
@@ -44,7 +67,7 @@ const useSession = () => {
 
   // 更新会话
   const updateSession = (id, updates) => {
-    const index = sessions.findIndex(s => s.id === id);
+    const index = sessions.findIndex((s) => s.id === id);
     if (index !== -1) {
       sessions[index] = { ...sessions[index], ...updates };
       saveSessionsToStorage(sessions);
@@ -65,7 +88,9 @@ const useSession = () => {
     deleteSession,
     addSession,
     updateSession,
-    switchSession
+    switchSession,
+    toggleHistory,
+    visibleHistory,
   };
 };
 
