@@ -1,6 +1,5 @@
 <template>
     <div class="session-list" :class="{ 'collapse-list': collapse }">
-        <a-button>新建会话</a-button>
       <a-list
         :data-source="sessions"
         item-layout="horizontal"
