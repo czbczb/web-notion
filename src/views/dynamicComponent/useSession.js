@@ -25,21 +25,20 @@ const useSession = () => {
   });
   // 当前的 visibleHistory
   const visibleHistory = reactive({
-    visible: JSON.parse(localStorage.getItem("visibleHistory"))
-  }
-  );
+    visible: JSON.parse(localStorage.getItem("visibleHistory")),
+  });
 
   const toggleHistory = () => {
-    console.log(visibleHistory.value)
-    if(visibleHistory.value === undefined || visibleHistory.value === false){
+    console.log(visibleHistory.value);
+    if (visibleHistory.value === undefined || visibleHistory.value === false) {
       visibleHistory.visible = true;
       localStorage.setItem("visibleHistory", true);
-    }else {
+    } else {
       visibleHistory.visible = false;
       localStorage.setItem("visibleHistory", false);
     }
-    
-    console.log(visibleHistory.value,);
+
+    console.log(visibleHistory.value);
   };
 
   // 当前的 history
