@@ -7,13 +7,13 @@
           <a-input v-model="formData.title"></a-input>
         </a-form-item>
         <a-form-item labe="UI框架" name="uiFrame">
-          <a-input v-model="formData.uiFrame"></a-input>
+          {{ formData.uiFrame }}
         </a-form-item>
         <a-form-item labe="js框架" name="jsFrame">
-          <a-input v-model="formData.jsFrame"></a-input>
+          {{ formData.jsFrame }}
         </a-form-item>
         <a-form-item labe="组件" name="codeStr">
-          <a-input v-model="formData.codeStr"></a-input>
+          {{ formData.codeStr }}
         </a-form-item>
       </a-form>
       <template #footer>
@@ -28,7 +28,7 @@
 
 <script setup>
 import { reactive, ref } from "vue";
-import { useMessage } from "ant-design-vue";
+import { message } from "ant-design-vue";
 import api from "@/api/chat.js";
 
 const props = defineProps(["codeStr", "jsFrame", "uiFrame"]);
@@ -41,9 +41,6 @@ const formData = reactive({
   uiFrame: props.uiFrame,
 });
 const rules = reactive([]);
-
-const message = useMessage();
-
 function showModal() {
   visible.value = true;
 }

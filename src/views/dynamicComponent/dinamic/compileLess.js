@@ -1,5 +1,5 @@
 import less from "less";
-import Sass from "sass.js"; // 用于编译 SCSS
+// import Sass from "sass"; // 用于编译 SCSS
 
 export async function compileLess(code) {
   // 动态判断并编译样式
@@ -22,14 +22,14 @@ export async function compileLess(code) {
       }
     });
   } else if (lang === "scss") {
-    // 编译 SCSS
-    Sass.compile(styleContent, (result) => {
-      if (result.status === 0) {
-        code = code.replace(styleMatch[0], `<style>${result.text}</style>`);
-      } else {
-        console.error("SCSS 编译错误:", result.message);
-      }
-    });
+    // // 编译 SCSS
+    // Sass.compile(styleContent, (result) => {
+    //   if (result.status === 0) {
+    //     code = code.replace(styleMatch[0], `<style>${result.text}</style>`);
+    //   } else {
+    //     console.error("SCSS 编译错误:", result.message);
+    //   }
+    // });
   }
   return code;
 }

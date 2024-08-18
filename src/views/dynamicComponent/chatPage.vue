@@ -1,8 +1,8 @@
 <template>
   <div class="ge-container">
     <div class="ge-chat">
-      <navbar></navbar>
-      <!-- <chatHistory></chatHistory> -->
+      <!-- <chatBar></chatBar> -->
+      <!-- <historyList></historyList> -->
       <div class="config-wrapper">
         <a-checkbox v-model:checked="cacheHistory">记住历史</a-checkbox>
         <a-select
@@ -34,6 +34,7 @@
         </a-col>
       </a-row>
       <renderComponent
+        v-if="codeStr"
         title="回复内容"
         :uiFrame="uiFrame"
         :jsFrame="jsFrame"
@@ -46,10 +47,10 @@
 <script setup>
 import { ref } from "vue";
 import api from "@/api/chat.js";
-// import chatHistory from "./history/index.vue";
-import navbar from "./navbar.vue";
+// import historyList from "./history/historyList.vue";
+// import chatBar from "./nav/chatBar.vue";
 
-import useSession from "./useSession";
+import useSession from "./useHook/useSession";
 import { systemMessage } from "./config.js";
 import renderComponent from "./dinamic/renderComponent.vue";
 
@@ -118,3 +119,4 @@ const sendIssue = async () => {
   padding: 0 120px;
 }
 </style>
+./usehook/useSession.js./useHook/useSession.js

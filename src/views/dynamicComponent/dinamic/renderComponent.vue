@@ -2,21 +2,20 @@
   <a-card style="margin-top: 20px">
     <template #title> {{ title }} </template>
     <template #extra>
-      <a-button
-        v-if="showComponent"
-        @click="renderComponentHandler"
-        type="primary"
+      <a-button v-if="codeStr" @click="renderComponentHandler" type="primary"
         >渲染</a-button
       >
-      <span>
-        <a-button @click="removeComponent" type="primary">取消</a-button>
+      <div v-if="showComponent && codeStr" style="display: flex">
+        <a-button class="cancel-modal-btn" @click="removeComponent"
+          >取消</a-button
+        >
         <saveComponent
           :title="title"
           :uiFrame="uiFrame"
           :jsFrame="jsFrame"
           :codeStr="codeStr"
         ></saveComponent>
-      </span>
+      </div>
     </template>
     <component v-if="showComponent" :is="dinamicComponent"></component>
     <div v-else>{{ codeStr }}</div>
@@ -29,6 +28,7 @@ import * as designIcons from "@ant-design/icons-vue";
 import { loadModule } from "vue3-sfc-loader";
 import * as Vue from "vue";
 import saveComponent from "./saveComponent.vue";
+// import { compileLess } from "./compileLess.js";
 
 let dynamicScripts = []; // 存储动态加载的script元素
 
@@ -116,4 +116,8 @@ function removeComponent() {
   dinamicComponent.value = null; // 清空组件
 }
 </script>
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+.cancel-modal-btn {
+  margin-right: 4px;
+}
+</style>

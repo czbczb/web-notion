@@ -19,8 +19,8 @@
 
 <script setup>
 import { watchEffect } from "vue";
-import useSession from "./useSession";
-import login from "./login.vue";
+import useSession from "../useHook/useSession";
+import login from "../login/loginModal.vue";
 import { useHistoryStore } from "@/store/history.js";
 
 const props = defineProps({
@@ -93,3 +93,4 @@ function newSession() {
   bottom: 15px;
 }
 </style>
+./usehook/useSession

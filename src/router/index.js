@@ -112,11 +112,11 @@ const routes = [
     name: "dynamicComponent",
     children: [
       {
-        path: 'com1',
-        name: 'com1',
-        component: () => import("../views/dynamicComponent/index.vue"),
+        path: "chat",
+        name: "chat",
+        component: () => import("../views/dynamicComponent/chatPage.vue"),
       },
-    ]
+    ],
   },
   {
     path: "/virtualScroller",
@@ -186,11 +186,11 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  if (!window.history.state.current) window.history.state.current = to.fullPath
-  if (!window.history.state.back) window.history.state.back = from.fullPath
+  if (!window.history.state.current) window.history.state.current = to.fullPath;
+  if (!window.history.state.back) window.history.state.back = from.fullPath;
   // 手动修改history的state
-  return next()
-})
+  return next();
+});
 
 export { routes };
 
