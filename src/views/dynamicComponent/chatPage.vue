@@ -1,8 +1,8 @@
 <template>
   <div class="ge-container">
     <div class="ge-chat">
-      <navbar></navbar>
-      <chatHistory></chatHistory>
+      <!-- <chatBar></chatBar> -->
+      <!-- <historyList></historyList> -->
       <div class="config-wrapper">
         <a-checkbox v-model:checked="cacheHistory">记住历史</a-checkbox>
         <a-select
@@ -33,33 +33,26 @@
           >
         </a-col>
       </a-row>
-
-      <a-card style="margin-top: 20px">
-        <template #title> 回复内容 </template>
-        <template #extra>
-          <a-button @click="renderComponent" type="primary">渲染</a-button>
-        </template>
-        <div id="demoRef">
-          <DynamicVueLoader :componentString="vueComponentString" ></DynamicVueLoader>
-        </div>
-        <component v-if="showComponent" :is="dinamicComponent"></component>
-        <div v-else>{{ codeStr }}</div>
-      </a-card>
+      <renderComponent
+        v-if="codeStr"
+        title="回复内容"
+        :uiFrame="uiFrame"
+        :jsFrame="jsFrame"
+        :codeStr="codeStr"
+      ></renderComponent>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, defineAsyncComponent } from "vue";
-import api from "@/api/article.js";
-import * as designIcons from "@ant-design/icons-vue";
-import { loadModule } from "vue3-sfc-loader";
-import * as Vue from "vue";
-import chatHistory from "./history/index.vue";
-import navbar from "./navbar.vue";
-import useSession from "./useSession";
+import { ref } from "vue";
+import api from "@/api/chat.js";
+// import historyList from "./history/historyList.vue";
+// import chatBar from "./nav/chatBar.vue";
+
+import useSession from "./useHook/useSession";
 import { systemMessage } from "./config.js";
-import DynamicVueLoader from './DynamicVueLoader.vue';
+import renderComponent from "./dinamic/renderComponent.vue";
 
 const vueComponentString = ref(`
 <template>
@@ -106,14 +99,12 @@ const jsFrameOptions = ref([
     value: "vue3",
   },
 ]);
-const showComponent = ref(false);
 
 const prompt =
   ref(`实现todoList, 功能完整， 使用ant-design-vue实现,   需要包括删除，选择，清空所有，状态改变（未完成，已完成，已终止）
 符合大众的审美观`);
 const loading = ref(false);
 const codeStr = ref("");
-const dinamicComponent = ref(null);
 
 const pushHistory = (role, text) => {
   const history = [
@@ -130,8 +121,6 @@ const pushHistory = (role, text) => {
 };
 
 const sendIssue = async () => {
-  showComponent.value = false;
-
   loading.value = true;
   const params = {
     prompt: `${prompt.value}`,
@@ -145,39 +134,39 @@ const sendIssue = async () => {
   loading.value = false;
 };
 
-const renderComponent = async () => {
+// const renderComponent = async () => {
 
-  const antDesignVue = await import("ant-design-vue");
+//   const antDesignVue = await import("ant-design-vue");
 
-  const options = {
-    moduleCache: {
-      vue: Vue,
-      "@ant-design/icons-vue": designIcons,
-      "ant-design-vue": antDesignVue,
-    },
-    async getFile() {
-      return codeStr.value;
-    },
-    addStyle(textContent) {
-      console.log(textContent);
-      const style = Object.assign(document.createElement("style"), {
-        textContent,
-      });
-      const ref = document.head.getElementsByTagName("style")[0] || null;
-      document.head.insertBefore(style, ref);
-    },
-  };
-  dinamicComponent.value = defineAsyncComponent(async () => {
-    const res = await loadModule(
-      "http://localhost:8080/remote-component.vue",
-      options
-    );
+//   const options = {
+//     moduleCache: {
+//       vue: Vue,
+//       "@ant-design/icons-vue": designIcons,
+//       "ant-design-vue": antDesignVue,
+//     },
+//     async getFile() {
+//       return codeStr.value;
+//     },
+//     addStyle(textContent) {
+//       console.log(textContent);
+//       const style = Object.assign(document.createElement("style"), {
+//         textContent,
+//       });
+//       const ref = document.head.getElementsByTagName("style")[0] || null;
+//       document.head.insertBefore(style, ref);
+//     },
+//   };
+//   dinamicComponent.value = defineAsyncComponent(async () => {
+//     const res = await loadModule(
+//       "http://localhost:8080/remote-component.vue",
+//       options
+//     );
 
-    return res;
-  });
+//     return res;
+//   });
 
-  showComponent.value = true;
-};
+//   showComponent.value = true;
+// };
 </script>
 <style scoped lang="less">
 @import "@/styles/variables.less";
@@ -192,3 +181,4 @@ const renderComponent = async () => {
   padding: 0 120px;
 }
 </style>
+./usehook/useSession.js./useHook/useSession.js

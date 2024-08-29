@@ -5,7 +5,9 @@
       <a-list-item class="nav-item is-active" @click="newSession">
         message
       </a-list-item>
-      <a-list-item class="nav-item" @click="toggleHistory"> history </a-list-item>
+      <a-list-item class="nav-item" @click="historyStore.toggleShowHistory">
+        history
+      </a-list-item>
       <a-list-item class="nav-item"> favorites </a-list-item>
       <a-list-item class="nav-item" @click="showMarket"> market </a-list-item>
     </a-list>
@@ -16,35 +18,22 @@
 </template>
 
 <script setup>
-import { ref, watchEffect, onMounted } from "vue";
-import useSession from "./useSession";
-import login from "./login.vue";
+import { watchEffect } from "vue";
+import useSession from "../useHook/useSession";
+import login from "../login/loginModal.vue";
+import { useHistoryStore } from "@/store/history.js";
 
 const props = defineProps({
   sessions: Array,
 });
 
-const {
-  sessions: sessionsStore,
-  currentSessionId,
-  switchSession,
-  deleteSession,
-  editSession,
-  addSession,
-  toggleHistory,
-} = useSession();
+const { sessions: sessionsStore, addSession } = useSession();
+
+const historyStore = useHistoryStore();
 
 watchEffect(() => {
   // 确保 sessionsStore 与父组件传递的 sessions 保持同步
   sessionsStore.value = props.sessions;
-});
-
-onMounted(() => {
-  // 组件挂载后，检查是否有存储的当前会话 ID
-  const sessionId = localStorage.getItem("currentSessionId");
-  if (sessionId) {
-    switchSession(sessionId);
-  }
 });
 
 function showMarket() {
@@ -104,3 +93,4 @@ function newSession() {
   bottom: 15px;
 }
 </style>
+./usehook/useSession
