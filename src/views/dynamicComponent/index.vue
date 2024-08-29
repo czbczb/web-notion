@@ -39,6 +39,9 @@
         <template #extra>
           <a-button @click="renderComponent" type="primary">渲染</a-button>
         </template>
+        <div id="demoRef">
+          <DynamicVueLoader :componentString="vueComponentString" ></DynamicVueLoader>
+        </div>
         <component v-if="showComponent" :is="dinamicComponent"></component>
         <div v-else>{{ codeStr }}</div>
       </a-card>
@@ -54,10 +57,38 @@ import { loadModule } from "vue3-sfc-loader";
 import * as Vue from "vue";
 import chatHistory from "./history/index.vue";
 import navbar from "./navbar.vue";
-
 import useSession from "./useSession";
 import { systemMessage } from "./config.js";
+import DynamicVueLoader from './DynamicVueLoader.vue';
 
+const vueComponentString = ref(`
+<template>
+    <div>{{ message }} - Count: <span class="count-number">{{ count }}</span>
+    <a-button>test</a-button>
+    </div>
+</template>
+
+<script setup>
+import {ref} from 'vue'
+
+const message = "这是一个动态加载的组件"
+const count = 0
+
+const increment = () => {
+  count.value++;
+}
+
+const decrement = () => {
+  count.value--;
+}
+<//script>
+
+<style>
+.count-number {
+  color: #0B6EE2;
+}
+</style>
+`);
 const cacheHistory = ref(true);
 const { currentSessionId, currentHistory, updateSession } = useSession();
 
@@ -115,12 +146,14 @@ const sendIssue = async () => {
 };
 
 const renderComponent = async () => {
-  showComponent.value = true;
+
+  const antDesignVue = await import("ant-design-vue");
+
   const options = {
     moduleCache: {
       vue: Vue,
       "@ant-design/icons-vue": designIcons,
-      "ant-design-vue": import("ant-design-vue"),
+      "ant-design-vue": antDesignVue,
     },
     async getFile() {
       return codeStr.value;
@@ -142,7 +175,8 @@ const renderComponent = async () => {
 
     return res;
   });
-  console.log(dinamicComponent.value);
+
+  showComponent.value = true;
 };
 </script>
 <style scoped lang="less">
