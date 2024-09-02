@@ -54,6 +54,34 @@ import useSession from "./useHook/useSession";
 import { systemMessage } from "./config.js";
 import renderComponent from "./dinamic/renderComponent.vue";
 
+const vueComponentString = ref(`
+<template>
+    <div>{{ message }} - Count: <span class="count-number">{{ count }}</span>
+    <a-button>test</a-button>
+    </div>
+</template>
+
+<script setup>
+import {ref} from 'vue'
+
+const message = "这是一个动态加载的组件"
+const count = 0
+
+const increment = () => {
+  count.value++;
+}
+
+const decrement = () => {
+  count.value--;
+}
+<//script>
+
+<style>
+.count-number {
+  color: #0B6EE2;
+}
+</style>
+`);
 const cacheHistory = ref(true);
 const { currentSessionId, currentHistory, updateSession } = useSession();
 
@@ -105,6 +133,40 @@ const sendIssue = async () => {
   codeStr.value = res.data;
   loading.value = false;
 };
+
+// const renderComponent = async () => {
+
+//   const antDesignVue = await import("ant-design-vue");
+
+//   const options = {
+//     moduleCache: {
+//       vue: Vue,
+//       "@ant-design/icons-vue": designIcons,
+//       "ant-design-vue": antDesignVue,
+//     },
+//     async getFile() {
+//       return codeStr.value;
+//     },
+//     addStyle(textContent) {
+//       console.log(textContent);
+//       const style = Object.assign(document.createElement("style"), {
+//         textContent,
+//       });
+//       const ref = document.head.getElementsByTagName("style")[0] || null;
+//       document.head.insertBefore(style, ref);
+//     },
+//   };
+//   dinamicComponent.value = defineAsyncComponent(async () => {
+//     const res = await loadModule(
+//       "http://localhost:8080/remote-component.vue",
+//       options
+//     );
+
+//     return res;
+//   });
+
+//   showComponent.value = true;
+// };
 </script>
 <style scoped lang="less">
 @import "@/styles/variables.less";
