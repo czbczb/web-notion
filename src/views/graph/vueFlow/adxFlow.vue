@@ -3,6 +3,7 @@
     <a-modal
       v-model:open="showConfig"
       title="导出配置"
+      centered
       @ok="showConfig = false"
     >
       <code class="json" ref="codeBlock">{{ exportContent }}</code>
@@ -12,7 +13,10 @@
         <a-button class="space-btn" type="primary" @click="exportConfig"
           >导出</a-button
         >
-        <a-button type="primary" @click="addNode">添加节点</a-button>
+        <a-button class="space-btn" type="primary">校验</a-button>
+        <a-button class="space-btn" type="primary" @click="addNode"
+          >添加节点</a-button
+        >
       </div>
       <VueFlow
         :nodes="nodes"
@@ -151,7 +155,7 @@ const exportConfig = () => {
   console.log(JSON.stringify(exportContent.value));
   // hljs.highlightBlock(codeBlock.value);
   showConfig.value = true;
-  console.log(showConfig.value)
+  console.log(showConfig.value);
 };
 </script>
 
