@@ -22,10 +22,10 @@
           padding: 0.2, // 设置填充，确保图形不紧贴窗口边缘
           includeHiddenNodes: true, // 包括所有节点，即使它们是隐藏的
         }"
-        :nodes-draggabel="readonly"
-        :elements-updatable="readonly"
-        :edges-updatable="readonly"
-        :nodes-connectable="readonly"
+        :nodes-draggabel="editable"
+        :elements-updatable="editable"
+        :edges-updatable="editable"
+        :nodes-connectable="editable"
         @nodes-change="handleNodesChange"
         @edges-change="handleEdgesChange"
       >
@@ -51,7 +51,7 @@ import "highlight.js/styles/github.css"; // 选择一个样式，GitHub风格
 
 hljs.registerLanguage("json", json);
 
-const readonly = ref(false);
+const editable = ref(true);
 const exportContent = ref("");
 const codeBlock = ref(null);
 const showConfig = ref(true);
