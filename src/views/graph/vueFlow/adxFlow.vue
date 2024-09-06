@@ -1,6 +1,11 @@
 <template>
-  <div style="height: 100vh">
-    <div>
+  <div class="flow-container">
+    <div class="options">
+      <a-switch
+        v-model="readonly"
+        hecked-children="只读"
+        un-checked-children="编辑"
+      ></a-switch>
       <a-button class="space-btn" type="primary" @click="exportConfig"
         >导出</a-button
       >
@@ -9,19 +14,34 @@
     <VueFlow
       :nodes="nodes"
       :edges="edges"
-      :elements-updatable="true"
-      :edges-updatable="true"
-      :nodes-connectable="true"
+      :fit-view="true"
+      :fit-view-options="{
+        padding: 0.2, // 设置填充，确保图形不紧贴窗口边缘
+        includeHiddenNodes: true, // 包括所有节点，即使它们是隐藏的
+      }"
+      :elements-updatable="readonly"
+      :edges-updatable="readonly"
+      :nodes-connectable="readonly"
       @nodes-change="handleNodesChange"
       @edges-change="handleEdgesChange"
-    />
+    >
+      <MiniMap />
+
+      <Controls />
+
+      <Background />
+    </VueFlow>
   </div>
 </template>
 
 <script setup>
 import { ref } from "vue";
 import { VueFlow, useVueFlow } from "@vue-flow/core";
+import { Background } from "@vue-flow/background";
+import { Controls } from "@vue-flow/controls";
+import { MiniMap } from "@vue-flow/minimap";
 
+const readonly = ref(false);
 // 配置文件映射
 const config = {
   name: "flow_exe_ab",
@@ -29,16 +49,16 @@ const config = {
     sequence: {
       name: "sequence1",
       elements: [
-        { name: "allocator.DspRecallLayer.RecallDsp" },
-        { name: "allocator.DspRecallLayer.ExperimentsByDspDiversion" },
-        { name: "allocator.DSPPriorityChooseLayer" },
-        { name: "allocator.DSPPriorityChooseLayer.SmartBidFilter" },
-        { name: "allocator.DSPDistributionCapabilityLayer.FlowControlByDsp" },
+        { name: "RecallDsp" },
+        { name: "ExperimentsByDspDiversion" },
+        { name: "DSPPriorityChooseLayer" },
+        { name: "SmartBidFilter" },
+        { name: "FlowControlByDsp" },
         {
-          name: "allocator.DSPDistributionCapabilityLayer.DowngradeByDspBusiness",
+          name: "DowngradeByDspBusiness",
         },
         {
-          name: "allocator.DSPDistributionCapabilityLayer.DecideUseProxyDispatch",
+          name: "DecideUseProxyDispatch",
         },
       ],
     },
@@ -47,7 +67,7 @@ const config = {
 
 // 自定义节点样式
 const nodeStyle = {
-  minWidth: "400px",
+  minWidth: "200px",
 };
 
 // 生成 Vue Flow 节点和连接
@@ -130,8 +150,19 @@ const exportConfig = () => {
   transform: scale(75%);
   transform-origin: bottom right;
 }
+
+.flow-container {
+  height: calc(100vh - 110px);
+}
+
+.options {
+  position: absolute;
+  right: 10px;
+  z-index: 1000;
+}
+
 .space-btn {
-  margin-right: 10px;
+  margin: 0 10px;
 }
 
 /* import the necessary styles for Vue Flow to work */
