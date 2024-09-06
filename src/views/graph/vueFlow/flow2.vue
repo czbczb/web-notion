@@ -1,10 +1,14 @@
 <template>
-  <div style="height: 500px;">
+  <div style="height: 100vh">
     <div>
-      <a-button class="space-btn" type="primary" @click="exportConfig">导出</a-button>
+      <a-button class="space-btn" type="primary" @click="exportConfig"
+        >导出</a-button
+      >
       <a-button type="primary" @click="addNode">添加节点</a-button>
     </div>
-    <VueFlow :nodes="nodes" :edges="edges" 
+    <VueFlow
+      :nodes="nodes"
+      :edges="edges"
       :elements-updatable="true"
       :edges-updatable="true"
       :nodes-connectable="true"
@@ -41,13 +45,19 @@ const config = {
   },
 };
 
+// 自定义节点样式
+const nodeStyle = {
+  minWidth: "400px",
+};
+
 // 生成 Vue Flow 节点和连接
 const nodes = ref(
   config.root.sequence.elements.map((element, index) => ({
     id: `node-${index}`,
     label: element.name,
-    position: { x: 200 * index, y: 100 }, // 可以根据实际需要调整
+    position: { x: 410, y: 100 * index }, // 可以根据实际需要调整
     data: { label: element.name },
+    style: nodeStyle,
   }))
 );
 
@@ -91,8 +101,8 @@ const addNode = () => {
 const exportConfig = () => {
   const exportedElements = nodes.value.map((node) => ({
     element: {
-      name: node.data.label
-    }
+      name: node.data.label,
+    },
   }));
 
   const exportedConfig = {
@@ -100,21 +110,21 @@ const exportConfig = () => {
     root: {
       sequence: {
         name: "sequence1",
-        elements: exportedElements
-      }
-    }
+        elements: exportedElements,
+      },
+    },
   };
 
-  console.log('导出的配置:', JSON.stringify(exportedConfig, null, 2));
+  console.log("导出的配置:", JSON.stringify(exportedConfig, null, 2));
 };
 </script>
 
 <style>
-@import 'https://cdn.jsdelivr.net/npm/@vue-flow/core@1.34.1/dist/style.css';
-@import 'https://cdn.jsdelivr.net/npm/@vue-flow/core@1.34.1/dist/theme-default.css';
-@import 'https://cdn.jsdelivr.net/npm/@vue-flow/controls@latest/dist/style.css';
-@import 'https://cdn.jsdelivr.net/npm/@vue-flow/minimap@latest/dist/style.css';
-@import 'https://cdn.jsdelivr.net/npm/@vue-flow/node-resizer@latest/dist/style.css';
+@import "https://cdn.jsdelivr.net/npm/@vue-flow/core@1.34.1/dist/style.css";
+@import "https://cdn.jsdelivr.net/npm/@vue-flow/core@1.34.1/dist/theme-default.css";
+@import "https://cdn.jsdelivr.net/npm/@vue-flow/controls@latest/dist/style.css";
+@import "https://cdn.jsdelivr.net/npm/@vue-flow/minimap@latest/dist/style.css";
+@import "https://cdn.jsdelivr.net/npm/@vue-flow/node-resizer@latest/dist/style.css";
 
 .vue-flow__minimap {
   transform: scale(75%);
@@ -123,7 +133,6 @@ const exportConfig = () => {
 .space-btn {
   margin-right: 10px;
 }
-
 
 /* import the necessary styles for Vue Flow to work */
 /* @import '@vue-flow/core/dist/style.css'; */
