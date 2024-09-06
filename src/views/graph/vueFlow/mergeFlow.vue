@@ -1,11 +1,6 @@
 <template>
   <div class="flow-container">
     <div class="options">
-      <a-switch
-        v-model="readonly"
-        hecked-children="只读"
-        un-checked-children="编辑"
-      ></a-switch>
       <a-button class="space-btn" type="primary" @click="exportConfig"
         >导出</a-button
       >

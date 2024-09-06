@@ -1,36 +1,41 @@
 <template>
-  <div class="flow-container">
-    <div class="options">
-      <a-switch
-        v-model="readonly"
-        hecked-children="只读"
-        un-checked-children="编辑"
-      ></a-switch>
-      <a-button class="space-btn" type="primary" @click="exportConfig"
-        >导出</a-button
-      >
-      <a-button type="primary" @click="addNode">添加节点</a-button>
-    </div>
-    <VueFlow
-      :nodes="nodes"
-      :edges="edges"
-      :fit-view="true"
-      :fit-view-options="{
-        padding: 0.2, // 设置填充，确保图形不紧贴窗口边缘
-        includeHiddenNodes: true, // 包括所有节点，即使它们是隐藏的
-      }"
-      :elements-updatable="readonly"
-      :edges-updatable="readonly"
-      :nodes-connectable="readonly"
-      @nodes-change="handleNodesChange"
-      @edges-change="handleEdgesChange"
+  <div>
+    <a-modal
+      v-model:open="showConfig"
+      title="导出配置"
+      @ok="showConfig = false"
     >
-      <MiniMap />
+      <code class="json" ref="codeBlock">{{ exportContent }}</code>
+    </a-modal>
+    <div class="flow-container">
+      <div class="options">
+        <a-button class="space-btn" type="primary" @click="exportConfig"
+          >导出</a-button
+        >
+        <a-button type="primary" @click="addNode">添加节点</a-button>
+      </div>
+      <VueFlow
+        :nodes="nodes"
+        :edges="edges"
+        :fit-view="true"
+        :fit-view-options="{
+          padding: 0.2, // 设置填充，确保图形不紧贴窗口边缘
+          includeHiddenNodes: true, // 包括所有节点，即使它们是隐藏的
+        }"
+        :nodes-draggabel="readonly"
+        :elements-updatable="readonly"
+        :edges-updatable="readonly"
+        :nodes-connectable="readonly"
+        @nodes-change="handleNodesChange"
+        @edges-change="handleEdgesChange"
+      >
+        <MiniMap />
 
-      <Controls />
+        <Controls />
 
-      <Background />
-    </VueFlow>
+        <Background />
+      </VueFlow>
+    </div>
   </div>
 </template>
 
@@ -40,8 +45,17 @@ import { VueFlow, useVueFlow } from "@vue-flow/core";
 import { Background } from "@vue-flow/background";
 import { Controls } from "@vue-flow/controls";
 import { MiniMap } from "@vue-flow/minimap";
+import hljs from "highlight.js/lib/core";
+import json from "highlight.js/lib/languages/json";
+import "highlight.js/styles/github.css"; // 选择一个样式，GitHub风格
+
+hljs.registerLanguage("json", json);
 
 const readonly = ref(false);
+const exportContent = ref("");
+const codeBlock = ref(null);
+const showConfig = ref(true);
+
 // 配置文件映射
 const config = {
   name: "flow_exe_ab",
@@ -95,14 +109,14 @@ const edges = ref(
 );
 
 const vueFlow = useVueFlow();
-
+console.log(vueFlow);
 // 处理节点和线条变化
 const handleNodesChange = (changes) => {
-  vueFlow.value.handleNodeChanges(changes);
+  vueFlow.updateNode(changes);
 };
 
 const handleEdgesChange = (changes) => {
-  vueFlow.value.handleEdgeChanges(changes);
+  vueFlow.edgesUpdatable(changes);
 };
 
 let nodeCount = nodes.value.length;
@@ -125,7 +139,7 @@ const exportConfig = () => {
     },
   }));
 
-  const exportedConfig = {
+  exportContent.value = {
     name: "flow_exe_ab",
     root: {
       sequence: {
@@ -134,8 +148,10 @@ const exportConfig = () => {
       },
     },
   };
-
-  console.log("导出的配置:", JSON.stringify(exportedConfig, null, 2));
+  console.log(JSON.stringify(exportContent.value));
+  // hljs.highlightBlock(codeBlock.value);
+  showConfig.value = true;
+  console.log(showConfig.value)
 };
 </script>
 
@@ -153,16 +169,21 @@ const exportConfig = () => {
 
 .flow-container {
   height: calc(100vh - 110px);
+  display: flex;
 }
 
 .options {
   position: absolute;
   right: 10px;
   z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  width: 120px;
+  padding: 10px;
 }
 
 .space-btn {
-  margin: 0 10px;
+  margin: 10px 0;
 }
 
 /* import the necessary styles for Vue Flow to work */
