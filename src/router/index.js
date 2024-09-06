@@ -60,6 +60,11 @@ const routes = [
         component: () => import("../views/graph/vueFlow/flow.vue"),
       },
       {
+        path: "vueFlow2",
+        name: "vueFlow2",
+        component: () => import("../views/graph/vueFlow/flow2.vue"),
+      },
+      {
         path: "vueSuperFlow",
         name: "vueSuperFlow",
         component: () => import("../views/graph/vueSuperFlow/index.vue"),
