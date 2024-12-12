@@ -46,38 +46,40 @@ getSelectedKeys();
 </script>
 
 <template>
-  <a-layout class="layout">
-    <a-layout-header theme="light" :style="headerStyle">
-      <a-menu
-        class="menuWrapper"
-        mode="horizontal"
-        v-model:selectedKeys="selectedKeys"
-        @click="goRouter"
-        :style="{ lineHeight: '64px' }"
-      >
-        <template v-for="menu in routerConfig">
-          <a-sub-menu v-if="menu.children" :key="menu.name">
-            <template #title>
-              <strong>{{ menu.name }}</strong>
-            </template>
-            <a-menu-item v-for="sub in menu.children" :key="sub.name">
-              <strong>
-                {{ sub.title || sub.name }}
-              </strong></a-menu-item
-            >
-          </a-sub-menu>
+  <div style="height: 100%; width: 100%;">
+    <a-layout class="layout">
+      <a-layout-header theme="light" :style="headerStyle">
+        <a-menu
+          class="menuWrapper"
+          mode="horizontal"
+          v-model:selectedKeys="selectedKeys"
+          @click="goRouter"
+          :style="{ lineHeight: '64px' }"
+        >
+          <template v-for="menu in routerConfig">
+            <a-sub-menu v-if="menu.children" :key="menu.name">
+              <template #title>
+                <strong>{{ menu.name }}</strong>
+              </template>
+              <a-menu-item v-for="sub in menu.children" :key="sub.name">
+                <strong>
+                  {{ sub.title || sub.name }}
+                </strong></a-menu-item
+              >
+            </a-sub-menu>
 
-          <a-menu-item v-else :key="menu.name">
-            <strong>{{ menu.title || menu.name }}</strong>
-          </a-menu-item>
-        </template>
-      </a-menu>
-    </a-layout-header>
+            <a-menu-item v-else :key="menu.name">
+              <strong>{{ menu.title || menu.name }}</strong>
+            </a-menu-item>
+          </template>
+        </a-menu>
+      </a-layout-header>
 
-    <a-layout-content :style="contentStyle">
-      <RouterView />
-    </a-layout-content>
-  </a-layout>
+      <a-layout-content :style="contentStyle">
+        <RouterView />
+      </a-layout-content>
+    </a-layout>
+  </div>
 </template>
 
 <style scoped></style>
