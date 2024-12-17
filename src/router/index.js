@@ -55,6 +55,11 @@ const routes = [
     name: "graph",
     children: [
       {
+        path: "hierarchicalTimeline",
+        name: "hierarchicalTimeline",
+        component: () => import("../views/graph/HierarchicalTimelineWrap.vue"),
+      },
+      {
         path: "vueFlow",
         name: "vueFlow",
         component: () => import("../views/graph/vueFlow/adxFlow.vue"),
